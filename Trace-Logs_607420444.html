@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Monitoring Expansion : Trace Logs</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Monitoring Expansion</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Overzicht_373653886.html">Overzicht</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Components_491388972.html">Components</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="492863490.html">OpenText Content Server (xECM)</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Logs_492535812.html">Logs</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Monitoring Expansion : Trace Logs
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                            
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Bram Verkuijlen</span>, last modified on dec 18, 2025
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p local-id="93353d8f-6f71-4fbb-8f1b-9a94352a9d9a"><strong>Location:</strong> <code>C:\OPENTEXT\OTCS\logs\trace_logs\</code><br/><strong>Format:</strong> Text</p><hr local-id="8483b692-f3d1-4e9b-8018-b341a9e9d50a"/><h1 local-id="ffdc1539-f7ec-4ff3-b605-5cd457df0fd1" id="TraceLogs-TableofContents">Table of Contents<br/></h1><style type='text/css'>/*<![CDATA[*/
+div.rbtoc1767101594056 {padding: 0px;}
+div.rbtoc1767101594056 ul {list-style: default;margin-left: 0px;padding-left: ;}
+div.rbtoc1767101594056 li {margin-left: 0px;padding-left: 0px;}
+
+/*]]>*/</style><div class='toc-macro rbtoc1767101594056'>
+<ul class='toc-indentation'>
+<li><a href='#TraceLogs-Purpose/Overview'>Purpose / Overview</a></li>
+<li><a href='#TraceLogs-KeyFields&amp;Metrics'>Key Fields &amp; Metrics</a></li>
+<li><a href='#TraceLogs-Relevance'>Relevance</a>
+<ul class='toc-indentation'>
+<li><a href='#TraceLogs-Correlation'>Correlation</a></li>
+<li><a href='#TraceLogs-ObservabilityContext'>Observability Context</a></li>
+<li><a href='#TraceLogs-Example(Text)'>Example (Text)</a></li>
+</ul>
+</li>
+<li><a href='#TraceLogs-Monitoring&amp;MetricPotential'>Monitoring &amp; Metric Potential</a>
+<ul class='toc-indentation'>
+<li><a href='#TraceLogs-RelatedLogTypes'>Related Log Types</a></li>
+</ul>
+</li>
+</ul>
+</div><hr local-id="78a7fde1-797f-4d7f-994d-640556317c1c"/><h1 local-id="92d5bbc9-a4ad-4d8f-8a5b-b1de2049eaa9" id="TraceLogs-Purpose/Overview">Purpose / Overview</h1><p local-id="0de1c404-4c7f-45e5-a5a3-4d0de6740bf8">Trace Logs appear to be <strong>internal diagnostic or audit logs</strong> created by specific features or tests within the Content Server.</p><p local-id="d061c81a-c8f9-4a9e-aef0-89ba4fc59ea6">They may capture:</p><ul local-id="92fc0198-6fda-452e-acd1-5dcf18159c08"><li local-id="78d8e874-33e3-4030-a542-a50069b36e51"><p local-id="e76cbf10-7afb-4f5a-84bf-9d51025b335f">Stack traces of threads</p></li><li local-id="88700616-5995-45f0-a3fa-e6f5b6433c2e"><p local-id="972a1ae8-583a-4364-a86a-7c3a16366a42">Local variables, arguments, and object references</p></li><li local-id="a00b9f8b-41a9-4753-b61f-7f367498d4af"><p local-id="bef4c8c6-ea02-4525-9d68-ed0e56d21f36">Execution of certain administrative or temporary functions</p></li></ul><p local-id="edaad9d4-5cf9-4520-a185-08a87e6ada5e">These logs are <strong>inconsistent in format and content</strong>, and their origin or purpose may vary depending on server configuration or experimental features.</p><hr local-id="d33cbaff-9dbc-47bc-89dc-ea536de04480"/><h1 local-id="d4177ca4-5563-408f-a7a8-8226c25f00f8" id="TraceLogs-KeyFields&amp;Metrics">Key Fields &amp; Metrics</h1><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="4f8a4879-4ed5-491a-84b5-a01f242e452e" class="confluenceTable"><tbody><tr ac:local-id="0eabc53b-95ae-4006-9e48-ff32d3748338"><th data-local-id="f484a095-ef5e-4ba6-a925-f08094475daa" class="confluenceTh"><p local-id="01f629d8-3823-447b-9d80-077b8febf766">Field</p></th><th data-local-id="1ffdf1fa-0fa5-4a30-91f7-12ebe90254ab" class="confluenceTh"><p local-id="3fcbb304-c25c-4b69-b0bd-9d208b7eef07">Description / Metric</p></th></tr><tr ac:local-id="8ec037f7-d004-416d-9111-0f2d96cb2ae2"><td data-local-id="efd5ff14-c4ae-4a3f-baef-2951ea08bef6" class="confluenceTd"><p local-id="c30413ec-d5a1-4152-80d9-25d55f4ebe8c">Thread</p></td><td data-local-id="40d04dd4-208d-42f9-839e-6c29e52a8c77" class="confluenceTd"><p local-id="fd698afb-d0d1-4f24-bf15-2ac11cdcb684">Thread identifier performing the action</p></td></tr><tr ac:local-id="42bdeedb-65be-47cb-a1eb-1d58470d2377"><td data-local-id="e88e08b6-da01-4b28-9af4-1e53a3043ffc" class="confluenceTd"><p local-id="4b6387d0-b1a8-4d34-8543-b30a396222a2">Depth</p></td><td data-local-id="8579f715-2656-4a36-8914-0185b8647ea8" class="confluenceTd"><p local-id="03ba62d9-6d52-40d7-9c3f-ecf471bc193f">Stack depth at the point of trace</p></td></tr><tr ac:local-id="9f826be3-47ff-4fab-b4cd-03fe2d134ea1"><td data-local-id="bd440543-4b66-4a83-af3c-d42c45961ab9" class="confluenceTd"><p local-id="60e1e288-6b8b-4d76-ad64-83ad04aab794">Status</p></td><td data-local-id="38ee1380-64b8-4556-a520-dbc2f565c583" class="confluenceTd"><p local-id="446ce31c-ddbe-4fa0-b199-0d1abef52469">Status or error message captured</p></td></tr><tr ac:local-id="d1025338-2270-402a-8702-10b15133948d"><td data-local-id="ab71a0c4-24ac-4633-9e54-613cf9fd1abd" class="confluenceTd"><p local-id="2cfc32c6-e6d0-4c79-8b86-305614aa3b92">Frame</p></td><td data-local-id="8635bb42-3362-43c0-83a7-5baa5f4245b6" class="confluenceTd"><p local-id="13961edf-d609-40f7-8709-e1c370a0aba0">Function or feature being executed</p></td></tr><tr ac:local-id="4464f048-3869-494e-a352-e9127bfb6ae3"><td data-local-id="bcc70e97-6403-42f5-9b9c-f1f24f3227dd" class="confluenceTd"><p local-id="413d40be-b278-4101-af89-581476ebbd1e">ObjRef</p></td><td data-local-id="7b256706-1ffe-4144-88f8-4720cc7a972a" class="confluenceTd"><p local-id="20262746-fbd8-4e42-a0af-d53707587bd8">Object reference, often internal</p></td></tr><tr ac:local-id="f61f2ffe-302e-4da2-b6e1-b86fcb47f037"><td data-local-id="a434e821-cd63-4e1a-93a5-0b4d85c1eb69" class="confluenceTd"><p local-id="3b5b4e64-0d0f-4cb0-94e7-7b7f9ddaa965">Line</p></td><td data-local-id="4d8091c7-05de-4c2f-a67b-f91ef082c8bf" class="confluenceTd"><p local-id="ef7f6d99-6ac7-45d5-b652-be14280c63ba">Source code line reference (if available)</p></td></tr><tr ac:local-id="853595f7-1e8b-4932-baf0-1e98e99768c0"><td data-local-id="bbc25795-521a-46ae-bf7e-45df9b146850" class="confluenceTd"><p local-id="afb9d8d2-04e0-44a0-8859-b2e8befa7c26">Args / Local / Stack</p></td><td data-local-id="a05f7624-3c48-4984-bedc-207b73b67fe5" class="confluenceTd"><p local-id="dabb8602-970a-4a14-8992-3bef81d79881">Argument, local variables, and stack values at trace point</p></td></tr><tr ac:local-id="23ea23c0-ca45-48fd-a1a3-b315f119e549"><td data-local-id="12f855f7-d9c0-4e80-8d00-471e249217c4" class="confluenceTd"><p local-id="ffd55602-cc18-422b-b584-5bb6b77c5d08">Other Metadata</p></td><td data-local-id="0bd055d2-f7eb-4d57-8bcd-5735238a4f36" class="confluenceTd"><p local-id="56937174-755f-4d5f-b718-074bc37e3427">May include configuration keys, temporary settings, or feature references</p></td></tr></tbody></table></div><blockquote local-id="241ac8fe-6b27-4573-ae21-e8114141b7b0"><p local-id="61a3b6eb-0971-4147-915c-f79293846c2c">⚠️ <strong>Disclaimer:</strong> These fields are <strong>highly variable</strong> and may not be consistently present in every log.</p></blockquote><hr local-id="460a94ba-3134-427d-965b-30f581832cea"/><h1 local-id="3968f5c1-9088-40a1-a8d0-4d6c72302b20" id="TraceLogs-Relevance">Relevance</h1><p local-id="cfd7027c-eb04-4cb5-ac7f-1d6c147d7753">Trace Logs have <strong>limited operational value</strong>:</p><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="2bdd6da5-d6ef-4eca-9c04-aa9eed0d9ee5" class="confluenceTable"><tbody><tr ac:local-id="e752c983-cddc-4de1-81d5-0f0430981758"><th data-local-id="0b900e00-f16f-4eb5-9b4d-5a5f5cbea445" class="confluenceTh"><p local-id="e360f1fd-d797-4696-ad31-146e6ce0ce67">Aspect</p></th><th data-local-id="0fef2864-f4d1-450a-a826-dbea46e1ad98" class="confluenceTh"><p local-id="01c3d8e0-db46-4588-8a5c-69132760344c">Value</p></th></tr><tr ac:local-id="812b91b1-c02e-4ee5-95a4-939fce59c404"><td data-local-id="c749a530-d4ce-4d0c-a731-419dbc1dad7c" class="confluenceTd"><p local-id="7265c1d6-f4bd-4173-9e37-0ce489413ef2">Troubleshooting</p></td><td data-local-id="9dd9c658-c8f1-40f0-8fd0-ff036af20f0d" class="confluenceTd"><p local-id="6c482c7c-2777-4be4-9725-f1bbf75da0c0">★★☆☆☆ – Only useful for debugging very specific internal features</p></td></tr><tr ac:local-id="826ef73d-a66d-4173-8437-26703175e57a"><td data-local-id="892ba888-59ee-4b29-adad-b950680b0dc5" class="confluenceTd"><p local-id="042d5ad4-2357-4832-ae54-2314c90506ea">Functional insight</p></td><td data-local-id="a704dd2c-ea2a-4e60-986a-4bbc2a84b71a" class="confluenceTd"><p local-id="e5e174d7-337e-413f-b4f7-c9d6735239b9">★☆☆☆☆ – Highly inconsistent; often unclear purpose</p></td></tr><tr ac:local-id="da0c4555-de64-4f61-afc5-dfd2e286adcb"><td data-local-id="b85d8a44-187c-46f5-8e48-dc7eb56627e9" class="confluenceTd"><p local-id="b7a29798-1263-425e-b0b9-3d8f53164088">Performance metrics</p></td><td data-local-id="eb4ae6c0-7f26-43d6-9f1f-bda84fb03f9f" class="confluenceTd"><p local-id="078167ec-06c0-4ce6-8014-c948d1336caf">☆☆☆☆☆ – Not suitable for performance analysis</p></td></tr><tr ac:local-id="a2f9d675-db4e-43f7-a6ff-d3e4b629942c"><td data-local-id="e5826e1c-fefd-4dfb-8733-914f0db0cb42" class="confluenceTd"><p local-id="8485d318-1586-492d-ab94-79d36f1694ec">Correlation value</p></td><td data-local-id="5ee10a18-2865-4a45-9201-5fa68c637ebc" class="confluenceTd"><p local-id="99528d5f-2596-471a-b61e-b80f4b39e7d1">★☆☆☆☆ – Rarely linkable to other logs; may provide context in specific investigations</p></td></tr></tbody></table></div><h2 local-id="309f4530-2380-47b9-9663-58cd5ff0cd3b" id="TraceLogs-Correlation">Correlation</h2><ul local-id="edfdc1c6-3464-4c3b-b1d1-400c444eff3f"><li local-id="199f7482-57b0-4046-bc80-b866e4dc9b7f"><p local-id="9fbb5fd6-5b07-4863-a574-992da1ad5232">Occasionally, Trace Logs can provide <strong>context for errors seen in Thread Logs or Security Logs</strong>, but <strong>reliability is low</strong>.<br/><a href="Thread-Logs_606142483.html" data-linked-resource-id="606142483" data-linked-resource-version="3" data-linked-resource-type="page">Thread Logs</a> <a href="Security-Logs_607322131.html" data-linked-resource-id="607322131" data-linked-resource-version="2" data-linked-resource-type="page">Security Logs</a> </p></li><li local-id="7c1ce164-6e3a-48d7-8c9e-b9090f32197b"><p local-id="d53b54a6-09c5-4377-a687-ca66cf67a637">They are not typically used in monitoring or production troubleshooting.</p></li></ul><p local-id="2c4f351c-20a4-4805-8a87-cb36719b528c" /><h2 local-id="0527fbe4-8932-487e-9e34-2d3ca1e56a9c" id="TraceLogs-ObservabilityContext">Observability Context</h2><ul local-id="4bda6f60-3e36-413c-a6c4-5dee3ea99625"><li local-id="24bb54d1-858b-48c0-8f5e-15bf955b778f"><p local-id="af206858-513b-4605-bcb3-7d55ac7df128">These logs are mostly <strong>experimental or audit-related</strong>.</p></li><li local-id="36f17e4e-60e3-44e4-8683-71b2ea3df15c"><p local-id="782c7342-a6e0-45a0-aba5-d51687818267"><strong>High volume or complex stack traces</strong> may appear if temporary features are enabled.</p></li><li local-id="a766d440-f50a-42ed-87d0-c3e18f967727"><p local-id="4490cb7b-3a1e-4115-928a-9a597d8418d0">Use <strong>with caution</strong>, and filter heavily if attempting analysis.</p></li></ul><hr local-id="f1ccc88c-350b-4d49-ad40-5989dc7ff791"/><h2 local-id="34cfce7f-6213-4518-a5cd-fd0cdacbfc2d" id="TraceLogs-Example(Text)">Example (Text)</h2><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">tart Stack Crawl: 
+  Thread: be701fe990
+  Depth:  15
+  Status: An unknown feature was specified
+  R0:     0
+ Frame:     LOAD_FEATURE (0)
+   ObjRef:  #3d000b5b (restimpl::AdminSettingsReport::CSVReport [temp]).?
+   Line:    0
+   NStkVal: 0
+   NLocals: 0
+   NArgs:   2
+   Args:    &lt;Arg 1&gt; (1) = ?
+   Args:    &lt;Arg 2&gt; (2) = &#39;Settings_Server_TemporaryLog_Logs_thread_logs_LogLevel&#39;
+ Frame:     GenerateFile (1)
+   ObjRef:  #3d000b5b (restimpl::AdminSettingsReport::CSVReport [temp]).&#39;GenerateFile&#39;
+   Line:    63
+   NStkVal: 19
+   NLocals: 14
+   NArgs:   5
+   Stack:   &lt;Reg 1&gt; (1) = ?
+   ...
+</pre>
+</div></div><blockquote local-id="c323897d-9a3d-4a59-934d-d1d6b3ab572a"><p local-id="eba6a974-9dd8-4b30-8f97-21c29c73f4a1">Note: Example truncated for clarity; logs can include <strong>very large stack traces and variable dumps</strong>.</p></blockquote><hr local-id="18e59b79-3172-4a98-a5dd-bbc143ab88b6"/><h1 local-id="264f706f-08f4-49cf-ad6c-285659d624d5" id="TraceLogs-Monitoring&amp;MetricPotential">Monitoring &amp; Metric Potential</h1><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="51a2455b-00e6-455e-afaa-91dda8e2c113" class="confluenceTable"><tbody><tr ac:local-id="48ac22b3-cd9d-4d54-96c0-b59cfddf0721"><th data-local-id="61d2fd45-bce7-4061-837d-6a7a27e79890" class="confluenceTh"><p local-id="915d8521-d82c-4b4e-97ce-2035f0995295">Metric</p></th><th data-local-id="3fae9a9d-09d1-4c15-9675-def83fc39f67" class="confluenceTh"><p local-id="afefb7ed-2ac7-432e-b457-8efe4483183b">Value / Description</p></th></tr><tr ac:local-id="d64367ab-f318-4777-bf7c-c59d930a9de3"><td data-local-id="aa32140a-fc72-4995-98e2-6daae38e1002" class="confluenceTd"><p local-id="cf1e9a41-b785-463f-8ac9-bc747ee61292">Internal Feature Status</p></td><td data-local-id="1faab92d-36e8-4f88-849d-33094b8c9ee4" class="confluenceTd"><p local-id="c582325f-011b-460a-bf6f-826f66f820d5">Occasionally captures status messages for experimental features</p></td></tr><tr ac:local-id="e57f40d3-ab50-4797-aef5-de99cf486f99"><td data-local-id="bcc518e8-5534-40a0-9799-d403fbac3a1a" class="confluenceTd"><p local-id="604093b0-71a1-44fb-be62-bef74a1b3f00">Stack Depth / Execution Context</p></td><td data-local-id="1a99a701-a7aa-4d25-922e-53656f1901d7" class="confluenceTd"><p local-id="8c3dbb4d-0c22-496f-8054-6ee72024da86">Can provide insight into complex internal operations</p></td></tr><tr ac:local-id="5476f4dc-e227-4419-9a9f-7150b5f2a8c5"><td data-local-id="fb5a8186-7b4e-4b76-9f15-f6b20fdab0b7" class="confluenceTd"><p local-id="04fb9481-bbb2-400f-8727-bd2e16b4b150">Arguments / Local Values</p></td><td data-local-id="4bcf823a-4090-47ad-9c00-afd8918d9170" class="confluenceTd"><p local-id="96bff68b-35a5-4593-9380-4058d305c2c7">Only meaningful if specific feature behavior is under investigation</p></td></tr></tbody></table></div><blockquote local-id="d8c56eb6-8130-4a5d-a6eb-96bb8b68d8f6"><p local-id="1d9551ce-5dd9-4d29-bb27-3ee56088fe4f">Overall, monitoring and metric potential is <strong>very low</strong>.</p></blockquote><hr local-id="72b28499-2f24-45c9-bb8c-b37306706f30"/><h2 local-id="ae8e0fd2-137d-4275-9c90-5de90663004f" id="TraceLogs-RelatedLogTypes">Related Log Types</h2><ul local-id="2f0b9ccb-d73d-4abf-b8b4-9df71af12d59"><li local-id="cb8bef31-3506-4c42-bd41-3534f8a94079"><p local-id="2149611e-24c4-4b24-b292-2c65f9ad438f"><strong>Thread Logs / Thread Summary Timing Logs</strong> – may occasionally correlate to captured stack frames<br/><a href="Thread-Logs_606142483.html" data-linked-resource-id="606142483" data-linked-resource-version="3" data-linked-resource-type="page">Thread Logs</a> <a href="Thread-Summary-Timing-Logs_606371861.html" data-linked-resource-id="606371861" data-linked-resource-version="5" data-linked-resource-type="page">Thread Summary Timing Logs</a> </p></li><li local-id="f2ffb4af-7bec-497b-ba22-1da880a1ad2a"><p local-id="ec5b7165-c53a-479a-ac70-9e345f838ecf"><strong>Security Logs</strong> – some traces may reference security-related temporary functions<br/><a href="Security-Logs_607322131.html" data-linked-resource-id="607322131" data-linked-resource-version="2" data-linked-resource-type="page">Security Logs</a> </p></li><li local-id="fe8ca13d-da31-4d74-8631-1da60774951c"><p local-id="ed199e15-7d06-46b9-a80a-7f65c7584a52"><strong>Connect / Timing Logs</strong> – rarely referenced, mostly experimental<br/><a href="SQL-Connect-Logs_607387666.html" data-linked-resource-id="607387666" data-linked-resource-version="2" data-linked-resource-type="page">SQL Connect Logs</a> <a href="Web-Server-Client-Timing-Logs_606240778.html" data-linked-resource-id="606240778" data-linked-resource-version="4" data-linked-resource-type="page">Web Server Client Timing Logs</a> </p></li></ul>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on dec 30, 2025 14:33</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

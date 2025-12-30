@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Monitoring Expansion : OpenText Content Server (xECM)</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Monitoring Expansion</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Overzicht_373653886.html">Overzicht</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Components_491388972.html">Components</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Monitoring Expansion : OpenText Content Server (xECM)
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                            
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Bram Verkuijlen</span>, last modified on dec 18, 2025
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <div class="contentLayout2">
+<div class="columnLayout fixed-width" data-layout="fixed-width">
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<p local-id="5857e585-5cc4-4d64-bc1f-672e645e9cf3">This section documents <strong>OpenText Content Server (Extended ECM / xECM) V24.4</strong> from a <strong>monitoring and observability perspective</strong>.</p><p local-id="35fbcf7c-7565-4ece-b97e-f60a979fc5c2">The goal of this part of the documentation is <strong>not</strong> to explain how xECM works functionally, but to describe:</p><ul local-id="1f373cc5-f63e-43ad-8c3f-422f7608df99"><li local-id="88c88435-c935-4186-9edd-138ef6de0d78"><p local-id="5fa738fe-5ca1-48df-88c5-96d7b287bf7e">What monitoring data xECM exposes</p></li><li local-id="520e6366-9cc7-484d-9b19-f3614f2d652f"><p local-id="53dd38da-ab0c-42d0-a9f7-d331335c87ab">How that data can be accessed</p></li><li local-id="66fb000b-71a7-4fd4-a6a5-91f30f1bc749"><p local-id="8ac8ae65-4e0d-4795-8ee9-2a477402140a">What limitations exist</p></li><li local-id="07bfa494-375c-44fc-8f7c-7c10588b05d4"><p local-id="ed58e5fc-6669-468b-ae53-f240e2e14148">How xECM integrates into the observability Proof of Concept</p></li></ul><p local-id="73b3eaae-4803-4620-8cb8-644eab92fbe6">This documentation is based on <strong>hands-on technical research</strong> performed during the internship project and reflects what is realistically achievable within enterprise xECM environments running on <strong>Windows</strong>.</p><hr local-id="e001ae97-91c2-4012-9c4b-975dc9985aca"/></div>
+</div>
+</div>
+<div class="columnLayout single" data-layout="single">
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<h1 local-id="1ea56144-cd4a-4486-883f-89279f1d799e" id="OpenTextContentServer(xECM)-TableofContents">Table of Contents</h1></div>
+</div>
+</div>
+<div class="columnLayout fixed-width" data-layout="fixed-width">
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<style type='text/css'>/*<![CDATA[*/
+div.rbtoc1767101593285 {padding: 0px;}
+div.rbtoc1767101593285 ul {list-style: default;margin-left: 0px;padding-left: ;}
+div.rbtoc1767101593285 li {margin-left: 0px;padding-left: 0px;}
+
+/*]]>*/</style><div class='toc-macro rbtoc1767101593285'>
+<ul class='toc-indentation'>
+<li><a href='#OpenTextContentServer(xECM)-Purpose'>Purpose</a></li>
+<li><a href='#OpenTextContentServer(xECM)-Context'>Context</a></li>
+<li><a href='#OpenTextContentServer(xECM)-KeyResponsibilities'>Key Responsibilities</a></li>
+<li><a href='#OpenTextContentServer(xECM)-ArchitectureRole'>Architecture Role</a>
+<ul class='toc-indentation'>
+<li><a href='#OpenTextContentServer(xECM)-LimitationsandConstraints'>Limitations and Constraints</a></li>
+</ul>
+</li>
+<li><a href='#OpenTextContentServer(xECM)-Subpages'>Subpages</a></li>
+</ul>
+</div><hr local-id="78d8656d-738d-478a-8897-3dc6f6c30a00"/><h1 local-id="7175a065-8ec7-4ca3-94c5-818292ba6e06" id="OpenTextContentServer(xECM)-Purpose">Purpose</h1><p local-id="b17d9d13-259b-4a11-bfd1-3d8c4c1db787">xECM is the <strong>primary monitored system</strong> in this Proof of Concept.</p><p local-id="72c9a8e5-0a6d-4706-95d0-43ceb1d9cef6">All logs, metrics, and derived traces originate from:</p><ul local-id="229b6b2b-1451-49ab-aa9e-77fdcf3e84c1"><li local-id="879403e3-9b0b-45e9-9436-07b67d1da2fb"><p local-id="726e755f-8a18-4ea0-ab4f-59c3f37ac902">The Content Server itself</p></li><li local-id="6066c336-06de-4127-b5d5-3d6536084a85"><p local-id="65c38289-3c0b-4305-a52e-68ab3d263180">Its internal logging mechanisms</p></li><li local-id="d27e2aa1-a13d-4ad6-9163-532f9bb8269f"><p local-id="c1e75c5f-07f2-435b-b33a-e7830128a57f">Its limited external monitoring interfaces</p></li></ul><p local-id="913a4b3a-ccc4-4ad9-9285-5ed6cd4077a2">Because xECM <strong>does not support native OpenTelemetry agents or exporters</strong>, the observability pipeline is built <em>around</em> xECM rather than <em>inside</em> it.</p><hr local-id="d73a2c0b-a28a-4f59-a9a6-95b001c5c019"/><h1 local-id="edf4b785-ab34-483d-8e28-d04ddd3599f2" id="OpenTextContentServer(xECM)-Context">Context</h1><p local-id="3cb157a9-2a31-4bc0-b0ad-47a7c39b3645">For this POC, OTCM is deployed as:</p><ul local-id="385ade34-eddc-4f38-87a9-ecc4da8546b2"><li local-id="75015164-784c-4e25-ba54-a00073caa2b4"><p local-id="029e3bfc-6e42-4fc0-8d47-adc7a5edc5db"><strong>Version:</strong> OpenText Content Server V24.4</p></li><li local-id="6966bba6-a23d-416b-b22d-229917df56dd"><p local-id="2a44bbab-12a6-4640-9983-e895f49ea8ea"><strong>Operating System:</strong> Windows Server</p></li><li local-id="c96ace38-215b-41c3-a52e-5d45d32008d0"><p local-id="7dc474a1-1e3e-41ea-a224-feb4d0cf33fb"><strong>Architecture:</strong> Monolithic Java-based application</p></li></ul><p local-id="90fd500b-09e6-4f26-a879-85130cfc67a7">All monitoring components (Fluent Bit, OpenTelemetry, Prometheus, Loki, Grafana) are deployed <strong>outside</strong> of OTCM and interact with it through:</p><ul local-id="18c289e7-e3b1-42b2-b0d5-02b2cef82882"><li local-id="d2aec288-de2d-4e4a-aba8-f121b0e70ee8"><p local-id="86f9babc-1740-4355-b861-e36d5ff48619">File-based log access</p></li><li local-id="ce2f962b-c52b-49c0-9e03-1e42d25af32b"><p local-id="c3128146-cc6c-4538-a8fc-fef964f57c83">Network-based endpoints</p></li><li local-id="1538908e-6f84-4cbe-9b46-54f76dd9f847"><p local-id="dfd5a7aa-2d5b-4d82-8d00-a16e7b8881cb">Periodic API polling</p></li></ul><hr local-id="d490be6e-d516-4d4c-b6ea-58a6d38092c9"/><h1 local-id="29b859a3-2a6b-4c0d-bd58-fc0df075573d" id="OpenTextContentServer(xECM)-KeyResponsibilities">Key Responsibilities</h1><p local-id="d1a1c014-646b-48e5-bc0f-5a4e56fc4a4f">Within the scope of this Proof of Concept, OpenText Content Management (OTCM) is responsible for <strong>generating all source data</strong> used by the observability pipeline.</p><p local-id="21f5c122-6dd4-46a1-9f2a-ec9cb2324c02">OTCM itself does <strong>not act as a monitoring or observability platform</strong>. Instead, it exposes operational data indirectly through logs, internal monitoring events, and accessible API endpoints. These outputs form the foundation for all downstream observability processing.</p><p local-id="f1dfc0c4-1402-45f0-ba41-e5854780fc25">The key responsibilities of OTCM in this POC are:</p><ul local-id="c4f75790-6995-4f23-962e-1de73b296b2e"><li local-id="31a47724-aa7f-47df-8e1d-94f8c2aaf79a"><p local-id="8565108a-4702-4c0c-bcb6-bb8dfa7879cd">Generating <strong>application logs</strong> describing user actions, security events, request handling, and internal processing.</p></li><li local-id="d4836b9b-4076-4186-af6d-cca3551cf816"><p local-id="5f3bca5a-0315-440c-9cfc-fcb1548b7709">Producing <strong>performance-related logs</strong>, such as timing and thread execution information.</p></li><li local-id="19f2406e-f56a-4ec1-b0c5-13de12fca377"><p local-id="255bcf47-6ce8-49bb-925a-052d184595be">Emitting <strong>system monitoring events</strong> through a native monitoring endpoint.</p></li><li local-id="dc9508ac-bd96-4541-af79-dd1557d44784"><p local-id="73588146-34cf-461a-8c36-df583ef9515c">Exposing <strong>basic REST API endpoints</strong> that can be used for availability and performance checks.</p></li><li local-id="55038f95-0fbe-4eb3-a5a4-31c0e2fc2537"><p local-id="4a0a0baf-fe02-4813-971c-710e0981ec8e">Acting as the <strong>business-critical workload</strong> whose behavior and health are being observed.</p></li></ul><p local-id="465f8fdd-72a0-48a0-8cb8-3ef291cc3bc8">OTCM does <strong>not</strong> perform:</p><ul local-id="b37e6f7d-d21f-4c40-9368-19f7ca070838"><li local-id="21fc4981-3592-4a3b-99ad-7de0f78baa42"><p local-id="1c88cda3-5f8b-4d85-b9b9-61eeb55abe1a">Metric aggregation</p></li><li local-id="ec548a4c-860c-4512-a194-a4c2cf8ce6c5"><p local-id="b47e871b-f279-4bbe-9fae-7c96b740211f">Trace generation</p></li><li local-id="861ffa3b-326d-412a-a879-886ec49da688"><p local-id="866c5567-58c4-4d16-b95d-73c017fbf640">External data export using observability standards (e.g. OTLP)</p></li><li local-id="a2b89eaa-81f0-4b2e-936c-7ae2d2b085c2"><p local-id="a9e45aa3-52a3-4847-b68f-029ad794b824">Agent-based instrumentation</p></li></ul><p local-id="66a565dc-cd9a-4b58-9ae4-e9e99afcc6f6">All processing, enrichment, and transformation of data occurs outside of OTCM.</p><hr local-id="58bc8999-f2e2-49e2-bc00-efcfdf7a5d56"/><h1 local-id="bc8cab8f-4db0-41ab-8a38-57d4de49ec2e" id="OpenTextContentServer(xECM)-ArchitectureRole">Architecture Role</h1><p local-id="cadacf00-968c-47cc-94bb-f6820a5f2bc8">In the overall architecture of the POC, OTCM functions as the <strong>origin of all observability data</strong>.</p><p local-id="bc71cbd9-ec0b-46ae-823c-3e5b80689c84">Because OTCM does not natively support modern observability standards, it is treated as a <strong>black-box enterprise application</strong>. Observability is achieved by extracting data from the outside rather than instrumenting the application internally.</p><p local-id="bb2e053b-6857-449a-8463-5a3e141ca678">High-level architectural role of OTCM:</p><ul local-id="2f29b24c-413c-4671-bc86-f3ec1b0d8c9c"><li local-id="5552e952-5ee0-481f-af5d-6b3279837432"><p local-id="e82d5117-0b19-4cdf-816d-2b157236d4b9"><strong>Source system</strong> for logs, events, and operational signals</p></li><li local-id="9175a453-9701-4a2f-a1e1-b42c6bf0cdd6"><p local-id="7f1a7fd0-06cb-41c6-9328-686dfbfba23b"><strong>Uninstrumented application</strong>, requiring log-based and indirect monitoring approaches</p></li><li local-id="eb300776-7940-48e9-8971-c7e48f6e7fc3"><p local-id="e4f572cb-4140-4b88-a6dd-dbf3b14d6c08"><strong>Upstream dependency</strong> for all other monitoring components</p></li></ul><p local-id="30504105-c336-4bfd-ab57-cf3e2af4c3e2">Conceptually, OTCM sits at the start of the data flow.</p><p local-id="1176c452-c372-4ccb-9df5-3dd7c81dd1fb">This architectural position strongly influenced the technical choices made in the POC, particularly:</p><ul local-id="46e158b9-1120-46ec-a8bb-dd343521a465"><li local-id="1cba7437-831f-4f70-af78-12977e10ff8b"><p local-id="d1affd5d-00fb-4c4c-a52f-c6114278db47">The decision to use <strong>Fluent Bit</strong> for log ingestion</p></li><li local-id="60c9c323-4066-440d-91a1-2eb7e63792d4"><p local-id="5bbe5d74-97c8-4e58-b498-ba38acd625b9">The reliance on <strong>OpenTelemetry Collectors</strong> for normalization and enrichment</p></li><li local-id="cc24094d-afa4-43e1-92c1-7b16caa7ee55"><p local-id="65e607b2-2c97-4437-b2ce-b19de941aece">The focus on <strong>log-derived metrics</strong></p></li></ul><hr local-id="fbdc90eb-505c-49de-910c-41bb26f0cd1a"/><h2 local-id="fdbf32fd-e8d7-4375-a6d1-50218f577e3c" id="OpenTextContentServer(xECM)-LimitationsandConstraints">Limitations and Constraints</h2><p local-id="bde6235c-6b9a-4281-bba5-78f5fc6671ee">The following constraints of OTCM are central to this project and explain many of the architectural decisions:</p><ul local-id="3c2bdb7e-a139-429b-b979-b0d46abe9906"><li local-id="078a34de-bca4-4c36-ad49-fbb25805a647"><p local-id="c54c9f18-9982-4d64-8fbd-f951cefeb3ce">OTCM does <strong>not support native OpenTelemetry instrumentation</strong></p></li><li local-id="1789d56e-538e-49ed-a073-ed0ffdf158d0"><p local-id="9fc941e3-f9f5-4839-8a8a-0a6ca2409c2a">Java agent-based monitoring is <strong>not feasible</strong> in typical OTCM deployments on Windows</p></li><li local-id="e6c60afc-82bc-4c99-8a01-00610b7ee439"><p local-id="51f43d2b-9e1f-4739-9776-8f467c297e15">No native push mechanism exists for metrics or traces</p></li><li local-id="0b76cd8b-762b-4325-a93f-96e88a9f6f06"><p local-id="25908685-d6fd-4a8a-9b4f-d398ffa7969e">Observability data must be collected via:</p><ul local-id="5fa51cf8-2f60-4ab7-8969-78efd7f465d8"><li local-id="b381bd8e-e1a4-4dc3-b0f8-14af2ef80141"><p local-id="be0f13f8-bc4e-4e3c-a210-8fc41f9c38c0">File-based log scraping</p></li><li local-id="97e609ee-e62c-410a-a3cc-11ee4b42666b"><p local-id="feb5360d-0c2a-4e3d-b17b-316df8b37a88">Native system monitoring events</p></li><li local-id="33cc3f7b-ea48-45b9-af02-5d168516c3a8"><p local-id="89b9d557-2fc2-458b-ba4e-169fca490ca2">External API polling</p></li></ul></li></ul><hr local-id="1cddb5a1-b423-4924-ab7d-696154df3a52"/><h1 local-id="690330bc-6069-41ba-8201-5262a8268c6f" id="OpenTextContentServer(xECM)-Subpages">Subpages</h1><ul class='childpages-macro'><li><a href="607322114.html" data-linked-resource-id="607322114" data-linked-resource-version="2" data-linked-resource-type="page">Agent-Based Instrumentation (Java Agent)</a></li><li><a href="Admin-Panel-Configuration_605028361.html" data-linked-resource-id="605028361" data-linked-resource-version="3" data-linked-resource-type="page">Admin Panel Configuration</a></li><li><a href="Logs_492535812.html" data-linked-resource-id="492535812" data-linked-resource-version="10" data-linked-resource-type="page">Logs</a><ul class='childpages-macro'><li><a href="Thread-Logs_606142483.html" data-linked-resource-id="606142483" data-linked-resource-version="3" data-linked-resource-type="page">Thread Logs</a></li><li><a href="Thread-Summary-Timing-Logs_606371861.html" data-linked-resource-id="606371861" data-linked-resource-version="5" data-linked-resource-type="page">Thread Summary Timing Logs</a></li><li><a href="SQL-Connect-Logs_607387666.html" data-linked-resource-id="607387666" data-linked-resource-version="2" data-linked-resource-type="page">SQL Connect Logs</a></li><li><a href="Trace-Logs_607420444.html" data-linked-resource-id="607420444" data-linked-resource-version="2" data-linked-resource-type="page">Trace Logs</a></li><li><a href="Web-Server-Client-Logs_605945861.html" data-linked-resource-id="605945861" data-linked-resource-version="3" data-linked-resource-type="page">Web Server Client Logs</a></li><li><a href="Web-Server-Client-Timing-Logs_606240778.html" data-linked-resource-id="606240778" data-linked-resource-version="4" data-linked-resource-type="page">Web Server Client Timing Logs</a></li><li><a href="Security-Logs_607322131.html" data-linked-resource-id="607322131" data-linked-resource-version="2" data-linked-resource-type="page">Security Logs</a></li><li><a href="Java-JVM-Logs_607420451.html" data-linked-resource-id="607420451" data-linked-resource-version="4" data-linked-resource-type="page">Java JVM Logs</a></li><li><a href="605978637.html" data-linked-resource-id="605978637" data-linked-resource-version="5" data-linked-resource-type="page">System Monitoring (JSON Events)</a></li></ul></li><li><a href="API_611057665.html" data-linked-resource-id="611057665" data-linked-resource-version="2" data-linked-resource-type="page">API</a></li><li><a href="Limitations_492699652.html" data-linked-resource-id="492699652" data-linked-resource-version="8" data-linked-resource-type="page">Limitations</a></li></ul></div>
+</div>
+</div>
+</div>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on dec 30, 2025 14:33</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

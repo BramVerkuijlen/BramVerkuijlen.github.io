@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Monitoring Expansion : Limitations</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Monitoring Expansion</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Overzicht_373653886.html">Overzicht</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Components_491388972.html">Components</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="492863490.html">OpenText Content Server (xECM)</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Monitoring Expansion : Limitations
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                            
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Bram Verkuijlen</span>, last modified on dec 19, 2025
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p local-id="53381bbd-4c4c-48b8-9fa9-09e2899b8ae5">OpenText Content Management server (xECM) has several inherent limitations in terms of monitoring, metrics, and tracing capabilities. Understanding these constraints is essential for designing a feasible observability approach.</p><hr local-id="a08ba7b9-f230-4691-a274-003709bbe3e3"/><h1 local-id="4c04b2d5-a51e-49ce-891a-02a9793d2b8d" id="Limitations-TableofContents">Table of Contents</h1><style type='text/css'>/*<![CDATA[*/
+div.rbtoc1767101594254 {padding: 0px;}
+div.rbtoc1767101594254 ul {list-style: default;margin-left: 0px;padding-left: ;}
+div.rbtoc1767101594254 li {margin-left: 0px;padding-left: 0px;}
+
+/*]]>*/</style><div class='toc-macro rbtoc1767101594254'>
+<ul class='toc-indentation'>
+<li><a href='#Limitations-LackofNativeTracing'>Lack of Native Tracing</a>
+<ul class='toc-indentation'>
+<li><a href='#Limitations-Implications'>Implications</a></li>
+</ul>
+</li>
+<li><a href='#Limitations-LimitedMetricsCollection'>Limited Metrics Collection</a>
+<ul class='toc-indentation'>
+<li><a href='#Limitations-Implications.1'>Implications</a></li>
+</ul>
+</li>
+<li><a href='#Limitations-FluentBitInstrumentationLimitations'>Fluent Bit Instrumentation Limitations</a></li>
+<li><a href='#Limitations-OverallObservabilityChallenges'>Overall Observability Challenges</a></li>
+<li><a href='#Limitations-KeyTakeaways'>Key Takeaways</a></li>
+</ul>
+</div><hr local-id="29bae69d-dce0-4489-b0ee-468e11fef8e5"/><h1 local-id="47b1a698-4d74-43f4-955c-ab6e6f60d637" id="Limitations-LackofNativeTracing">Lack of Native Tracing</h1><p local-id="7a164818-accb-496b-a819-e1eca01666c2">Unlike traditional observability systems that support agent-based trace instrumentation (e.g., OpenTelemetry Agents), OTCM does <strong>not</strong> provide:</p><ul local-id="1bc22d10-4790-476a-a2a4-7f9d8b466975"><li local-id="15b7f7b0-c12e-42c5-9768-7e1efe80462a"><p local-id="e057c22d-8e8b-47ae-a4a7-f037ef654fdf">Java agents for active trace collection</p></li><li local-id="55bc4a53-2752-41e2-b5bd-31016cdc8683"><p local-id="1dcb523b-3b39-4609-aea4-fcb5b032dd42">Any endpoints to push trace data externally</p></li><li local-id="2fca6ab5-667c-4949-8136-efc92f04b95c"><p local-id="a9066d98-d4ca-40d3-800f-acd4eb49727f">Automatic span creation</p></li></ul><h2 local-id="10d5fe2b-24e9-4500-939d-d389137450ce" id="Limitations-Implications">Implications</h2><ul local-id="5db4fbf9-5c8f-4aec-b876-1bd424bcc409"><li local-id="f6e4b29c-655c-4a22-9739-99e099b240ce"><p local-id="cccec91d-3542-4bc4-b446-57995058463a">No native or agent-based traces can be captured</p></li><li local-id="d6c2587b-f7a0-4ab2-997b-55ae7239b435"><p local-id="3079972f-50e2-47ad-9772-c887f2760fb1">Traces must be <strong>reconstructed manually</strong> by correlating log files (e.g., Thread Logs, SQL Connect Logs, Web Server Client Logs)</p></li><li local-id="d32d84d8-806a-4022-a068-4c6456a38ef8"><p local-id="1a359c03-4e58-4939-9a44-609ba6041d40">Trace reconstruction can be <strong>incomplete</strong> depending on log detail and active modules</p></li><li local-id="2f9fc145-8196-420d-bf2d-5a367b54bde7"><p local-id="12e1c04d-f307-4b60-8fcb-22b5cfc499ac">During the POC, no trace files or agent-generated traces were found, confirming that OTCM relies solely on logs for any trace-like information</p></li></ul><p local-id="2ba5eb8e-0f19-4eef-9286-f858d9c8119a" /><blockquote local-id="5b42246f-98ec-45e3-b081-dab7a486b6e6"><p local-id="11e3ec1b-0ae1-4cd6-bba4-f3e8847bd5d6">Active tracing is not supported; only log-based trace reconstruction is possible.</p></blockquote><hr local-id="24345fb0-bb55-434f-bca5-8350f750124d"/><h1 local-id="f7d6891f-674d-4cab-b52f-aa18aa249336" id="Limitations-LimitedMetricsCollection">Limited Metrics Collection</h1><p local-id="2c3d46dc-8906-4652-a4a5-9295c2362ba4">OTCM does not provide a central metrics endpoint. Metrics must be derived from:</p><ul local-id="5755eddc-db44-41ca-9dca-fdc64a9aa923"><li local-id="9811aa66-6b5e-4484-87c0-cc4bfa4016a9"><p local-id="b4694cb4-71f4-41c5-8bfd-2d1a0585098e">Logs (Thread Summary Timing Logs, SQL Connect Logs, Web Server Client Timing Logs, Security Logs)</p></li><li local-id="e2ae79cd-2ea2-45e5-87f3-e5b0bb9abbef"><p local-id="6e3970d9-8783-46ef-9bad-4883974a11b0">OTCM APIs (limited)</p></li><li local-id="ac68662d-13e4-45e9-8b8e-b06b0cae3d8b"><p local-id="ee6c67fc-dbb7-4eea-af04-19743307be85">Host-level metrics (CPU, memory, disk usage) via external collectors like OpenTelemetry Collector</p></li></ul><h2 local-id="5bc7c659-4fdc-417a-9cda-050309fe8963" id="Limitations-Implications.1">Implications</h2><ul local-id="1975c81f-6702-4b2b-b2d2-9d169220c500"><li local-id="40d6be93-3775-43a2-8fe7-73a3291c1862"><p local-id="443527ac-204a-42aa-9b0a-332c8f1780de">Metrics collection is <strong>fragmented</strong> and requires aggregation from multiple sources</p></li><li local-id="859b77bb-87b5-4559-a559-bedaffc5a1ad"><p local-id="651324ab-b26b-4cfa-8bca-771427682157">Metrics are <strong>not exposed in real time</strong>; parsing of log files or event streams is needed</p></li><li local-id="6c9a2e0a-8b57-43ae-8e8e-d4e733716989"><p local-id="061a2efd-5495-45f8-be8e-c96900f0caed">Complex dashboards or real-time alerting require <strong>custom ETL or log-forwarding setup</strong>, often via Fluent Bit or similar tools</p></li></ul><p local-id="6602fba0-73c6-471c-a3f0-40873f51007e" /><blockquote local-id="c7c819b4-dc26-4349-a2b7-0b69132d6b9d"><p local-id="68bb080d-e5b6-416a-8d14-e9bd94ad7a92">Metrics are obtainable but require additional configuration, parsing, and aggregation; there is no built-in central metrics endpoint.</p></blockquote><hr local-id="fbe8e2b1-a528-494e-9344-bcccb5387324"/><h1 local-id="a056406b-5841-40d9-8d9d-2a8daa5242d4" id="Limitations-FluentBitInstrumentationLimitations">Fluent Bit Instrumentation Limitations</h1><ul local-id="60337af8-a23c-413b-8088-72206d8e210d"><li local-id="a360532f-68ec-4d8b-97d4-0f15438bd42a"><p local-id="40dcd9d5-51ec-4a69-ac80-257932a1d934">OTCM provides only a <strong>basic Fluent Bit configuration file</strong> for shipping system and security logs</p></li><li local-id="e37198be-50b6-426f-a056-f0c22c129708"><p local-id="3f5113ea-e9fb-4885-965b-b0f6f2354e75">Fluent Bit is <strong>not installed, managed, or started by OTCM</strong>; manual setup is required</p></li><li local-id="24dd3034-79ac-4426-92c6-e9742530c4cb"><p local-id="d5761e96-f26f-40ff-85b0-d66cd55ec655">No advanced configuration (e.g., routing, output plugins) is provided by OTCM</p></li><li local-id="bad91533-817a-4b27-8e83-a43d54053199"><p local-id="8f9ab1ec-4cc9-412f-a3e1-9f7e92c43e60">Monitoring capabilities remain <strong>limited and largely manual</strong></p></li></ul><hr local-id="bb47c12e-f789-40a4-b49d-25561887563b"/><h1 local-id="6580e290-33fc-49bf-baed-05ac026a0fd6" id="Limitations-OverallObservabilityChallenges">Overall Observability Challenges</h1><ul local-id="8e89dd0b-8608-4215-8608-1e60a4173069"><li local-id="e358beb7-1846-4bea-b419-49674f0e8e6a"><p local-id="430c001d-a80b-4ad4-a16b-bff13244594c">OTCM monitoring is <strong>hard and fragmented</strong></p></li><li local-id="01ff5983-d9ac-4ced-a2d9-df4f49a5ac21"><p local-id="dee15ce5-d11c-46fc-ace2-5a761c9e8465">No native support for modern observability patterns (traces, metrics endpoints, agent-based collection)</p></li><li local-id="7af5340a-41ee-4ad4-9c05-d13d1af65f13"><p local-id="242a3576-c366-4421-9eb7-c5134c8bcd39">The system is largely <strong>log-driven</strong>, making automated tracing or real-time analytics difficult</p></li></ul><hr local-id="3f6865a6-5631-402f-86bb-84f99ac0cf37"/><h1 local-id="2d8b15ce-025e-467e-9675-06349b598db9" id="Limitations-KeyTakeaways">Key Takeaways</h1><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="ef40bf97-a9ab-45ab-92d0-6b592a6552f1" class="confluenceTable"><tbody><tr ac:local-id="fa97e362-12fe-4aeb-9505-9df6092547b2"><th data-local-id="044fdc3e-afa6-4f40-8acd-6d3e380c707d" class="confluenceTh"><p local-id="c7e98f47-bd87-4094-b605-b8d4d9674e7f">Aspect</p></th><th data-local-id="c05acb0b-ac0f-42fd-a1e3-737e6b01e64b" class="confluenceTh"><p local-id="48f70311-7764-4fa2-a511-1b592161c173">OTCM Capability</p></th><th data-local-id="748e5aad-0dce-42cc-9a8a-f587617b8b88" class="confluenceTh"><p local-id="fdbbb0b2-b4bb-4b04-b187-04fc7c6efe40">Notes / Limitations</p></th></tr><tr ac:local-id="b997b660-1a20-455a-82c7-ee6f415a3047"><td data-local-id="bc2f0a67-dcad-49ac-bbde-5f31cc3247ce" class="confluenceTd"><p local-id="88515cd7-c391-4917-9cbb-51cc4c00bf48">Traces</p></td><td data-local-id="89669422-8266-45f0-ab42-3286270b099c" class="confluenceTd"><p local-id="1fecce41-602d-4f38-b944-5948dec9d35e">❌</p></td><td data-local-id="e79f8463-581f-4444-aca5-3f7ef9f605a1" class="confluenceTd"><p local-id="41951c6b-ed0e-431d-b053-8a68fe405aa2">No Java agents, no span creation, must reconstruct from logs</p></td></tr><tr ac:local-id="82fbf5b5-23dc-4e39-9f62-2f11fe3afd4b"><td data-local-id="4f7a6e35-17f1-46a0-bba0-cd93270f1752" class="confluenceTd"><p local-id="b9f6c38e-9103-4afe-a2ba-a025e406f685">Metrics</p></td><td data-local-id="0151ba80-3b15-401e-b38d-fc5d3b1637a1" class="confluenceTd"><p local-id="a85cc4cd-b808-47b4-a95b-85724e6d78b8">⚠️ Partial</p></td><td data-local-id="dbe47911-749d-4b09-a3c4-9c8cbdd572e5" class="confluenceTd"><p local-id="9e3cd53c-8f64-4ab7-8f8f-e8aa730fea65">Available from logs, APIs, host metrics; no central endpoint</p></td></tr><tr ac:local-id="d4513eae-31dc-4b10-bbb1-6a7df2f25eea"><td data-local-id="46a51c3d-1a68-4d4f-837c-9443629026fe" class="confluenceTd"><p local-id="eb02646b-519f-4e70-a4a0-9b207d0de220">Fluent Bit</p></td><td data-local-id="11786886-a8bf-4aeb-83bf-c1a6320ce54d" class="confluenceTd"><p local-id="34be89b5-a7bb-4de9-9078-60c35ae8a5d5">⚠️ Basic</p></td><td data-local-id="7959d745-44de-472b-a55a-7b5e5546ed75" class="confluenceTd"><p local-id="2c303c10-dd3f-460c-aafc-1b33deffb101">Only config files provided; manual setup required</p></td></tr></tbody></table></div><p local-id="ad60c7a6-5867-4c60-8d75-c413a77a54e3" />
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on dec 30, 2025 14:33</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Monitoring Expansion : Installation &amp; Setup</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Monitoring Expansion</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Overzicht_373653886.html">Overzicht</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Monitoring Expansion : Installation &amp; Setup
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                            
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Bram Verkuijlen</span>, last modified on dec 17, 2025
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p local-id="1a9a9a33-282e-4ea4-b421-b27fbd4d59e4">This section provides all necessary instructions to prepare the environment and get the monitoring Proof of Concept (POC) running. It is intended for developers, engineers, or anyone setting up the POC for testing or demonstration purposes.</p><hr local-id="339b5e66-cdbd-4f01-947f-e5f645b11772"/><h1 local-id="cee82803-4300-48e8-a7cf-98bc2147f2fd" id="Installation&amp;Setup-TableofContents">Table of Contents</h1><style type='text/css'>/*<![CDATA[*/
+div.rbtoc1767101593085 {padding: 0px;}
+div.rbtoc1767101593085 ul {list-style: default;margin-left: 0px;padding-left: ;}
+div.rbtoc1767101593085 li {margin-left: 0px;padding-left: 0px;}
+
+/*]]>*/</style><div class='toc-macro rbtoc1767101593085'>
+<ul class='toc-indentation'>
+<li><a href='#Installation&amp;Setup-Overview'>Overview</a></li>
+<li><a href='#Installation&amp;Setup-Subpages'>Subpages</a>
+<ul class='toc-indentation'>
+<li><a href='#Installation&amp;Setup-Notes'>Notes</a></li>
+</ul>
+</li>
+</ul>
+</div><hr local-id="3435bf2d-c1e6-497b-8b7a-447a47a571f2"/><h1 local-id="92219b06-51d3-442c-bf2a-327469f607fd" id="Installation&amp;Setup-Overview">Overview</h1><p local-id="9fc27a42-4440-4ad8-88c4-c6f836269350">The POC pipeline includes the following components:</p><ul local-id="13cf0967-459a-43b4-8634-ad5e00d8215d"><li local-id="d1787a21-8e17-40e6-bcae-b99abe5b07a9"><p local-id="fae27901-addb-4a24-beaa-9056ea1a0893"><strong>OTCM (OpenText Content Management System)</strong> – source of logs, metrics, and trace-like data</p></li><li local-id="5fcced35-f7be-4ead-ab52-670b1f99ef94"><p local-id="ee66d8b3-6bc0-4ab0-9fe9-e4e6978a272f"><strong>Fluent Bit</strong> – lightweight log shipper to collect OTCM logs and system events</p></li><li local-id="4199a71c-a074-4587-a6df-5860fa6a3ecb"><p local-id="30556668-b645-4ddb-ab2c-74d7add21798"><strong>OpenTelemetry Collector</strong> – central pipeline to process, transform, and export logs and metrics</p></li><li local-id="1f48c51f-6447-4d41-842d-2fb35345fdee"><p local-id="f39603dd-41b6-483b-bcf3-2a12d9be2db6"><strong>Prometheus &amp; Loki</strong> – optional backends for storing metrics and logs</p></li><li local-id="6f3ad06e-510c-467f-96c7-78e0da1a722e"><p local-id="2de2db74-5c43-4831-969d-f8f72e36b1b2"><strong>Grafana</strong> – optional visualization layer for dashboards</p></li></ul><hr local-id="62fa7096-e1fa-4aa4-8816-c8b3e8ed1829"/><h1 local-id="90e1447b-c5be-48b2-8d4b-99d1bbd54b93" id="Installation&amp;Setup-Subpages">Subpages</h1><p local-id="d296b4f1-3588-4cba-bfa8-d2f8757bd3f6">Please follow the steps on the subpages in order for a successful setup:</p><ul class='childpages-macro'><li><a href="Environment-Requirements_601948170.html" data-linked-resource-id="601948170" data-linked-resource-version="4" data-linked-resource-type="page">Environment Requirements</a></li><li><a href="Quick-Start_602144811.html" data-linked-resource-id="602144811" data-linked-resource-version="4" data-linked-resource-type="page">Quick Start</a></li></ul><hr local-id="60728cca-da83-453c-a543-a8d62e08f6c5"/><h2 local-id="f4de81d3-0799-4767-93e6-97cc03c1322a" id="Installation&amp;Setup-Notes">Notes</h2><ul local-id="755d6fbb-349e-447a-9506-c037319e1b5d"><li local-id="2926a748-ae23-4cae-96f5-0e7efd2ded8b"><p local-id="03748f46-105d-4ee9-822e-5b29e1fcc4f4">Grafana is <strong>optional</strong> but recommended for visualizing logs and metrics. It can be installed on the same VM or a separate host.</p></li><li local-id="b0784571-4cfe-4ca9-80c6-5788fcbd5de4"><p local-id="eaefc1b0-2542-41f1-a58b-15e91db4e46b">This POC is tested on <strong>Windows 24.4</strong>; other OS configurations are out of scope.</p></li><li local-id="e9d69e76-dfb9-4312-a6b5-8f5d9aa51bfa"><p local-id="de39e96b-0c9e-45d2-866f-6ed810721c9d">The focus is on understanding <strong>monitoring possibilities</strong> of enterprise ECM systems using OTCM; full integration into production systems or AMI is out of scope.</p></li></ul>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on dec 30, 2025 14:33</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

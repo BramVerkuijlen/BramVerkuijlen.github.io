@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Monitoring Expansion : Prometheus</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Monitoring Expansion</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Overzicht_373653886.html">Overzicht</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Components_491388972.html">Components</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Monitoring Expansion : Prometheus
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                            
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Bram Verkuijlen</span>, last modified on dec 29, 2025
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p local-id="eb6b0bc1-7b8e-4ba6-80fb-fc1728bdc7e8">This section documents <strong>Prometheus</strong> as used in the Monitoring Expansion POC. It describes its role in the observability pipeline, the data it collects, how it integrates with other components, and key limitations.</p><p local-id="e54e268f-4547-4bd2-a35b-ebe596225733">The goal of this part of the documentation is not to explain Prometheus in detail as a monitoring system, but to describe:</p><ul local-id="82c7cd3e-42de-4bc1-ba29-5052d8325924"><li local-id="d295da21-c808-42d7-8685-275f91e3bbb4"><p local-id="7bbd3230-1782-40d2-8137-1918c4d48d44">What data Prometheus collects in this POC</p></li><li local-id="c4fd8178-d0f1-43aa-996b-6b5908827542"><p local-id="92f1fa32-761c-4faa-8f89-1a1c1232f7a1">How Prometheus is configured</p></li><li local-id="6d8758a7-9696-4c88-99de-77eb17fef6f2"><p local-id="d15cf6f3-9dc1-4aa3-9bc9-71bd3657a2d5">How Prometheus integrates with the pipeline</p></li><li local-id="28b99f71-2805-4576-870c-9208db2272b7"><p local-id="82fa1273-d1d6-40b4-9656-5695c24f3122">Limitations and considerations for future improvements</p></li></ul><p local-id="b7f192f8-c705-4b8d-9f65-b81e5fc8c9ce">This documentation is based on the hands-on technical research performed during the internship project.</p><hr local-id="a988c5bb-81ca-4d8f-bd89-b28c272ca152"/><h1 local-id="d48269c6-726b-4de9-8cee-8308a4022c13" id="Prometheus-TableofContents">Table of Contents</h1><style type='text/css'>/*<![CDATA[*/
+div.rbtoc1767101594858 {padding: 0px;}
+div.rbtoc1767101594858 ul {list-style: default;margin-left: 0px;padding-left: ;}
+div.rbtoc1767101594858 li {margin-left: 0px;padding-left: 0px;}
+
+/*]]>*/</style><div class='toc-macro rbtoc1767101594858'>
+<ul class='toc-indentation'>
+<li><a href='#Prometheus-Purpose'>Purpose</a></li>
+<li><a href='#Prometheus-Context'>Context</a></li>
+<li><a href='#Prometheus-KeyResponsibilities'>Key Responsibilities</a></li>
+<li><a href='#Prometheus-ArchitectureRole'>Architecture Role</a></li>
+<li><a href='#Prometheus-LimitationsandConstraints'>Limitations and Constraints</a></li>
+<li><a href='#Prometheus-ConfigurationOverview'>Configuration Overview</a>
+<ul class='toc-indentation'>
+<li><a href='#Prometheus-GlobalSettings'>Global Settings</a></li>
+<li><a href='#Prometheus-ScrapeTargets'>Scrape Targets</a></li>
+<li><a href='#Prometheus-Alerting&amp;RuleFiles'>Alerting &amp; Rule Files</a></li>
+</ul>
+</li>
+<li><a href='#Prometheus-RelatedDocumentation'>Related Documentation</a></li>
+</ul>
+</div><hr local-id="e67816eb-e68f-411d-9698-bc5a3b74eee3"/><h1 local-id="990fc015-2150-4531-ad0f-7afe95c874fe" id="Prometheus-Purpose">Purpose</h1><p local-id="968f744a-f7fa-49e5-8786-01458e5800c5">Prometheus is used as the <strong>metrics backend</strong> in the POC. Its main responsibilities are:</p><ul local-id="81e75de8-820b-4207-8b90-c1b6e4afa148"><li local-id="2f19e0b9-cb1f-457a-87e5-997ce4212e18"><p local-id="7b169c35-a893-49c3-a57c-6eaf21cd4215">Collecting metrics from all OpenTelemetry collectors</p></li><li local-id="bacaf2d9-4917-4f70-9f21-9903eb5b008b"><p local-id="c4e29342-1914-4db5-bbb7-d8195bd1f4c2">Collecting internal telemetry from the Central Collector</p></li><li local-id="a3d26c70-74ae-43aa-9bef-a29d9c6dbbc2"><p local-id="65257a37-f3e1-4072-b717-1b0d27b770e0">Scraping metrics from Loki for monitoring purposes</p></li><li local-id="cf451899-3df2-4c5f-8af2-73b076f3ac9f"><p local-id="b280d2d9-f931-4b9b-a076-c8929692b499">Providing a Prometheus-compatible endpoint for Grafana dashboards</p></li></ul><p local-id="1d5d6493-21d5-418b-ba52-cf87874aa29f">Prometheus does <strong>not</strong> generate metrics itself—it only scrapes and stores telemetry from other components.</p><hr local-id="64a00dd1-0e04-4da2-aab0-b4f10bfe88d7"/><h1 local-id="eff31105-70da-44e8-befd-37407e2b2d34" id="Prometheus-Context">Context</h1><p local-id="fabdb9f1-1b78-4354-a0ba-9ca58657f957">In this POC, Prometheus is deployed on the same Windows VM as the other components but can also run on a separate host if network access to the collectors and Loki is available.</p><ul local-id="44f3d1a9-476b-4d67-8ef4-8bbba50aeb3f"><li local-id="196b361b-8b19-451f-ab95-7ef638341592"><p local-id="423f9ba4-daa3-45b0-a277-f119c44acda7">Prometheus Version: <strong>3.8.0</strong></p></li><li local-id="fa01bba0-9a47-4d80-b5cd-b1b8926faddf"><p local-id="bb97f8db-f851-445e-bb61-c2944da58fe6">Operating System: <strong>Windows Server</strong></p></li><li local-id="2c993e53-ec45-4806-b7a5-a2101ef62ca4"><p local-id="ce8b60f1-c78c-4a8e-9a81-865459190195">Architecture: <strong>Standalone instance</strong> scraping the <strong>Central collector</strong> and <strong>Loki</strong></p></li></ul><p local-id="522ae638-ca4c-431f-89a7-08eb5154a8f3">Prometheus interacts with:</p><ul local-id="ff98dd70-dd9c-460b-acf3-d32d0fd3e25a"><li local-id="eac4a0f4-9d09-4c9a-8565-e921e99bf170"><p local-id="2659404e-aeeb-4303-9c89-19b4c94812c6"><strong>OpenTelemetry Central Collector</strong> – exposes metrics via the <code>/metrics</code> endpoint<br/><a href="Central-Collector_605257739.html" data-linked-resource-id="605257739" data-linked-resource-version="5" data-linked-resource-type="page">Central Collector</a> </p></li><li local-id="822fdfe2-ba13-4b02-a9d9-5433eaecb418"><p local-id="2e87417e-727c-4f8f-8050-4917e209ca80"><strong>Loki</strong> – exposes its internal metrics for monitoring<br/><a href="Loki_602079237.html" data-linked-resource-id="602079237" data-linked-resource-version="2" data-linked-resource-type="page">Loki</a> </p></li></ul><p local-id="9d3025a2-5a6e-44e1-a70f-ffafde464075">Grafana reads from Prometheus to visualize metrics.<br/><a href="Grafana_491520010.html" data-linked-resource-id="491520010" data-linked-resource-version="5" data-linked-resource-type="page">Grafana</a> </p><hr local-id="55b60925-1c4f-491a-8273-295235b5095f"/><h1 local-id="e9fc5399-c272-4eec-a198-da2d85ea5e65" id="Prometheus-KeyResponsibilities">Key Responsibilities</h1><p local-id="134a19df-93a3-4e45-bb24-0bbd23d7fc1d">Prometheus acts as the <strong>central metric store</strong>:</p><ul local-id="40cae80c-9248-426a-ab66-05dac084293d"><li local-id="5ce13d1e-d3bd-46ae-b4c0-8a1665ac27ba"><p local-id="2b59aea0-480d-4ddc-8ab5-44aeee96646d">Scrapes metrics from the central collector</p></li><li local-id="d36d7d27-4c6d-4620-9b3f-08df15882b6d"><p local-id="92f65576-b32d-431a-8f73-0664eb600901">Scrapes metrics from Loki</p></li><li local-id="4cfe661f-5590-469c-b4d8-0de1860dd4e0"><p local-id="5c7f03ba-7389-4ca1-9ea7-06048b49f53d">Provides metrics to Grafana for dashboards</p></li><li local-id="610526c1-b160-47a4-9fe1-f15bbdddb8b5"><p local-id="2757b5a6-4362-43c5-9432-97ef1e54ba0f">Can serve as the basis for alerting (currently not implemented in this POC)</p></li></ul><p local-id="4d344b38-2fd3-4af4-a68b-457e4cfa40e2">Prometheus does <strong>not</strong>:</p><ul local-id="d8bea1ba-4908-4365-a79f-49d63eedcab1"><li local-id="8029409b-8c8a-43c9-96ad-16dd9c87e489"><p local-id="1da6d04a-cf72-4be7-997a-650fb3721949">Store, process or enrich logs</p></li><li local-id="e75e1aeb-57bc-4cfb-bed0-4661c858f305"><p local-id="2b0752bb-fac8-4668-95e1-c8f1c4d34a27">Collect metrics from OTCM directly</p></li><li local-id="fb301ef1-c67d-478b-88b2-9ee12461415f"><p local-id="53f881ba-f87d-4285-9731-d03c0de64550">Provide trace storage</p></li></ul><hr local-id="1e107c5d-b1e3-4023-9698-3b27ca7603b8"/><h1 local-id="95d7a053-6bb5-44d4-b057-a2d0be5a1474" id="Prometheus-ArchitectureRole">Architecture Role</h1><p local-id="faecf5fa-1fb0-433b-97bb-b957bad51bc8">Prometheus functions as the <strong>metrics aggregation and storage layer</strong>.</p><p local-id="fff14f01-cf42-40cb-82d2-45529e19f821">It is positioned <strong>downstream of OpenTelemetry collectors</strong>, receiving OTLP-to-Prometheus metrics and exposing them via its native <code>/metrics</code> endpoint.<br/><a href="601260048.html" data-linked-resource-id="601260048" data-linked-resource-version="3" data-linked-resource-type="page">Architecture</a> </p><p local-id="15e02cbe-4105-46d4-a922-e03bf638fc63">Key architectural points:</p><ul local-id="1fac8468-e2f5-4e59-9498-50b6ed297079"><li local-id="45df1bb8-436b-412d-9e97-4ece68044f5c"><p local-id="2eaec047-bc40-4a10-9761-fa5d5e59b234">Centralizes all metric data for visualization and alerting</p></li><li local-id="a9713354-6e83-48d1-b3df-d81ad984b4e2"><p local-id="0397771e-2976-48ba-a112-8d8c803b2c30">Supports long-term storage if configured with retention</p></li><li local-id="26ab53b9-489c-4686-bc06-3ad8713b122f"><p local-id="7f9a2339-6f22-4430-bab6-489c6c93ff67">Provides a single source of truth for metric-based dashboards</p></li></ul><hr local-id="6838317d-36ef-47f2-bf21-ae11920d7f1a"/><h1 local-id="f504d969-c31f-4438-8aac-7c92590f0916" id="Prometheus-LimitationsandConstraints">Limitations and Constraints</h1><ul local-id="81b6e160-109c-4212-ba7e-7c8bccc8b902"><li local-id="fbb489f8-0423-434f-bd99-9f3554ea9b89"><p local-id="df58028a-35b9-4872-8d4e-f12ee2edec9a">Prometheus is configured for local scraping only; remote scraping requires network access and firewall rules</p></li><li local-id="b5d743c1-9825-40b9-91ba-c47661c9fc0c"><p local-id="f9444892-03f8-4602-b869-e661f4b366cb">Metric retention is default; long-term storage requires additional configuration or remote storage adapters</p></li><li local-id="8202fd47-c969-46cf-bd66-9c3c491b781c"><p local-id="4ceb4683-8590-418d-bac5-7b670ccb75a5">No authentication or TLS is enabled for POC simplicity</p></li><li local-id="cfd8898e-5c38-4a25-8da8-c8151b7eed24"><p local-id="6a25b953-72dc-4e28-bd0d-97785e87e1e2">Alerting configuration is minimal and not actively used</p></li></ul><hr local-id="9a85410b-7ef3-4c40-bffb-761f82af45ca"/><h1 local-id="54acd35f-eb33-4b5e-b1f5-e77771642051" id="Prometheus-ConfigurationOverview">Configuration Overview</h1><p local-id="02af1738-6807-4f5b-8b7f-ca78d3536538">The following configuration is used for the POC setup:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"># my global config
+global:
+  scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093
+
+# Load rules once and periodically evaluate them according to the global &#39;evaluation_interval&#39;.
+rule_files:
+  # - &quot;first_rules.yml&quot;
+  # - &quot;second_rules.yml&quot;
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it&#39;s Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=&lt;job_name&gt;` to any timeseries scraped from this config.
+  - job_name: &quot;otel-collecto&quot;
+
+    static_configs:
+      - targets: [&quot;127.0.0.1:9466&quot;,&quot;127.0.0.1:8892&quot;]
+        labels:
+          app: &quot;prometheus&quot;
+          source: &quot;otel-col&quot;
+    
+  - job_name: &quot;loki&quot;
+    static_configs:
+      - targets: [&quot;127.0.0.1:3100&quot;]</pre>
+</div></div><blockquote local-id="8c1e30ff-4148-4218-9cd7-9ccf7cf2f8d3"><p local-id="2c74ad7f-bdef-46e1-a71b-366d0a9114a3">Please refer to the official documentation for more detailed information on how to further configure Prometheus.<br/><a class="external-link" data-card-appearance="inline" href="https://prometheus.io/docs/prometheus/latest/configuration/configuration/" local-id="488c68c3-8f63-4d57-9c1f-bcb5b6f0237b" rel="nofollow">https://prometheus.io/docs/prometheus/latest/configuration/configuration/</a> </p></blockquote><h2 local-id="9b55f29e-58dc-4c9f-9509-08e6aa4e4f50" id="Prometheus-GlobalSettings">Global Settings</h2><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">global:
+  scrape_interval: 15s
+  evaluation_interval: 15s</pre>
+</div></div><ul local-id="d6e8b7b0-fa46-47f1-972b-42b3aef1db6b"><li local-id="f87ca014-de86-45c9-81d1-2478e85dcaae"><p local-id="b3a49cfa-78a4-4fd3-862a-578e8221aefa"><code>scrape_interval</code>: Prometheus scrapes metrics every 15 seconds</p></li><li local-id="957f0df2-214e-4a8c-a37f-260711694053"><p local-id="72dff4bd-fa87-483b-a642-0038f1d02d60"><code>evaluation_interval</code>: Prometheus evaluates rules every 15 seconds</p></li></ul><p local-id="61df2653-1447-469b-b1df-0fa933490214" /><h2 local-id="7487745e-710b-4520-9dcf-b2394b2671bc" id="Prometheus-ScrapeTargets">Scrape Targets</h2><p local-id="4dcd72fe-0574-49e9-b07c-fbb29ad6a0dc">Prometheus scrapes metrics from the collectors and Loki:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">scrape_configs:
+  - job_name: &quot;otel-collector&quot;
+    static_configs:
+      - targets: [&quot;127.0.0.1:9466&quot;,&quot;127.0.0.1:8892&quot;]
+        labels:
+          app: &quot;prometheus&quot;
+          source: &quot;otel-col&quot;
+    
+  - job_name: &quot;loki&quot;
+    static_configs:
+      - targets: [&quot;127.0.0.1:3100&quot;]</pre>
+</div></div><ul local-id="3d73a0ec-8b3f-4427-8b59-44c376fa11c8"><li local-id="9d8b156c-fde5-448e-9a2e-2fac8c05b846"><p local-id="c79a02c9-3ad5-43ec-858f-5eb6edd31b02"><code>otel-collector</code> job: scrapes all OTEL collectors exposing Prometheus metrics</p></li><li local-id="f66d52f3-1cb9-4fcb-a1c6-565566f62971"><p local-id="97e868a2-6f18-458d-b73d-b961fde496dc"><code>loki</code> job: scrapes Loki metrics for monitoring its health and performance</p></li></ul><p local-id="e90db294-166d-41bb-877c-cc77337e40ec" /><h2 local-id="2fc19f90-2410-40bb-8376-6c57297bb01f" id="Prometheus-Alerting&amp;RuleFiles">Alerting &amp; Rule Files</h2><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+
+rule_files:
+  # - &quot;first_rules.yml&quot;
+  # - &quot;second_rules.yml&quot;</pre>
+</div></div><ul local-id="8dde3232-0f51-4457-a08f-589345ab34ca"><li local-id="4dd62ee6-d654-46d0-a87a-a309a6dd41ce"><p local-id="40dea761-3099-4cfe-a900-5ba13c29f2bd">No active alerting is configured for the POC</p></li><li local-id="2ed016ee-9599-478e-8e60-ed8a9aa5977a"><p local-id="214b1acb-2189-45b8-b759-0f80763b69a6">Rule files are placeholders for future use</p></li></ul><hr local-id="192d0b10-ddef-4111-863a-5ec3f5946c9b"/><h1 local-id="4218fc4f-7dc6-476e-9c50-b35a93135aa3" id="Prometheus-RelatedDocumentation">Related Documentation</h1><ul local-id="f21ea5a7-b284-49b1-ab25-ebd2116e0519"><li local-id="8ee189fa-1843-4e25-96c2-b3eeb794ffee"><p local-id="d577f0f0-8a0d-4ed4-b806-b96751285042"><strong>Grafana – Visualization and dashboards</strong><br/><a href="Grafana_491520010.html" data-linked-resource-id="491520010" data-linked-resource-version="5" data-linked-resource-type="page">Grafana</a><strong> </strong></p></li><li local-id="3d34760b-00b9-420c-85ce-92368bb69008"><p local-id="3f6dd21e-9f7e-480c-9fe9-6ae81caad06e"><strong>Central Collector</strong><br/><a href="Central-Collector_605257739.html" data-linked-resource-id="605257739" data-linked-resource-version="5" data-linked-resource-type="page">Central Collector</a><strong> </strong></p></li><li local-id="c9a71020-07c7-4820-afa8-b4f44de76986"><p local-id="a0802fde-9e73-4e73-bf2a-c576f4ba371e"><strong>Loki – Metrics and log correlation</strong><br/><a href="Loki_602079237.html" data-linked-resource-id="602079237" data-linked-resource-version="2" data-linked-resource-type="page">Loki</a> </p></li><li local-id="b20da9a9-8c2e-499a-9e07-e4a30c2eaf12"><p local-id="09b886ec-a958-4578-a202-22b60cf33161"><strong>Prometheus - Website</strong><br/><a class="external-link" data-card-appearance="inline" href="https://prometheus.io/" local-id="39767cf4-07a6-4fc5-9d84-8f5fb7f8eb5a" rel="nofollow">https://prometheus.io/</a> </p></li><li local-id="20addc8f-5c99-4d53-b024-0c18c97e72a3"><p local-id="6433a29e-843e-49e6-8f98-1511ecf98c27"><strong>Prometheus - official documentation</strong><br/><a class="external-link" data-card-appearance="inline" href="https://prometheus.io/docs/prometheus/latest/configuration/configuration/" local-id="df9ee64f-abd2-4392-b1e3-bea91b78f6cb" rel="nofollow">https://prometheus.io/docs/prometheus/latest/configuration/configuration/</a> </p></li></ul>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on dec 30, 2025 14:33</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

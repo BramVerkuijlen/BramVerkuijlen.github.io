@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Monitoring Expansion : HTTPCheck Receiver – httpcheck.request.duration Metric Broken</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Monitoring Expansion</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Overzicht_373653886.html">Overzicht</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Known-issues_604078083.html">Known issues</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Monitoring Expansion : HTTPCheck Receiver – httpcheck.request.duration Metric Broken
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                            
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Bram Verkuijlen</span> on dec 29, 2025
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p local-id="6d831eaf-2bd7-41b6-a03c-c535820a8523"><strong>Issue Description</strong><br/>The <code>httpcheck.request.duration</code> metric is currently broken due to a bug in the HTTPCheck receiver. While older documentation still references this metric, it is no longer supported in the latest release.</p><p local-id="327f5e5a-e888-4c85-bf7e-b1aec0f66064">Other timing metrics from HTTPCheck (e.g., DNS lookup, TLS handshake, client request) are functional.</p><hr local-id="04e3924a-0a52-4cdc-a6c9-7c52d6b35c11"/><p local-id="2a07cd2a-6129-4765-8d0c-6cd5a2202317"><strong>Example Configuration Snippet</strong></p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">receivers:
+  httpcheck:
+    metrics:
+      httpcheck.dns.lookup.duration:
+        enabled: true
+      httpcheck.client.connection.duration:
+        enabled: true
+      httpcheck.tls.handshake.duration:
+        enabled: true
+      httpcheck.client.request.duration:
+        enabled: true
+      httpcheck.request.duration:  # &lt;-- Not supported in latest release
+        enabled: true
+      httpcheck.response.duration:
+        enabled: true</pre>
+</div></div><hr local-id="c51f3e73-22a3-401f-8961-0f4ffbec32af"/><p local-id="7739f6ff-0709-4129-9847-4ea0ad1c1033"><strong>Possible Workarounds</strong></p><ul local-id="e63e2e97-f393-4f92-a7dd-41a4909cb5c8"><li local-id="ad9b6786-6680-4b5d-9eba-007fae3834ed"><p local-id="49c2f109-3e49-4b27-80f8-01f0b2814116">Use <code>httpcheck.duration</code> instead of <code>httpcheck.request.duration</code> (currently supported).</p></li><li local-id="4037d583-8191-4093-8046-191b80458492"><p local-id="860933c8-c14b-4923-9270-2bfb3023f501">Set <code>disable_keep_alives: true</code> on each endpoint to prevent metrics from defaulting to 0 after the first scrape.</p></li></ul><hr local-id="2a7bb3b4-1ef8-4817-8c2e-577374a375db"/><p local-id="1680ccd2-42ee-4a05-bd33-c64d52b7e261"><strong>Impact</strong></p><ul local-id="52e9b4f4-7b58-4a17-81d8-cf0055b549a2"><li local-id="ff508d63-852a-4b94-81f8-019f120dacf0"><p local-id="cf8a23f2-dece-411e-8274-a42baf6b9edf">The broken metric prevents accurate monitoring of request durations for HTTP endpoints.</p></li><li local-id="0909af85-7cc5-4535-bac9-569c88d26861"><p local-id="59938b89-4902-4a39-aaae-d6803dffc893">Any dashboards or alerts relying on <code>httpcheck.request.duration</code> will display incorrect values or zero.</p></li></ul><hr local-id="b4b4986b-e9c3-4399-8b56-72d5634b97ce"/><p local-id="87679f77-f800-4225-9806-32612cb9845e"><strong>Next Steps / Notes</strong></p><ul local-id="9cd693c3-9b80-435a-8b6f-d4f03655f1e7"><li local-id="aa72923a-80b8-4bf7-9270-b94f012e1c73"><p local-id="df0010ea-de52-4fbf-bc7a-edc224e34e0e">Monitor updates to the OpenTelemetry Collector HTTPCheck receiver for a fix.</p></li><li local-id="89ace0be-1722-4b3c-8d4e-3ff09aa7e95b"><p local-id="6180c2e6-0514-46db-98d9-e924fddb4ff5">Use alternative supported metrics for timing until the issue is resolved.</p></li><li local-id="a99fc63e-1720-46ad-a188-b1322492e16f"><p local-id="705497fb-9710-4ce5-ae56-7bc4a8d8a221">This issue is tracked in GitHub: <a class="external-link" data-card-appearance="inline" href="https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/44729" local-id="39537f65-1e6f-4019-aaf0-433205fd4036" rel="nofollow">https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/44729</a> </p></li></ul>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on dec 30, 2025 14:33</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

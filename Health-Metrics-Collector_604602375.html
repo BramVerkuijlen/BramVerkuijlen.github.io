@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Monitoring Expansion : Health Metrics Collector</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Monitoring Expansion</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Overzicht_373653886.html">Overzicht</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Components_491388972.html">Components</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="OpenTelemetry_491978770.html">OpenTelemetry</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Monitoring Expansion : Health Metrics Collector
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                            
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Bram Verkuijlen</span>, last modified on dec 29, 2025
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p local-id="febd6df2-3084-46a0-a80b-24abaf4dd216"><strong>Collector distribution:</strong> OpenTelemetry Collector <strong>Core</strong><br/><a class="external-link" data-card-appearance="inline" href="https://github.com/open-telemetry/opentelemetry-collector" local-id="46e7f282-c25a-426a-8d70-3c4ae0251704" rel="nofollow">https://github.com/open-telemetry/opentelemetry-collector</a> </p><p local-id="3e265fec-3a44-4587-85fc-dd021d0d7a0a">This configuration is for the <strong>Health Metrics Collector</strong> used in the Monitoring Expansion POC.<br/>It collects <strong>host-level metrics from the underlying Windows system</strong> on which Content Servers runs and forwards them to the <strong>Central Collector</strong> for aggregation and export to Prometheus.<br/><a href="Central-Collector_605257739.html" data-linked-resource-id="605257739" data-linked-resource-version="5" data-linked-resource-type="page">Central Collector</a> </p><p local-id="baff3831-e1fd-4a9c-8112-b1ead1b9d867">These metrics provide metrics of the <strong>system health, resource utilization, and performance bottlenecks</strong>, independent of Content Servers application logs.</p><hr local-id="7cdefd92-2403-42fb-94a2-9ad6280144e9"/><h1 local-id="58ce8726-f968-41d4-8f1b-a76ad9c7d616" id="HealthMetricsCollector-TableofContents">Table of Contents</h1><style type='text/css'>/*<![CDATA[*/
+div.rbtoc1767101594728 {padding: 0px;}
+div.rbtoc1767101594728 ul {list-style: default;margin-left: 0px;padding-left: ;}
+div.rbtoc1767101594728 li {margin-left: 0px;padding-left: 0px;}
+
+/*]]>*/</style><div class='toc-macro rbtoc1767101594728'>
+<ul class='toc-indentation'>
+<li><a href='#HealthMetricsCollector-CollectedHostMetrics'>Collected Host Metrics</a></li>
+<li><a href='#HealthMetricsCollector-Receivers'>Receivers</a>
+<ul class='toc-indentation'>
+<li><a href='#HealthMetricsCollector-Explanation'>Explanation</a></li>
+</ul>
+</li>
+<li><a href='#HealthMetricsCollector-Exporters'>Exporters</a>
+<ul class='toc-indentation'>
+<li><a href='#HealthMetricsCollector-Explanation.1'>Explanation</a></li>
+</ul>
+</li>
+<li><a href='#HealthMetricsCollector-Pipelines'>Pipelines</a>
+<ul class='toc-indentation'>
+<li><a href='#HealthMetricsCollector-Explanation.2'>Explanation</a></li>
+</ul>
+</li>
+<li><a href='#HealthMetricsCollector-RelatedDocumentation'>Related Documentation</a></li>
+</ul>
+</div><hr local-id="a7925e4e-06de-46b6-a0ef-34aa60bfb4b9"/><h1 local-id="ba41189b-f8db-4c4c-a9d0-c45dc06468dd" id="HealthMetricsCollector-CollectedHostMetrics">Collected Host Metrics</h1><p local-id="78b72466-86e2-4e74-999d-9c503ab4e571">The Health Metrics Collector captures the following metrics from Windows:</p><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="71f1614b-ce6d-4151-9952-040d66d81dda" class="confluenceTable"><tbody><tr ac:local-id="c75579b4-2e68-46f5-8a55-ec26d860e3c4"><th data-local-id="84007592-a59d-49ad-ab8e-ca2f4e1ca7e2" class="confluenceTh"><p local-id="c7cdb01a-245b-411b-9b53-e271ede2bb82">Metric</p></th><th data-local-id="d1cc437d-93ee-4e7d-9e4a-c97cdc8f47a1" class="confluenceTh"><p local-id="cba59e4f-8858-484b-9169-84e9a9763ab0">Description</p></th><th data-local-id="fbb5958c-c308-418e-af56-15f5a0ac22b1" class="confluenceTh"><p local-id="d814d915-4b56-46b0-bef3-a45a4f753a69">Useful for</p></th></tr><tr ac:local-id="6e2103ac-32de-46ba-ad1e-b4f0fffcf0ac"><td data-local-id="503ae079-726f-4e4e-bb19-566034ba3948" class="confluenceTd"><p local-id="41bd56f3-9107-4d67-82c1-ba2527d31e3a">CPU Usage</p></td><td data-local-id="3d2e7745-11a4-4d47-b7ad-f08b2c3570b2" class="confluenceTd"><p local-id="30b3e6a7-e269-41e6-98d5-290e80da0de4">CPU load per core or averaged</p></td><td data-local-id="421b7de2-6573-4956-9a6f-120164027587" class="confluenceTd"><p local-id="572f881d-6c61-4a6a-a774-0a14011fc82b">Bottleneck detection</p></td></tr><tr ac:local-id="b2fe1bb7-d796-4473-962b-3545eea629f9"><td data-local-id="8ff5b98c-089d-46da-a2a0-f1bd2e981e6f" class="confluenceTd"><p local-id="1fffe153-79a6-4993-9576-9bac2e75b6a6">Memory Usage</p></td><td data-local-id="b2168c96-a3c7-4fd8-a0b8-3fa7b586d619" class="confluenceTd"><p local-id="cb0e0cc2-b6d8-466d-9dbb-067c78e118ca">Used and available RAM</p></td><td data-local-id="ebb43895-ae5b-4d19-908a-53c050accb7f" class="confluenceTd"><p local-id="6cedbac6-93e1-4178-ae1b-c6a131513c9c">Memory pressure analysis</p></td></tr><tr ac:local-id="a00d74ce-fec3-4a36-b811-365040aa3cad"><td data-local-id="1bf17494-6993-4aa9-9226-7cfd831bd46d" class="confluenceTd"><p local-id="3676ddc0-30a9-4eea-98d1-c329cfcc92ea">Disk Usage</p></td><td data-local-id="779111f3-79a1-4cee-8bd4-007fc2c62d34" class="confluenceTd"><p local-id="28addb6c-f6e4-49cd-993c-363dc775878d">Free and used disk space</p></td><td data-local-id="6570a2ad-8b2a-4eff-ae9c-72176a45799a" class="confluenceTd"><p local-id="3e34d2dc-788f-42e7-8aa1-f9b2224a9368">Capacity planning</p></td></tr><tr ac:local-id="0cf209f4-334c-457f-9c2b-85ab380169bb"><td data-local-id="4d655591-e7c0-495d-b476-71a983054d1c" class="confluenceTd"><p local-id="98decbe7-b160-47fb-885d-d1348afeefa1">Disk I/O</p></td><td data-local-id="7d69791f-8eb9-4c73-ae81-e46f72315a0f" class="confluenceTd"><p local-id="a80bf2ae-9c6f-4779-b58b-af357c516355">Read/write throughput</p></td><td data-local-id="0138edf0-6c7d-4970-a445-fbf7e28b6316" class="confluenceTd"><p local-id="ebda0389-165a-43df-948c-c785b930c773">Storage performance</p></td></tr><tr ac:local-id="3ee3837a-1046-46a0-a159-0a0306f1af46"><td data-local-id="e94b942f-3f10-4df6-846d-86472c961b61" class="confluenceTd"><p local-id="04d2bad0-ccec-4db1-a150-5f865457e1c1">Network I/O</p></td><td data-local-id="0a821c5b-1f3c-4dcf-a2d4-24a5c6cec9c3" class="confluenceTd"><p local-id="84b74715-808e-4f74-9584-f5bb00ea9cee">Bytes sent/received</p></td><td data-local-id="0598a34e-c8a1-4bc8-804b-426a0a657b76" class="confluenceTd"><p local-id="7591e433-476c-4855-ad1f-7c1e4afe9c53">Network congestion</p></td></tr><tr ac:local-id="300b1fdf-4af9-492d-be5c-9596dd8e83f1"><td data-local-id="70e44034-a3d2-4b6d-a683-1f6ce2ac84b3" class="confluenceTd"><p local-id="be517f44-6805-4ae8-acf7-69134f822af0">System Uptime</p></td><td data-local-id="c570cfaa-caf2-4e4e-a085-e9aca3cf4c8c" class="confluenceTd"><p local-id="bb8e78bf-14eb-4324-aa64-7c50c757c168">Time since last reboot</p></td><td data-local-id="8af72e9e-df90-48f1-9558-2524f282e809" class="confluenceTd"><p local-id="360a9a95-f9d1-4357-8988-aa82aa27419b">Health and reliability</p></td></tr></tbody></table></div><hr local-id="4e85cfe7-9b21-4006-9812-47cc0f05d7e4"/><h1 local-id="a0aa774f-6a2e-4bf7-ac45-a34d03be595b" id="HealthMetricsCollector-Receivers">Receivers</h1><p local-id="95c3a1d0-9f24-4c90-8cad-d20146b67732">Receivers define how telemetry enters the collector.</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">receivers:
+  hostmetrics:
+    collection_interval: 10s
+    scrapers:
+      cpu:
+      memory:
+      disk:
+      filesystem:
+      network:</pre>
+</div></div><blockquote local-id="b5b2a12a-a9ba-4a25-a334-631818cafacd"><p local-id="245d43c5-0b42-40c7-858a-7768729a2d6c">The <code>hostmetrics</code> receiver is part of the <strong>OpenTelemetry Collector Core distribution</strong>.<br/>It was chosen because it provides stable, low-overhead host and system metrics without requiring contrib components, making it suitable for both POC and future production use.<br/><a class="external-link" data-card-appearance="inline" href="https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/README.md" local-id="65c66e1d-d90a-4587-b906-4ba99345ad69" rel="nofollow">https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/README.md</a> </p></blockquote><p local-id="76b90fe2-2331-4945-bb6b-178746f5cc5b" /><h2 local-id="8e002b4f-18de-40f5-81ef-860b7de33e88" id="HealthMetricsCollector-Explanation">Explanation</h2><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="d73304e5-52a9-4db5-8e12-5923027a3f6f" class="confluenceTable"><tbody><tr ac:local-id="c21b17b8-57a3-40b0-9cbe-12b8d8372f21"><th data-local-id="a0984f16-3d06-45cf-a22c-93d17d957a78" class="confluenceTh"><p local-id="0e5579c2-1dbe-4e15-9207-4868822f6068">Setting</p></th><th data-local-id="58e0dde1-323e-46b7-ba45-6d5db629dae3" class="confluenceTh"><p local-id="2f616d3e-b16a-41ac-a0d6-eb4a1fd687d7">Purpose</p></th></tr><tr ac:local-id="e88e8d29-3f90-4931-9599-ed7bb9841b28"><td data-local-id="020b9ab8-3476-43c5-bcb0-e932524ac3ab" class="confluenceTd"><p local-id="eb56f771-32b4-43a1-9e85-7d6ba0333bd4"><code>hostmetrics</code></p></td><td data-local-id="4f016f59-9c0f-437f-8ee2-93178d70bc71" class="confluenceTd"><p local-id="bf069a7d-d7de-4bf8-bfb5-80ca61dc5a54">Collects metrics from the local operating system</p></td></tr><tr ac:local-id="52161fa0-d04e-4c57-9227-ae8bdf8d8fd3"><td data-local-id="c77c70ec-5ddc-4541-91d3-820bd119fda2" class="confluenceTd"><p local-id="7ba9f02f-deb3-4b75-80a1-05ad1dc0b88b"><code>collection_interval</code></p></td><td data-local-id="abfd1a65-73ad-4e50-baf7-a1ebfe5d50fb" class="confluenceTd"><p local-id="e9239173-9fda-4c52-8de8-e6fa22a44120">Interval at which host metrics are collected</p></td></tr><tr ac:local-id="879e854a-1c0e-48cc-b871-3c3094095d32"><td data-local-id="37801857-58c6-467a-a10a-1b77b60ed6b1" class="confluenceTd"><p local-id="59ae7def-e3ab-4642-9787-b1eb6bda8e96"><code>cpu</code></p></td><td data-local-id="4daa7e45-5b7b-4538-b77a-950b0356fe6c" class="confluenceTd"><p local-id="2724959f-f174-4ed5-a67c-5353c30cffed">CPU usage and load metrics</p></td></tr><tr ac:local-id="a663e707-f70f-4ca4-a83a-af9c96e34f4f"><td data-local-id="78a96e23-3451-4f20-92f3-c3049a87faf4" class="confluenceTd"><p local-id="01cab9fd-61b8-4d40-b54a-d8c1d57c5c8a"><code>memory</code></p></td><td data-local-id="898d0b46-c0fe-4f85-8b78-7dd1de9018c5" class="confluenceTd"><p local-id="492963a9-89d8-4324-9ec8-e67124962de1">Memory usage and availability</p></td></tr><tr ac:local-id="7dde128f-046e-4133-8748-cf3668897faa"><td data-local-id="67259eea-652c-4076-9c74-1a0991bd6995" class="confluenceTd"><p local-id="53ae8ec0-6e95-425f-a7e1-cb3863a4cd5e"><code>disk</code></p></td><td data-local-id="7660dfd5-0aa0-4e1c-ab49-f3a35d824ea2" class="confluenceTd"><p local-id="cfca7910-d7cf-410d-8f11-0e2a52c16704">Disk I/O performance</p></td></tr><tr ac:local-id="e41471fc-26b8-458d-9a66-9999799f7cba"><td data-local-id="f8da9c72-8fea-4956-b279-f1bb6f245d5d" class="confluenceTd"><p local-id="27f59357-f0e7-4f70-9056-e95666e276c9"><code>filesystem</code></p></td><td data-local-id="00fdca73-7481-446b-9acb-42a821192d27" class="confluenceTd"><p local-id="1bc2c659-815a-463c-9389-c3d8137fd0c0">Disk usage and free space</p></td></tr><tr ac:local-id="6c9f7cb8-91ac-4a64-9aca-8b7eb3302f1e"><td data-local-id="cdd24e55-681b-4901-b741-89222f2f9eaf" class="confluenceTd"><p local-id="9d4d4880-edbd-496a-8b86-dc43ce184171"><code>network</code></p></td><td data-local-id="2a33d7a5-016b-4d70-bb62-08bf92e98570" class="confluenceTd"><p local-id="74188a53-920f-4142-974a-745bb9922ec5">Network traffic and throughput</p></td></tr></tbody></table></div><p local-id="50cc4a66-379a-457b-ad6e-a476fd4481a6">These scrapers provide visibility into <strong>system load, capacity, and resource pressure</strong> on the Windows host running OTCM.</p><hr local-id="40295495-9ab8-42b3-b72c-01e98b0e4156"/><h1 local-id="f0b5a330-54d2-4ca6-b858-b73e87c9e07b" id="HealthMetricsCollector-Exporters">Exporters</h1><p local-id="91922947-5876-4efe-bd2a-238508ba8089">Exporters define where the telemetry is sent.</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">exporters:
+  debug:
+  otlp:
+    endpoint: &quot;127.0.0.1:8895&quot;
+    tls:
+      insecure: true</pre>
+</div></div><p local-id="5bbac92f-5dca-43d3-a461-10a5ca6f1f15" /><h2 local-id="3535754d-3f0d-4d45-a153-4913cb3ee716" id="HealthMetricsCollector-Explanation.1">Explanation</h2><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="28f229ee-6751-4a19-9a86-ea3d6ccbf569" class="confluenceTable"><tbody><tr ac:local-id="1cb67808-669d-4822-a165-6bd0493e6608"><th data-local-id="b986409f-1d37-4f66-b320-8465e8eabbd4" class="confluenceTh"><p local-id="ee12d2f8-03a7-4580-a19d-93a3773969e6">Exporter</p></th><th data-local-id="319572a6-3757-4c7e-aefe-35a11ef72fad" class="confluenceTh"><p local-id="1cd22f86-0ebb-4d78-a820-e0d87d82a3a5">Purpose</p></th></tr><tr ac:local-id="b2bcc186-b79f-4b6c-9c89-537ac9211f88"><td data-local-id="c2ed31a2-54e7-42f0-b7bc-d55ff1c1c114" class="confluenceTd"><p local-id="06ef2001-a02f-4460-80f7-7e82d1d0a17f"><code>debug</code></p></td><td data-local-id="e6a958ff-0a3f-4567-8680-1bfef5c6f1d4" class="confluenceTd"><p local-id="32cda035-386e-4967-9d4b-381475c9ef03">Outputs collected metrics locally for troubleshooting</p></td></tr><tr ac:local-id="e1ef94f4-13c0-4833-bbf3-214ea6b1e4da"><td data-local-id="392acae0-2676-4b4e-9a9f-b7f1916f453c" class="confluenceTd"><p local-id="e9c0a09f-75d9-493c-9a06-bd06b4dd1538"><code>otlp</code></p></td><td data-local-id="ac17ba73-fbb9-45c6-9e8f-df1284f6aa23" class="confluenceTd"><p local-id="aed86185-ed92-4121-94a2-039eb226b763">Sends host metrics to the Central Collector</p></td></tr></tbody></table></div><p local-id="98f475f7-dc95-4d78-b160-5105836bbf3c">The OTLP exporter forwards metrics to the <strong>Central Collector</strong>, where they are exposed to Prometheus.<br/><a href="Central-Collector_605257739.html" data-linked-resource-id="605257739" data-linked-resource-version="5" data-linked-resource-type="page">Central Collector</a> </p><hr local-id="803820d4-0ed8-4b23-a659-59321fc29abc"/><h1 local-id="a1a8262b-d482-484c-a3c5-565165d40a06" id="HealthMetricsCollector-Pipelines">Pipelines</h1><p local-id="4fbd7b04-a549-4510-89cf-80b8b9b3c757">Pipelines define how telemetry flows through receivers and exporters.</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">service:
+  telemetry:
+    metrics:
+      readers:
+        - periodic:
+            exporter:
+              otlp:
+                protocol: http/protobuf
+                endpoint: &quot;127.0.0.1:8896&quot;
+
+  pipelines:
+    metrics:
+      receivers: [hostmetrics]
+      exporters: [debug, otlp]</pre>
+</div></div><p local-id="63112e6c-3c52-4b57-9013-efbb418b49b9" /><h2 local-id="6222b88d-087a-4fad-9fe3-1f1d2be3264c" id="HealthMetricsCollector-Explanation.2">Explanation</h2><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="b78ded2c-bf50-4966-8a78-4b035e54f71b" class="confluenceTable"><tbody><tr ac:local-id="0f5a7281-dac3-49c2-873d-c9d6135d2ea5"><th data-local-id="a707d7e0-c18c-43cb-bace-a0596ae3c543" class="confluenceTh"><p local-id="bf65c5ff-089b-4665-a3f7-084b8e443912">Pipeline</p></th><th data-local-id="75a3696a-1ab4-4114-b96d-dd8b4ae4a1ec" class="confluenceTh"><p local-id="d1e5b305-6d01-4b07-883b-b0dbbe7608d2">Purpose</p></th></tr><tr ac:local-id="c1165beb-eb4c-4328-85c4-420632752cd5"><td data-local-id="53175c8d-12c4-42f8-be47-0c26016355b1" class="confluenceTd"><p local-id="841981a3-0a0b-41fc-bb4a-57a5d9d2f334"><code>metrics</code></p></td><td data-local-id="81d5c7d4-781f-473b-b815-6d63e86ec7c2" class="confluenceTd"><p local-id="39b8d9d3-7f94-4e6d-aff0-4df7cbace7e9">Collects host metrics and forwards them to the Central Collector</p></td></tr><tr ac:local-id="4a75101a-3c75-4a59-81e7-ae82d5629d0e"><td data-local-id="d84d152e-74b7-4f19-b01f-d0669b5a61bb" class="confluenceTd"><p local-id="26cf1217-5e78-4a28-a281-c7a56c26445f"><code>telemetry</code></p></td><td data-local-id="f5454dfb-2542-4e7b-b614-c89ffef90523" class="confluenceTd"><p local-id="404eacef-f507-4eb3-baea-7ae2b59a207b">Periodically exports internal telemetry to the central collector</p></td></tr></tbody></table></div><p local-id="e09a3047-e35b-45a6-8f40-d0b00bef71e6">This pipeline ensures that <strong>Windows host health metrics</strong> are continuously available for monitoring and alerting.</p><hr local-id="826590f2-0784-4276-b627-207d9008e801"/><h1 local-id="dd1b2c44-62c7-49d8-aae9-66d0b6c83669" id="HealthMetricsCollector-RelatedDocumentation">Related Documentation</h1><ul local-id="92e07e33-82bd-46a0-b39d-b98e50056627"><li local-id="29a9b36f-9d13-4a7f-a2f5-861416b38541"><p local-id="3c337a3f-320c-4da6-9454-d7110fe8dc08"><strong>OpenTelemetry</strong><br/><a href="OpenTelemetry_491978770.html" data-linked-resource-id="491978770" data-linked-resource-version="8" data-linked-resource-type="page">OpenTelemetry</a> </p></li><li local-id="f5f93815-53d5-430e-a621-0d725f159a94"><p local-id="7f90a80c-a6ea-4a44-b1d7-e1b2ac713d96"><strong>Central Collector</strong><br/><a href="Central-Collector_605257739.html" data-linked-resource-id="605257739" data-linked-resource-version="5" data-linked-resource-type="page">Central Collector</a> </p></li><li local-id="5ecbe3d4-071e-4c77-bc1e-d0b48e660dcc"><p local-id="66bb6c7f-ea4a-4edc-a19d-b6e6bd8173e3"><strong>Host Metrics Receiver documentation</strong><br/><a class="external-link" data-card-appearance="inline" href="https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/README.md" local-id="0d800ec0-d674-4033-815f-2c5bec08d1b0" rel="nofollow">https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/README.md</a> </p></li></ul>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on dec 30, 2025 14:33</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Monitoring Expansion : Quick Start</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Monitoring Expansion</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Overzicht_373653886.html">Overzicht</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="490799127.html">Installation &amp; Setup</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Monitoring Expansion : Quick Start
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                            
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Bram Verkuijlen</span>, last modified on dec 18, 2025
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p local-id="e12213fa-0183-4d90-848e-296fa6e3f91c">This page provides a <strong>minimal setup guide</strong> to quickly start the <strong>Monitoring Expansion – OTCM Observability POC</strong> on a Windows system.</p><p local-id="e281718c-349e-4dff-918b-77725da8b4e6">It assumes that:</p><ul local-id="d5ab2feb-e02a-4bea-82af-8c9c5180f754"><li local-id="3deb5ddf-be96-4857-a002-b428820df49f"><p local-id="643d8b9b-89a1-436b-a1a9-088efb1c1b52">OpenText Content Management Server (xECM) is already installed</p></li><li local-id="64b6dc56-c4a4-4ae0-90c5-fbea113cd00f"><p local-id="1372c057-c82e-47cf-a2fb-7b13da4aeb64">All monitoring components are located on a single Windows machine</p></li><li local-id="a66ee6cf-dfd2-4d28-8811-a6570b21dbe9"><p local-id="e59e5626-1c70-43c7-97ee-2a8831166f92">Detailed installation steps are documented separately (GitHub)</p></li></ul><hr local-id="b9f6b46d-08a5-4e8c-9016-0b5da2a80fb6"/><h1 local-id="b6b0ec23-a2e7-4ba7-9cc6-204b75983461" id="QuickStart-TableofContents">Table of Contents</h1><style type='text/css'>/*<![CDATA[*/
+div.rbtoc1767101593225 {padding: 0px;}
+div.rbtoc1767101593225 ul {list-style: default;margin-left: 0px;padding-left: ;}
+div.rbtoc1767101593225 li {margin-left: 0px;padding-left: 0px;}
+
+/*]]>*/</style><div class='toc-macro rbtoc1767101593225'>
+<ul class='toc-indentation'>
+<li><a href='#QuickStart-Goal'>Goal</a></li>
+<li><a href='#QuickStart-AccessingthePOCRepository'>Accessing the POC Repository</a></li>
+<li><a href='#QuickStart-Prerequisites'>Prerequisites</a></li>
+<li><a href='#QuickStart-FolderLayout'>Folder Layout</a></li>
+<li><a href='#QuickStart-StarttheMonitoringStack'>Start the Monitoring Stack</a>
+<ul class='toc-indentation'>
+<li><a href='#QuickStart-Recommended(POC)'>Recommended (POC)</a></li>
+</ul>
+</li>
+<li><a href='#QuickStart-Grafana(OptionalVisualizationLayer)'>Grafana (Optional Visualization Layer)</a>
+<ul class='toc-indentation'>
+<li><a href='#QuickStart-DeploymentOptions'>Deployment Options</a>
+<ul class='toc-indentation'>
+<li><a href='#QuickStart-SameWindowsVM'>Same Windows VM</a></li>
+<li><a href='#QuickStart-SeparateHost'>Separate Host</a></li>
+</ul>
+</li>
+<li><a href='#QuickStart-Requirements'>Requirements</a></li>
+<li><a href='#QuickStart-Notes'>Notes</a></li>
+</ul>
+</li>
+<li><a href='#QuickStart-VerifyOperation'>Verify Operation</a>
+<ul class='toc-indentation'>
+<li><a href='#QuickStart-Logs'>Logs</a></li>
+<li><a href='#QuickStart-Metrics'>Metrics</a></li>
+<li><a href='#QuickStart-Visualization(Optional)'>Visualization (Optional)</a></li>
+<li><a href='#QuickStart-StoptheMonitoringStack'>Stop the Monitoring Stack</a></li>
+<li><a href='#QuickStart-NextSteps'>Next Steps</a></li>
+</ul>
+</li>
+</ul>
+</div><hr local-id="347ee0ab-2957-4ba2-8f01-d9a5f0c28e96"/><h1 local-id="bea778dc-68d9-4020-a9a5-a4b7b17c8d66" id="QuickStart-Goal">Goal</h1><p local-id="46d2e5c2-c545-48f4-bc00-d0404ac67594">The goal of this quick start is to:</p><blockquote local-id="f450d961-3917-41ff-92e5-2609ddf63384"><p local-id="b72cb174-46bc-4ffa-a89d-6f5cd061d390"><strong>Start the full monitoring stack and verify that logs and metrics from OTCM are being collected successfully.</strong></p></blockquote><p local-id="50a0a730-acd5-489e-ae32-5da952f28e71">This guide is intended for:</p><ul local-id="d326cb78-cd76-4193-8875-1590e291a51f"><li local-id="e6dbf5d6-963f-477a-9058-a021a2540e73"><p local-id="a117e4a3-beb2-4bcd-a005-15a708a3922e">Demonstrations</p></li><li local-id="020ec0bc-ae35-46ab-86e1-72f847bfceda"><p local-id="c6b263ec-894d-41af-973d-1ab8f868d007">Validation of the POC</p></li><li local-id="732f6a50-806d-49b6-b1ac-84ea4ef5f77b"><p local-id="57a65fe5-8824-43f1-b46e-6e6646c4c652">Development and experimentation</p></li></ul><hr local-id="97d415ee-27d0-4073-8ca2-b25385001bf9"/><h1 local-id="7f66918a-a33d-4952-b362-356eb3c13270" id="QuickStart-AccessingthePOCRepository">Accessing the POC Repository</h1><p local-id="559ded42-c5f0-423c-9102-3390619358d5">This Proof of Concept is maintained in a Git repository.</p><p local-id="d1ebb1ca-92ef-402f-84f1-8f31156e05f3">To obtain the project files:</p><ol start="1" local-id="81fdd5fe-95e0-45d6-b03b-79513720b0ce"><li local-id="0c95fb32-16c8-4297-b957-b0f78e394c7d"><p local-id="39e09978-b54b-42d9-a630-aff269d4fbc5">Ensure Git is installed on the system.</p></li><li local-id="9fbdb6a3-2009-445e-be4c-0386af4b874a"><p local-id="69db7a10-3df8-40aa-b250-4a431e53e040">Clone the repository:</p></li></ol><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">git clone https://git.amplexor.com/scm/amnlintern/internship-bram-verkuijlen.git
+</pre>
+</div></div><ol start="3" local-id="22257d16-893a-4aea-947a-313810f1a251"><li local-id="7808a61a-a639-4f4f-9171-e954c0c3dab5"><p local-id="bbcb2137-2280-429c-9ec7-ce80f060fadc">Place the repository in the desired location:</p></li></ol><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">C:\</pre>
+</div></div><blockquote local-id="dbbf4511-f0d9-4199-9cd5-70bcabd1595d"><p local-id="693b5da0-228b-4d34-ba8a-a60c92f4faa6">The repository contains all configuration files, scripts, and component binaries required to run the POC.</p></blockquote><p local-id="7b072793-0f76-4aa6-b51f-e7b62e389cbe">Detailed installation and configuration steps are documented in the repository’s README files.</p><hr local-id="46587ba1-a0f0-4daa-879c-d3ac6aafc7a2"/><h1 local-id="0a540831-abed-4d44-9b3b-7a9ecd6149b5" id="QuickStart-Prerequisites">Prerequisites</h1><p local-id="43edaa1d-4843-4395-8f35-2f4bc521f059">Before starting, ensure the following:</p><ul local-id="72a69f76-23ae-4385-9580-3471a577f96d"><li local-id="7b25bd30-4b25-44a6-aca1-d826cee59468"><p local-id="3fdc12e1-ae3d-45f0-af97-dc63a8816724">Windows OS with administrator access</p></li><li local-id="53aea227-7166-42f7-8845-79f03dc07346"><p local-id="66d1cd7b-25af-463a-91f8-a9ef4e6af36c">OTCM V24.4 is running</p></li><li local-id="4ac06d6c-b7f6-4500-82fb-0660c5f00d56"><p local-id="1d96efbf-9ad8-4ee0-82ed-c08f1a2137cd">Required OTCM logging features are enabled</p></li><li local-id="b55da586-011f-4fd6-bd9e-b51fe9de73e1"><p local-id="425ea44e-a88a-48f4-bf7d-28a79935b66e">Monitoring components are available locally:</p><ul local-id="13b81063-310e-40ea-b456-b5bf70f6c284"><li local-id="cfcec3b6-0644-45ce-82cc-05866314efa0"><p local-id="b2819e9e-7a22-411e-9428-8398c3f15a4f">Fluent Bit</p></li><li local-id="911df0d0-6bfd-409e-9c10-e2cfd7fefbe2"><p local-id="0e65672f-51fe-4b82-a098-44cdf95d6474">OpenTelemetry Collectors</p></li><li local-id="e54125a0-f68c-4266-8421-8d962110ec88"><p local-id="911f01c3-7151-4c6a-95b0-9d4444770778">(Optional) Prometheus, Loki, Grafana</p></li></ul></li></ul><p local-id="5f16331e-0fb3-4514-9458-9c6239f6179f">See: <a href="Environment-Requirements_601948170.html" data-linked-resource-id="601948170" data-linked-resource-version="4" data-linked-resource-type="page">Environment Requirements</a> </p><hr local-id="b97e127e-dfe3-486b-bb99-ea9ea1cc99a5"/><h1 local-id="a716db49-c941-4a85-9582-3a0fdd0b2d5e" id="QuickStart-FolderLayout">Folder Layout</h1><p local-id="4fd0433b-6c81-4386-81bc-c4829ec636a7">The project is assumed to be located at:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">C:\Monitoring Expension\
+</pre>
+</div></div><p local-id="3078e472-3e5c-44ee-8346-a665beae5ddb">With the following structure:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">Monitoring Expension/
+├── Fluent Bit/
+├── OpenTelemetry/
+├── Prometheus/
+├── Loki/
+├── start-monitoring.ps1
+├── stop-monitoring.ps1
+</pre>
+</div></div><hr local-id="850f2d77-e561-41e7-9fe5-854356ad8dd0"/><h1 local-id="dfd32c0f-f796-4e92-a8f5-3cae529de72c" id="QuickStart-StarttheMonitoringStack">Start the Monitoring Stack</h1><h2 local-id="e5598244-fd3b-4ee1-8779-e3223d0dcf2b" id="QuickStart-Recommended(POC)">Recommended (POC)</h2><p local-id="600d1842-c9db-4373-ab23-bcf17858619c">Start all components using the provided PowerShell script:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">cd &quot;C:\Monitoring Expension&quot;
+.\start-monitoring.ps1
+</pre>
+</div></div><p local-id="5506153a-095d-4f0d-bf9b-47f93b893cc1">This will start:</p><ul local-id="15773b13-c13e-445c-85e4-ab21157c4004"><li local-id="cb0c8ec7-9af8-4dba-b44a-329d7786f039"><p local-id="1c3d51c0-a649-4328-a236-e5a1e68c4b21">Fluent Bit (log collection)</p></li><li local-id="9be481ba-7cb6-4ad6-8af5-0fd3873cb1c1"><p local-id="fc0c8818-ee49-42f3-9f99-34b4f60e95ae">All OpenTelemetry collectors</p></li><li local-id="023aa943-ac20-492f-a2d2-4e1d407b15fb"><p local-id="b27e8356-1509-406f-9ad3-b6773ebae24e">Loki (log storage)</p></li><li local-id="6989f7b2-6baa-4197-9579-4aa4046f855f"><p local-id="73364c97-2de4-4121-9c2d-5c5da4d81c4a">Prometheus (metrics scraping)</p></li></ul><p local-id="319bb712-31ea-4fa2-8944-ed88db9ec8e4">Each component runs in the background.</p><hr local-id="069aa56b-bdfa-48f2-bb55-033f1fd9c542"/><h1 local-id="814e6ce6-3fb8-4430-8e82-caa143ca6a1d" id="QuickStart-Grafana(OptionalVisualizationLayer)">Grafana (Optional Visualization Layer)</h1><p local-id="77f40fbd-3b54-43d6-b3cc-cad5cf08554b">Grafana is used in this Proof of Concept to <strong>visualize logs and metrics</strong> collected by the monitoring pipeline.</p><p local-id="518b5c90-03ef-44a4-bba3-0fc508028313">Grafana is <strong>not included</strong> in the startup scripts and must be:</p><ul local-id="a9118c46-53a4-4835-b774-fad760bc29cf"><li local-id="1746a335-8adf-4517-8466-8c489666c25c"><p local-id="37fe3e9b-752e-4bc3-bc7e-0ddad9f65aa6">Installed separately</p></li><li local-id="71f69169-a9e5-4027-8326-ce9242f2bc56"><p local-id="ac5341f3-6674-4408-a693-5f88b460b46b">Configured manually</p></li></ul><p local-id="3293b581-b30f-48df-9411-03fa28287579" /><h2 local-id="af40ebb4-3bbe-47fe-840c-56bed675fd15" id="QuickStart-DeploymentOptions">Deployment Options</h2><p local-id="75cb5eab-62a5-4015-a6f4-8eb88704b178">Grafana can be deployed in one of the following ways:</p><h3 local-id="3c038048-5b8b-4ac5-9efe-9b09b2ac599e" id="QuickStart-SameWindowsVM"><strong>Same Windows VM</strong></h3><ul local-id="8ada1d38-b4c6-4e67-bfc4-ffbf8787ecba"><li local-id="e766347b-7708-4ae8-8026-591c80bd3ad3"><p local-id="53bb9270-9f72-4f25-97b6-32bd2095d022">Grafana runs on the same VM as the monitoring components</p></li><li local-id="a2ec84f5-1897-4caf-9a6e-05129c753c99"><p local-id="c83f24b0-8021-4ff1-8fb3-d70adde83f31">Simplest setup for demonstrations and testing</p></li></ul><h3 local-id="2283e197-47c3-4f25-a33e-97e43f25426d" id="QuickStart-SeparateHost"><strong> Separate Host</strong></h3><ul local-id="43e36ea8-d2b8-450b-a727-2b22d7e8e023"><li local-id="600d3719-0596-42e7-89e8-5e188a2a2dad"><p local-id="be7bae2d-74c7-4d83-8637-1746eff4763f">Grafana runs on a different machine</p></li><li local-id="893bc261-8bca-4fb1-9e85-75898bebec1f"><p local-id="27191802-b64b-4729-be80-b9195badbb2d">Loki and Prometheus must be reachable over the network</p></li><li local-id="f2a9bf3f-49f2-422d-a28a-4950b6c2a2b5"><p local-id="919d1ee6-9224-4200-bb55-1479882d5b57">Better represents a distributed or enterprise-style deployment</p></li></ul><p local-id="768c8da8-25b1-44a8-bdba-c4a2dca3635b" /><h2 local-id="b0739ef5-fdef-4b5b-90a0-90fcc4b822fc" id="QuickStart-Requirements">Requirements</h2><ul local-id="4c38774f-cfee-4799-807f-f1137495be80"><li local-id="e80a1e9f-ff90-436a-8785-667c12327f45"><p local-id="93cde9af-103e-44da-a715-df421cf23602">Network access to:</p><ul local-id="1342c4f1-1c4c-44de-a9b1-b2eae13b3e26"><li local-id="26e89b44-57cc-43c9-a7e8-88d1dc79bcb8"><p local-id="5c2d5481-aaaa-49ba-8007-5fd37ea12b03">Prometheus (metrics)</p></li><li local-id="13780f3c-5636-4f41-b645-6583f3ccb65b"><p local-id="fa23330b-f0b5-4d03-9fee-dee5cef35bda">Loki (logs)</p></li></ul></li><li local-id="ade703f2-81bc-4415-8e9f-762ae7ab8329"><p local-id="35d88b1d-d4d3-4b5a-9c73-83e36226cb1f">Compatible Grafana version</p></li><li local-id="2bd705ce-1828-4a61-b286-89dff7335915"><p local-id="7dfc6d87-6d32-40a8-9a88-b981d98dee0d">Appropriate data source configuration</p></li></ul><h2 local-id="10c3bf4f-717d-4819-8d6b-bbbee9286b41" id="QuickStart-Notes">Notes</h2><ul local-id="cd165eac-ca50-453e-bc66-2449bbb7c11d"><li local-id="8807b1a2-a3fd-4fb6-b533-b85493310a9c"><p local-id="ed9de29a-bee2-4361-b013-6072e5178db6">Grafana is used purely for visualization</p></li><li local-id="028dab92-5ccf-4143-91bb-6ec3c63dd85b"><p local-id="8d866ef0-7ec5-4049-a7f6-214ba1362734">The monitoring pipeline functions without Grafana</p></li><li local-id="66083df0-dacc-404d-a9b8-5a2db280f5ac"><p local-id="78f5a29c-26be-414a-ac52-d51e7ea54c7f">Dashboards may need to be imported or created manually</p></li></ul><hr local-id="925a94f3-f01c-48b1-a8f7-2563710907a7"/><h1 local-id="3a8c4326-4a41-4fb4-9dcb-c61e8172057c" id="QuickStart-VerifyOperation">Verify Operation</h1><h2 local-id="7e41c396-c273-4222-b02d-8447ffb6bd05" id="QuickStart-Logs">Logs</h2><ul local-id="0057cd45-b5ef-449b-a508-78c07c3ff58e"><li local-id="5ec777a6-9e04-407f-91ea-ee0fbd9ea669"><p local-id="30408d05-48c3-4a0b-8300-649e4803e40d">Fluent Bit console output shows log ingestion</p></li><li local-id="75cbbc8e-0103-4fb7-be39-4f2516218279"><p local-id="3d3fd3c5-54cb-4756-a810-7acfceaf4c5a">Loki is reachable and receiving logs</p></li></ul><h2 local-id="8907a5de-838f-4093-9c72-4958db7212da" id="QuickStart-Metrics">Metrics</h2><ul local-id="9069a622-39cf-421d-8901-b385991fe19d"><li local-id="327c88aa-0f7f-4c2f-88c5-e240b3eeac05"><p local-id="c5307313-55ca-4f70-ab15-7cbe55455831">Prometheus UI is accessible</p></li><li local-id="a412347f-0ad6-4684-ade9-371c5c6bd523"><p local-id="8f2720ed-572d-41b8-95fc-2848c5d1cb67">OpenTelemetry collectors expose scrape endpoints</p></li></ul><h2 local-id="2c16bb9c-27d5-4a0d-a04a-21670dceb394" id="QuickStart-Visualization(Optional)">Visualization (Optional)</h2><ul local-id="e3138a9d-c52b-4698-908b-6cf1c726490b"><li local-id="5d243c69-f453-4c92-9f43-13db5a9915e9"><p local-id="37c26cd1-d7c0-4623-82ad-68cc9763f9ca">Grafana dashboards show incoming logs and metrics</p></li></ul><hr local-id="0f407353-e556-4e42-86bb-fbb63ab69083"/><h2 local-id="c0de44e3-f4ea-40ce-aac4-acbcc366c011" id="QuickStart-StoptheMonitoringStack">Stop the Monitoring Stack</h2><p local-id="dec1e6f4-250c-480d-8e5a-335c7c0f12b9">To stop all monitoring components:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">cd &quot;C:\Monitoring Expension&quot;
+.\stop-monitoring.ps1
+</pre>
+</div></div><p local-id="385b8975-7ce9-4445-b42b-06daf6d1e391">This cleanly shuts down all running processes started by the POC.</p><hr local-id="0f5d9a02-acbf-4558-9368-aa879e3b4fce"/><h2 local-id="828d8a80-29db-4ced-9f1e-b3c5daf485d6" id="QuickStart-NextSteps">Next Steps</h2><p local-id="c10badee-84fe-4484-a40b-45c5633c7062">After confirming the stack is running:</p><ul local-id="01b06e4b-810a-4b35-8ced-69dd8c87c50d"><li local-id="f9016aba-1a9f-47a2-b54e-d065c6354050"><p local-id="76ba5dfc-154a-450b-9adc-1608cbd0bc5a">Review <a href="Components_491388972.html" data-linked-resource-id="491388972" data-linked-resource-version="5" data-linked-resource-type="page">Components</a>  to understand each tool’s role</p></li><li local-id="d4b62bf2-0ba2-427e-bcb7-5207f84e6408"><p local-id="924b0689-9375-4d72-9709-9d86744d9f28">Explore <a href="491782177.html" data-linked-resource-id="491782177" data-linked-resource-version="4" data-linked-resource-type="page">Data flow &amp; Intergration</a> </p></li><li local-id="443d930b-09fb-4e28-b463-71ba1fccf70b"><p local-id="30e4ab25-2070-4502-b7cb-c2540b140652">Inspect <a href="492863490.html" data-linked-resource-id="492863490" data-linked-resource-version="10" data-linked-resource-type="page">OpenText Content Server (xECM)</a> </p></li><li local-id="3de9a9a0-5395-4755-a989-21f85205da61"><p local-id="ea2c60a1-d27e-48e1-8024-bcacd2a60c6d">Review <a href="Limitations_492699652.html" data-linked-resource-id="492699652" data-linked-resource-version="8" data-linked-resource-type="page">Limitations</a> </p></li></ul><hr local-id="ba954235-c96c-4ffd-b945-bb5162441dec"/>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on dec 30, 2025 14:33</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

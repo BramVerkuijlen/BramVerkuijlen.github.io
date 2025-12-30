@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Monitoring Expansion : Security Logs Input</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Monitoring Expansion</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Overzicht_373653886.html">Overzicht</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Components_491388972.html">Components</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Fluent-bit_492339201.html">Fluent-bit</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Monitoring Expansion : Security Logs Input
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                            
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Bram Verkuijlen</span>, last modified on dec 19, 2025
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p local-id="3bf14859-00ee-4d35-a5ad-efb85b43f438"><strong>Config file:</strong> <code>inputs/ot_security_logs.conf</code></p><p local-id="548e0cec-21c8-456e-89dc-f738bb42ad01">This configuration ingests <strong>OTCM Security Logs</strong> directly from the filesystem.<br/>Security Logs capture authentication, authorization, and access-related activity within OTCM.</p><p local-id="558cf8be-d90a-4a70-b2c1-fec9008ecb1c">Detailed log structure, field meanings, and examples are documented in the <strong>Security Logs</strong> page.<br/><a href="Security-Logs-Input_610959378.html">Security Logs Input</a> </p><hr local-id="0544d484-ba61-4867-b1e4-04a801c7e350"/><h1 local-id="7c8e001a-b035-4bce-a60d-90027b7eb946" id="SecurityLogsInput-TableofContents">Table of Contents</h1><style type='text/css'>/*<![CDATA[*/
+div.rbtoc1767101594386 {padding: 0px;}
+div.rbtoc1767101594386 ul {list-style: default;margin-left: 0px;padding-left: ;}
+div.rbtoc1767101594386 li {margin-left: 0px;padding-left: 0px;}
+
+/*]]>*/</style><div class='toc-macro rbtoc1767101594386'>
+<ul class='toc-indentation'>
+<li><a href='#SecurityLogsInput-Inputconfiguration'>Input configuration</a>
+<ul class='toc-indentation'>
+<li><a href='#SecurityLogsInput-Explanation'>Explanation</a></li>
+</ul>
+</li>
+<li><a href='#SecurityLogsInput-Metadataenrichmentfilter'>Metadata enrichment filter</a>
+<ul class='toc-indentation'>
+<li><a href='#SecurityLogsInput-Explanation.1'>Explanation</a></li>
+</ul>
+</li>
+<li><a href='#SecurityLogsInput-Parsingfilter'>Parsing filter</a>
+<ul class='toc-indentation'>
+<li><a href='#SecurityLogsInput-Explanation.2'>Explanation</a></li>
+<li><a href='#SecurityLogsInput-Setting'>Setting</a></li>
+</ul>
+</li>
+<li><a href='#SecurityLogsInput-Parserdefinition'>Parser definition</a>
+<ul class='toc-indentation'>
+<li><a href='#SecurityLogsInput-Explanation.3'>Explanation</a>
+<ul class='toc-indentation'>
+<li><a href='#SecurityLogsInput-Relateddocumentation'>Related documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div><hr local-id="57ce58cd-1275-49e5-86c7-a2dad01f930e"/><h1 local-id="d2c91c9b-9a07-4702-b1a0-08b4afa7d0e0" id="SecurityLogsInput-Inputconfiguration">Input configuration</h1><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"># Opentext security logs
+# Configured in OTCM via:
+# http://&lt;OTCM-HOST&gt;/OTCS/cs.exe?func=admin.FluentBitConfig
+
+[INPUT]
+    Name tail
+    db C:\Monitoring Expension\Fluent Bit\db\securitylogs.db
+    Path C:\OPENTEXT\OTCS\logs\security_logs\security*
+    Path_Key file
+    tag cs.securitylogs</pre>
+</div></div><h2 local-id="4913c745-c381-4bb4-b690-d09ff5dc889a" id="SecurityLogsInput-Explanation">Explanation</h2><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="bc9da924-41df-435a-a6c3-908e5028dba4" class="confluenceTable"><tbody><tr ac:local-id="025f9023-0631-49ab-9042-ae913097cc8d"><th data-local-id="81e1e0fe-5bd3-406f-9d1f-11a9a39cc160" class="confluenceTh"><p local-id="67f335c6-3122-4db4-82c9-0f5b1001bc88">Setting</p></th><th data-local-id="89c7e2b9-afb5-4f35-ac92-a53a675a7d04" class="confluenceTh"><p local-id="96040175-50c0-4f60-b948-c736d503c113">Explanation</p></th></tr><tr ac:local-id="863ea2a1-7112-41c2-ac59-b51249a306a4"><td data-local-id="2c556cdd-1d58-4dc0-acbd-40f6541008bf" class="confluenceTd"><p local-id="3d7e4004-9cec-4f87-b1b2-cfbd933364a1"><code>Name tail</code></p></td><td data-local-id="d921d235-70b6-473a-871b-ba2c29d44da2" class="confluenceTd"><p local-id="85dac3c1-1f3b-49ff-82c6-0d7144a913bf">Reads log files from disk and tails them incrementally</p></td></tr><tr ac:local-id="19956463-4b62-4a40-83d0-f23b3471bad8"><td data-local-id="6ff47709-b50e-41a8-b3f4-a56bb9d4748f" class="confluenceTd"><p local-id="315cf881-d9f3-4695-8082-734a5b69516f"><code>db</code></p></td><td data-local-id="a6c77a9d-01ef-4652-b94c-4c97e1c8feae" class="confluenceTd"><p local-id="7907d593-51e4-4621-b8dd-3e1e1c5ecb6a">State database to track read offsets across restarts</p></td></tr><tr ac:local-id="b7a6158b-617b-43a0-b63d-d5508ed79009"><td data-local-id="c4adf474-e41f-48d0-ab4c-5fe1cb449735" class="confluenceTd"><p local-id="88ef5b5e-237f-4531-8652-902c3968e839"><code>Path</code></p></td><td data-local-id="bb6fcab4-917a-47bf-8a17-6dfe5f6f6811" class="confluenceTd"><p local-id="acfa3c5e-581b-44b8-886b-51b9078c4bb5">Location and filename pattern of OTCM Security Logs</p></td></tr><tr ac:local-id="fb7d4cbf-02c0-4890-89a4-461fa90eaf5d"><td data-local-id="3b573998-d6f3-478b-98c8-7b7436e923d7" class="confluenceTd"><p local-id="adadba1f-ca93-429d-a639-8323cbd18b5e"><code>Path_Key file</code></p></td><td data-local-id="4353de3d-41c1-40f9-9143-12d998d44061" class="confluenceTd"><p local-id="eebf6828-e44f-44e9-807f-3e9efc79b136">Adds the source file path to each record</p></td></tr><tr ac:local-id="44e41cc9-16fd-4e91-be92-0b7c2db2a5e2"><td data-local-id="3a5d4c8f-e9a2-426d-b69f-f2062f68fc75" class="confluenceTd"><p local-id="eb9db44e-cc41-4fff-9b40-074bc1d8fdb5"><code>tag cs.securitylogs</code></p></td><td data-local-id="f173286d-6d50-42f6-9e15-6f4f49c12948" class="confluenceTd"><p local-id="aef3a604-722a-44ea-afcc-fca84e1f5f9c">Tag used to route and process security log events</p></td></tr></tbody></table></div><hr local-id="aa3a2904-2663-4d29-b739-f3c178757467"/><h1 local-id="7ea0e7fe-e0fa-4601-a0bc-48d3ec1f51f9" id="SecurityLogsInput-Metadataenrichmentfilter">Metadata enrichment filter</h1><p local-id="9313965e-a838-4fb2-9808-6a096f9033ce" /><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">[FILTER]
+    Name modify
+    Match cs.securitylogs
+    Add applicationID -
+    Add applicationVersion 24.4
+    Add company opentext
+    Add componentCode security
+    Add level INFO
+    Add logger -
+    Add message -
+    Add server Opentext-xECM-f:2099
+    Add serviceCode xecm</pre>
+</div></div><p local-id="a8dfbfff-e606-4283-afc3-d1443579cb50" /><h2 local-id="098fad17-d767-4505-9a5f-3aad81b07528" id="SecurityLogsInput-Explanation.1">Explanation</h2><p local-id="96c2d554-d880-40d7-a04b-da5aa6753068">This filter enriches raw security log entries with <strong>static metadata</strong>, ensuring consistency across all OTCM log streams.</p><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="f63e0e78-2a81-49f4-b161-cc3bf930e574" class="confluenceTable"><tbody><tr ac:local-id="eaad6474-fdb5-4c7d-ba00-e2ec2a7fc42d"><th data-local-id="f6ef74c6-59f2-442f-8501-3c251afb7316" class="confluenceTh"><p local-id="1f5d1e66-db51-4ba8-a3e6-3deafa7de7ef">Field</p></th><th data-local-id="679f64ca-4497-4cf0-bdf9-baf644f313b9" class="confluenceTh"><p local-id="57d6dc9f-252e-47bc-a95f-5234e15202d5">Purpose</p></th></tr><tr ac:local-id="7b436edb-e8cb-41c5-a3a8-170f40443178"><td data-local-id="aaf89ec7-8204-4d78-ac66-47ec25197f03" class="confluenceTd"><p local-id="e71efe84-4cc4-432a-994e-01065e8f10e4"><code>applicationID / serviceCode</code></p></td><td data-local-id="7deb3c44-d084-4d9e-8294-88878d9d4101" class="confluenceTd"><p local-id="be138396-e7de-4b6a-8cf3-984cdd71de01">Identify the source application</p></td></tr><tr ac:local-id="cc7c641b-c327-4cbc-8d75-999a04de9dab"><td data-local-id="fa3b5117-572e-4981-a182-39d16a2bb6d6" class="confluenceTd"><p local-id="8116f07b-2762-4835-949d-cbfca8fc4db4"><code>applicationVersion</code></p></td><td data-local-id="431093c0-ca56-4c79-a051-7074d0f543a2" class="confluenceTd"><p local-id="4cb41961-d277-421e-bbbb-acf18bcbc2f0">OTCM version used in the POC</p></td></tr><tr ac:local-id="995cadb1-c613-4a89-9c59-967d504b5105"><td data-local-id="609cb158-9f24-452c-8e95-0867639d8a4a" class="confluenceTd"><p local-id="c5a62a0c-ec39-4ed3-ba7e-87f4380690d7"><code>company</code></p></td><td data-local-id="24d610cf-8348-421a-8384-efa19f9f73f7" class="confluenceTd"><p local-id="2e545080-2728-4b50-a3e9-da8c4ccefab1">Vendor identification</p></td></tr><tr ac:local-id="d1cfc009-2c59-4764-a4d1-803928ec58a3"><td data-local-id="b98626e2-cba5-492d-b920-cef50be7109a" class="confluenceTd"><p local-id="13767a5d-61e9-4dde-8e90-026cdfed73ad"><code>componentCode</code></p></td><td data-local-id="2bfd375a-32a6-498f-a5b1-192c1d898cad" class="confluenceTd"><p local-id="fd2cf789-f0b8-4f4f-9cfd-7f5ccc403468">Logical component name</p></td></tr><tr ac:local-id="acde80e4-9872-407f-a4f9-cf97dbc9f2cc"><td data-local-id="6109a2ea-e2a1-4c41-9f22-0f5c664477b6" class="confluenceTd"><p local-id="8abcc1c1-4df1-405b-a46b-ba1140748baf"><code>server</code></p></td><td data-local-id="aeba9fa0-938c-4fd9-aa90-f45b1e667bde" class="confluenceTd"><p local-id="b2ff7364-7f23-4ec6-93d5-2c7ea45cfd1d">Originating OTCM node</p></td></tr><tr ac:local-id="b5ea2b99-3c01-4778-8e1f-014944f5863e"><td data-local-id="14c915e1-3c62-43b1-bba0-c908db7037ca" class="confluenceTd"><p local-id="1cc22a1e-e55f-47bd-9547-d9adcf1f1314"><code>level / logger / message</code></p></td><td data-local-id="bd6016c9-2b95-4013-83a3-d912ff4e5950" class="confluenceTd"><p local-id="501a621c-287e-45b5-bb4d-61c61601411f">Normalized fields for downstream processing</p></td></tr></tbody></table></div><hr local-id="f13c59c5-2e51-4b0b-8f7b-0139cd335903"/><h1 local-id="ef3254b7-391f-4313-9289-d9d5b373e498" id="SecurityLogsInput-Parsingfilter">Parsing filter</h1><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">[FILTER]
+    Name parser
+    Match cs.securitylogs
+    Key_name log
+    Parser securitylogs_parser
+    Reserve_Data True</pre>
+</div></div><p local-id="c1833fda-96a4-4400-b293-ce8ca447981e" /><h2 local-id="1b8d8210-f858-40fd-b1c7-b09049d681bf" id="SecurityLogsInput-Explanation.2">Explanation</h2><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="0ada0082-db88-4a3e-9275-9e1ddfd28da7" class="confluenceTable"><tbody><tr ac:local-id="c44e6b4e-7658-455f-8200-4838197c8b26"><th data-local-id="1052fde6-3f75-44ad-9a1b-5ad38a1e1920" class="confluenceTh"><h2 local-id="78e6dfdf-99cd-4d93-b4aa-103f58643ce9" id="SecurityLogsInput-Setting">Setting</h2></th><th data-local-id="8c5add46-d4f6-4c00-84e1-f6150ed56d03" class="confluenceTh"><p local-id="8a4ae5e8-a6ec-42bc-886e-84ef4aa817ca">Explanation</p></th></tr><tr ac:local-id="f63056d4-7f5d-4343-a66a-cbb4a3170596"><td data-local-id="f7115e86-bf5a-4155-86aa-390e28dc3f51" class="confluenceTd"><p local-id="f94bfaf7-c672-494f-bc8c-0d25c2bc252f"><code>Key_name log</code></p></td><td data-local-id="bff47fd3-9dc3-40f9-8f56-b200adb04f8d" class="confluenceTd"><p local-id="b420578c-a1ee-40e6-af73-f1a906dbecb7">Field containing the raw log line</p></td></tr><tr ac:local-id="23d1be05-619a-4089-85d0-153da445293a"><td data-local-id="03a7a0c8-6e0e-4a4e-9315-698d05204cdf" class="confluenceTd"><p local-id="1f91eab0-58e8-4008-a4f4-90ef6e69b36c"><code>Parser securitylogs_parser</code></p></td><td data-local-id="94064149-7c1b-460c-9e06-3f1b41d6463b" class="confluenceTd"><p local-id="64c5ddec-24c5-42a6-a02b-81ab9316b09b">Applies the custom regex parser</p></td></tr><tr ac:local-id="0529dd34-85e1-46a7-b814-167774dc6fe1"><td data-local-id="a44cf5a1-14dd-41bc-84df-80b14efdd169" class="confluenceTd"><p local-id="9fb8530a-1cdd-40a0-bec9-f7582e3e5d70"><code>Reserve_Data True</code></p></td><td data-local-id="eef29c32-1cf6-4358-8671-1b400dc88aa3" class="confluenceTd"><p local-id="ec836d03-179c-4afa-ac1d-939957171635">Keeps original fields alongside parsed values</p></td></tr></tbody></table></div><p local-id="58e6e8a1-f242-4c37-9fef-3bcd95f2aeac">This step converts <strong>tab-delimited security log lines</strong> into structured fields usable for metrics, filtering, and correlation.</p><hr local-id="7364c40e-e638-4d1a-a423-a8928f7af8ea"/><h1 local-id="b81f3732-afd4-4065-90aa-b060764380d2" id="SecurityLogsInput-Parserdefinition">Parser definition</h1><p local-id="c89b8af6-e6f5-4032-87a5-4a17dc335fce"><strong>Config file:</strong> <code>parsers.conf</code></p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">[PARSER]
+    Name securitylogs_parser
+    Format regex
+    Regex ^(?&lt;x_utc_timestamp&gt;[^\t]+)[\t](?&lt;date&gt;[^\t]+)[\t](?&lt;time&gt;[^\t]+)[\t](?&lt;x_threadid&gt;[^\t]+)[\t](?&lt;c_ip&gt;[^\t]+)[\t](?&lt;x_authuser&gt;[^\t]+)[\t](?&lt;c_func&gt;[^\t]+)[\t](?&lt;c_method&gt;[^\t]+)[\t](?&lt;cs_uri&gt;[^\t]+)[\t](?&lt;time_taken&gt;[^\t]+)[\t](?&lt;bytes&gt;[^\t]+)[\t](?&lt;x_server&gt;[^\t]+)[\t](?&lt;x_uptimems&gt;[^\t]+)[\t](?&lt;x_sourcedevice&gt;[^\t]+)[\t](?&lt;x_authmethod&gt;[^\t]+)[\t](?&lt;x_authstatus&gt;[^\t]+)[\t](?&lt;x_requestid&gt;[^\t]+)[\t]?$
+    Time_Key x_utc_timestamp
+    Time_Format %Y-%m-%dT%T.%L
+</pre>
+</div></div><h2 local-id="75e3b159-4221-4108-a3be-30bbbb2b6e70" id="SecurityLogsInput-Explanation.3">Explanation</h2><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="0d6dfaf2-1453-4bda-a42e-3fe5100c73b2" class="confluenceTable"><tbody><tr ac:local-id="c468d16f-f40f-49c7-ae6d-76794ed69846"><th data-local-id="56316294-5db0-40a0-b9ac-b741a5dd5e0d" class="confluenceTh"><p local-id="63d59b01-dee6-4e0b-b00d-cb781e53fea9">Element</p></th><th data-local-id="35b8f258-c019-48aa-9682-dfc0ff8d0f2b" class="confluenceTh"><p local-id="2df1adac-bd6a-42ce-bf07-c00fdba4e531">Purpose</p></th></tr><tr ac:local-id="ef227ebe-1ff3-4dfb-89fe-93e11648554e"><td data-local-id="5a37beff-a102-4dc7-b2ff-66351e642b43" class="confluenceTd"><p local-id="3c0bf7f3-4189-443f-a07b-9002f5cbbab9"><code>Format regex</code></p></td><td data-local-id="14a454b7-ac84-4e62-8825-8fc94473db51" class="confluenceTd"><p local-id="98cddb3f-b22b-457f-a81f-9ff542e8b272">Parses non-JSON, tab-separated log lines</p></td></tr><tr ac:local-id="9aba47ea-6047-4c4d-aa4f-8671cd48fb98"><td data-local-id="a910ad76-7917-4dd8-8701-11125c1d6078" class="confluenceTd"><p local-id="8e19163d-7825-4766-959f-3d7f5547e57f">Named capture groups</p></td><td data-local-id="125e6273-8022-4281-b63c-1369fdfdaaf2" class="confluenceTd"><p local-id="506ae5ea-b072-4afd-893d-33999f62227d">Map directly to OTCM Security Log fields</p></td></tr><tr ac:local-id="170b12d4-3ad0-43cf-88ce-536a0c96dc4e"><td data-local-id="8c379a7c-ec87-46e8-b10e-46d7665ee271" class="confluenceTd"><p local-id="b834dbd9-1896-48fb-9a5e-870c8f0ec15d"><code>Time_Key</code></p></td><td data-local-id="9f8f45b4-69ca-400a-b780-6e7127effee8" class="confluenceTd"><p local-id="adb659f8-1828-43e9-83e5-7af35d2ca920">Uses the UTC timestamp from the log itself</p></td></tr><tr ac:local-id="0f402272-e488-4a71-87c7-2345edb93337"><td data-local-id="e091d8e3-c9cc-41f5-9b3c-18858b682ee6" class="confluenceTd"><p local-id="f49a23e6-adf6-48c8-8d55-7a1708476828"><code>Time_Format</code></p></td><td data-local-id="ae73be36-51f4-46fc-a916-ab3377cac074" class="confluenceTd"><p local-id="a1d8870d-57a8-4883-b064-5d8758396204">Matches OTCM timestamp precision</p></td></tr></tbody></table></div><hr local-id="fb1fe9a0-93bf-4a9a-a849-4f7020f2ba10"/><h3 local-id="22db0fd6-a540-4071-84a8-d6aec309629d" id="SecurityLogsInput-Relateddocumentation">Related documentation</h3><ul local-id="51eb2499-9edb-4d6f-8f1e-de4d1ec6e7b7"><li local-id="eb137559-2f84-4a30-a5da-f2c88a36acfd"><p local-id="cf3411dd-da23-4f1e-8a6f-8729db674de0"><strong>Security Logs</strong> – detailed fields, structure, and example entries<br/><a href="Security-Logs_607322131.html" data-linked-resource-id="607322131" data-linked-resource-version="2" data-linked-resource-type="page">Security Logs</a> </p></li><li local-id="4d4c22ba-63c3-4dfc-ba69-6b7075df2536"><p local-id="73f6184f-0bda-4b14-a539-0e88d46acc5f"><strong>Turning on Fluent Bit integration in Content management Server</strong><br/><a href="Admin-Panel-Configuration_605028361.html#Fluent-Bit-Integration" data-linked-resource-id="605028361" data-linked-resource-version="3" data-linked-resource-type="page">Admin Panel Configuration</a> </p></li><li local-id="459c7f64-b541-4d80-bc1b-fd1f8d43a322"><p local-id="233c65bf-7676-48a5-8509-2f8784ea773d"><strong>Security Logs settings in Content management server</strong><br/><a href="Admin-Panel-Configuration_605028361.html#Instance-Log-Settings" data-linked-resource-id="605028361" data-linked-resource-version="3" data-linked-resource-type="page">Admin Panel Configuration</a> </p></li></ul><p local-id="223d6a25-2f99-46ed-b31f-aaecc8777eca" />
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on dec 30, 2025 14:33</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Monitoring Expansion : Data flow &amp; Integration</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Monitoring Expansion</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Overzicht_373653886.html">Overzicht</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Monitoring Expansion : Data flow &amp; Integration
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                            
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Bram Verkuijlen</span>, last modified on dec 30, 2025
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p local-id="01eb6763-615a-49d7-bec5-e5803f7b330a">This section provides an overview of how the Monitoring Expansion POC is structured, how telemetry flows between components, and options for integrating with other systems. It is intended for developers, engineers, or anyone analyzing or extending the POC.</p><hr local-id="f86c49e4-9000-44e8-ab20-4138ecc7a685"/><h1 local-id="4a005dc4-5ba1-4bad-8083-0d4f9ec6b2b2" id="Dataflow&amp;Integration-TableofContents">Table of Contents</h1><style type='text/css'>/*<![CDATA[*/
+div.rbtoc1767101594928 {padding: 0px;}
+div.rbtoc1767101594928 ul {list-style: default;margin-left: 0px;padding-left: ;}
+div.rbtoc1767101594928 li {margin-left: 0px;padding-left: 0px;}
+
+/*]]>*/</style><div class='toc-macro rbtoc1767101594928'>
+<ul class='toc-indentation'>
+<li><a href='#Dataflow&amp;Integration-Overview'>Overview</a></li>
+<li><a href='#Dataflow&amp;Integration-Subpages'>Subpages</a></li>
+</ul>
+</div><hr local-id="63bc1523-bc9a-4e5f-8f9e-fa04037ad4c4"/><h1 local-id="9f02f4f2-cbcf-4416-9b90-6372fbc7513d" id="Dataflow&amp;Integration-Overview">Overview</h1><p local-id="e935c2af-7425-4d35-85cc-a457a3ccdf7a">The POC pipeline includes the following components:</p><ul local-id="eb5fab85-a897-43c8-aecc-8286f7cd3152"><li local-id="921e4012-5712-42fe-9eaf-2d80b020e0ee"><p local-id="a6554080-2c96-489d-831e-60f3e4875670"><strong>OTCM (OpenText Content Management System)</strong> – source of logs, metrics, and trace-like data</p></li><li local-id="5d69a007-c27f-41a6-bdef-2ae96378676d"><p local-id="8ce668d9-c569-4f66-9194-e9dd02529d0e"><strong>Fluent Bit</strong> – lightweight log shipper to collect OTCM logs and system events</p></li><li local-id="d182fc8d-d574-4794-99c5-e732d6be7aae"><p local-id="4f5b9029-116d-4350-9eee-51524c351eb6"><strong>OpenTelemetry Collector</strong> – central pipeline to process, transform, and export logs and metrics</p></li><li local-id="965fc3fa-d36d-4592-9d24-9de8116f7be6"><p local-id="43ef211a-79dc-42f1-ad55-b9c97dca081d"><strong>Prometheus &amp; Loki</strong> – backends for storing metrics and logs</p></li><li local-id="eb17bfb9-c0b1-4c3e-9f1a-aababf49f001"><p local-id="fcac04ea-cfce-4859-b4e2-09711e6af660"><strong>Grafana</strong> – optional visualization layer for dashboards</p></li></ul><p local-id="e725a056-3d30-4daf-ab81-f94e67172048">Telemetry flows from OTCM logs and system metrics into Fluent Bit, then into various OpenTelemetry collectors. The collectors process, transform, and forward the data to Prometheus and Loki. Grafana reads from Prometheus and Loki to visualize logs, metrics, and derived insights.</p><hr local-id="bf5829ee-0a07-4c18-9789-f3f3c8d6fef0"/><h1 local-id="804b23ef-4ece-43a5-9778-c41d101b9fe9" id="Dataflow&amp;Integration-Subpages">Subpages</h1><ul class='childpages-macro'><li><a href="601260048.html" data-linked-resource-id="601260048" data-linked-resource-version="3" data-linked-resource-type="page">Architecture &amp; Data flow</a></li><li><a href="Integration-options_602079244.html" data-linked-resource-id="602079244" data-linked-resource-version="4" data-linked-resource-type="page">Integration options</a></li><li><a href="Distributed-setup_602570765.html" data-linked-resource-id="602570765" data-linked-resource-version="2" data-linked-resource-type="page">Distributed setup</a></li></ul>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on dec 30, 2025 14:33</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

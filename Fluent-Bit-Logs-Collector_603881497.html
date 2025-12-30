@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Monitoring Expansion : Fluent Bit Logs Collector</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Monitoring Expansion</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Overzicht_373653886.html">Overzicht</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Components_491388972.html">Components</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="OpenTelemetry_491978770.html">OpenTelemetry</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Monitoring Expansion : Fluent Bit Logs Collector
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                            
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Bram Verkuijlen</span>, last modified on dec 29, 2025
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p local-id="3ec58bac-84dc-454d-9d80-d9f903765639"><strong>Collector distribution:</strong> OpenTelemetry Collector <strong>Contrib</strong><br/><a class="external-link" data-card-appearance="inline" href="https://github.com/open-telemetry/opentelemetry-collector-contrib" local-id="95392fb6-80f0-47f0-b4f4-c23407691cbd" rel="nofollow">https://github.com/open-telemetry/opentelemetry-collector-contrib</a> </p><p local-id="c4333886-c704-41c4-9d8a-f111ee1cf3e4">This configuration is for the <strong>Fluent Bit Logs Collector</strong> used in the Monitoring Expansion POC.<br/>It receives logs forwarded by Fluent Bit, performs minimal transformation, and routes the logs to:</p><ul local-id="20bf08fd-ddc8-4f42-a6ee-748cc88e588c"><li local-id="71b3e0ac-58f6-44b8-8d1b-a0cb92e616e7"><p local-id="32204b2e-1310-48d0-8d62-5207839797ec">The <strong>Central Collector</strong> for storage and visualization</p></li><li local-id="c71424c5-e2c3-4429-8417-3d94d42d17db"><p local-id="8c3656e1-433c-4cf1-8dd8-c4d749a52081">The <strong>Log Metrics Collector</strong> for log-derived metrics</p></li></ul><p local-id="5acecccd-3578-4044-9abb-ed0482d2f02b">For details about individual log formats and fields, refer to the corresponding log documentation pages.<br/><a href="Central-Collector_605257739.html" data-linked-resource-id="605257739" data-linked-resource-version="5" data-linked-resource-type="page">Central Collector</a> <a href="Log-Metrics-Collector_604438542.html" data-linked-resource-id="604438542" data-linked-resource-version="3" data-linked-resource-type="page">Log Metrics Collector</a> </p><hr local-id="21365555-069a-411c-b0ac-9d8187a1bbdf"/><h1 local-id="15711902-15ce-43a6-842d-73f3b7735cfe" id="FluentBitLogsCollector-TableofContents">Table of Contents</h1><style type='text/css'>/*<![CDATA[*/
+div.rbtoc1767101594795 {padding: 0px;}
+div.rbtoc1767101594795 ul {list-style: default;margin-left: 0px;padding-left: ;}
+div.rbtoc1767101594795 li {margin-left: 0px;padding-left: 0px;}
+
+/*]]>*/</style><div class='toc-macro rbtoc1767101594795'>
+<ul class='toc-indentation'>
+<li><a href='#FluentBitLogsCollector-DesignNotes'>Design Notes</a></li>
+<li><a href='#FluentBitLogsCollector-Receivers'>Receivers</a>
+<ul class='toc-indentation'>
+<li><a href='#FluentBitLogsCollector-Explanation'>Explanation</a></li>
+</ul>
+</li>
+<li><a href='#FluentBitLogsCollector-Processors'>Processors</a>
+<ul class='toc-indentation'>
+<li><a href='#FluentBitLogsCollector-Explanation.1'>Explanation</a>
+<ul class='toc-indentation'>
+<li><a href='#FluentBitLogsCollector-Whythisprocessorisused'>Why this processor is used</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href='#FluentBitLogsCollector-Exporters'>Exporters</a>
+<ul class='toc-indentation'>
+<li><a href='#FluentBitLogsCollector-Explanation.2'>Explanation</a></li>
+</ul>
+</li>
+<li><a href='#FluentBitLogsCollector-Pipelines'>Pipelines</a>
+<ul class='toc-indentation'>
+<li><a href='#FluentBitLogsCollector-Explanation.3'>Explanation</a></li>
+</ul>
+</li>
+<li><a href='#FluentBitLogsCollector-RelatedDocumentation'>Related Documentation</a></li>
+</ul>
+</div><hr local-id="5f4b2af2-a6aa-4c45-a7f9-afeb811c98be"/><h1 local-id="151a91c3-6df1-4518-8db2-517f8b741c04" id="FluentBitLogsCollector-DesignNotes">Design Notes</h1><ul local-id="0d46644b-6a8b-4bc5-b6da-4b4c0033701d"><li local-id="e40aed3f-9948-4b6b-b9ba-38e2a021600e"><p local-id="b05c15e2-209c-4e71-9baf-8502d2632fe3">Fluent Bit handles <strong>file reading, parsing, and enrichment</strong></p></li><li local-id="1c778b63-91c3-4c4e-a8a4-093105e2ec3b"><p local-id="894de4a8-1b11-44ec-be42-494546275ee7">This collector focuses on <strong>routing and normalization</strong></p></li><li local-id="4dd2d663-6cad-49f7-97c1-61a43b78c2ce"><p local-id="7b0abf8e-3fe2-484f-a03f-7948ad66ddd4">Logs are forwarded once and reused for multiple purposes</p></li><li local-id="9ad42293-2867-4f7e-81cb-e2286ddcdda9"><p local-id="dedb7a7e-5e61-4156-b712-d8868548b086">Separation of concerns keeps the system modular and maintainable</p></li></ul><hr local-id="2ad6c9c9-1382-4487-aaea-c0ee8213b3d5"/><h1 local-id="427a37d7-1a0b-4cdf-bd0b-f2fcd00c0d84" id="FluentBitLogsCollector-Receivers"> Receivers</h1><p local-id="640726d7-3b2a-4744-a7e6-debf5dab1cfa">Receivers define how telemetry enters the collector.</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">receivers:
+  fluentforward:
+    endpoint: 0.0.0.0:8006</pre>
+</div></div><h2 local-id="4fed58c1-faf4-4e8c-91a8-372f8117f5d2" id="FluentBitLogsCollector-Explanation">Explanation</h2><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="36d3857e-b639-4090-ab0e-7fc0211e997f" class="confluenceTable"><tbody><tr ac:local-id="46775277-58ec-4194-b4e4-b7e65bab697b"><th data-local-id="ecb7a8db-51d8-4612-a6dc-9d41b2d8067b" class="confluenceTh"><p local-id="e47aa145-d998-4bb3-951b-962f1d0f49bc">Setting</p></th><th data-local-id="c5d3fae4-8483-495d-89ce-4fd1e07033a8" class="confluenceTh"><p local-id="6968e809-9e81-48d9-aca8-333a4be8a9c6">Purpose</p></th></tr><tr ac:local-id="2697eb73-d8b7-42f1-abcf-de99da5c2c7b"><td data-local-id="3795bba4-fc8e-4ce4-b658-facea772bbea" class="confluenceTd"><p local-id="8b11ca23-59dd-4e1f-b3e5-f3c7b8419174">fluentforward</p></td><td data-local-id="256d6664-acac-4ee1-9547-00201192d10b" class="confluenceTd"><p local-id="de2079f5-27a8-44f7-86ce-8d2de8ed9c68">Receives logs using the Fluent Bit / Fluentd forward protocol</p></td></tr><tr ac:local-id="feaf3afb-4f6f-4bab-a3fb-f93a145ebbd0"><td data-local-id="6896790d-c030-47b1-b6da-5c60c4482db8" class="confluenceTd"><p local-id="b787b7b4-636f-4dd8-b3d3-f10acea53359">endpoint</p></td><td data-local-id="6b2cfc6c-fb57-43e6-8096-cb2c20d0e893" class="confluenceTd"><p local-id="86c4805e-2985-4f4b-adbd-7b76e6880d35">TCP address and port where Fluent Bit forwards logs</p></td></tr></tbody></table></div><blockquote local-id="9c627956-e50f-4416-89c2-5970b88c4970"><p local-id="da48b43f-3813-4583-894b-408bc740e2aa">The <code>fluentforward</code> receiver is only available in the <strong>OpenTelemetry Collector Contrib</strong> distribution.<br/>It is used here to maintain native compatibility with Fluent Bit’s <code>forward</code> output plugin.<br/><a class="external-link" data-card-appearance="inline" href="https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/fluentforwardreceiver" local-id="741e952b-9001-4a08-b063-90b3a3ab680d" rel="nofollow">https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/fluentforwardreceiver</a> </p></blockquote><hr local-id="5e4eeb64-46b5-42e9-a23f-08fd7c4ae338"/><h1 local-id="a8b46450-2660-48fd-9766-a0c46e0cb8fa" id="FluentBitLogsCollector-Processors">Processors</h1><p local-id="90fd6869-e3fa-497b-b789-13e0adfd73e1">Processors modify or normalize telemetry before export.</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">processors:
+  transform:
+    log_statements:
+      - set(log.body, log.attributes)</pre>
+</div></div><p local-id="95d6daa9-a39a-4546-a9d2-c0e9c706a23e" /><h2 local-id="7cd30b46-6b4f-4740-8558-d55cdf6da6cf" id="FluentBitLogsCollector-Explanation.1">Explanation</h2><div class="table-wrap"><table data-table-width="760" data-layout="align-start" data-local-id="1b9cc7ed-6327-45dc-a408-0183ee104675" class="confluenceTable"><tbody><tr ac:local-id="feb1013a-897b-4682-a6d0-fcb89bebb3f0"><th data-local-id="08ac29b3-b285-4031-8735-8de816fbe223" class="confluenceTh"><p local-id="fcd85355-deb0-4c22-b362-27625cd3dd39">Setting</p></th><th data-local-id="ac873261-52fe-424f-a1d4-d8a5f5480833" class="confluenceTh"><p local-id="6078c376-b307-46ee-8d18-bca54ce3407c">Purpose</p></th></tr><tr ac:local-id="24602c8c-5d5f-43f3-9210-1dbdf5047407"><td data-local-id="39a4603a-adb6-470f-b92d-5ca722cdac5c" class="confluenceTd"><p local-id="2c44830d-8691-46d9-9eca-37f0c838b745">transform</p></td><td data-local-id="47954e96-f675-450c-bc35-89dca2598b74" class="confluenceTd"><p local-id="73242add-43ce-40de-a0b2-689b3e0f661e">Applies transformations to incoming log records</p></td></tr><tr ac:local-id="d2fa13f7-2722-419a-bd9b-8aeab7fb0be6"><td data-local-id="03d61524-6c1c-4bb8-a903-0abf62177418" class="confluenceTd"><p local-id="daa227d6-507e-4b31-aaeb-199f69f2a22c">set(log.body, log.attributes)</p></td><td data-local-id="5190e6ab-a7fe-48e4-879b-cc9bd7f492d4" class="confluenceTd"><p local-id="3e12f0dc-2d41-47a0-a982-93c11b3bf787">Copies all log attributes into the log body</p></td></tr></tbody></table></div><p local-id="167d0ab0-7c8c-4d57-9894-518d715a105a" /><h3 local-id="2a768864-93a9-4352-b288-ce5008e2f556" id="FluentBitLogsCollector-Whythisprocessorisused">Why this processor is used</h3><p local-id="56a25895-e741-4450-8f71-15f1f830f584">Fluent Bit parses and enriches OTCM logs by adding structured fields as <strong>log attributes</strong>.<br/>However, when exporting logs to <strong>Loki via OTLP</strong>, not all attributes are always interpreted or displayed as expected in <strong>Grafana</strong>.</p><p local-id="842f816a-7bd0-48bd-9826-175cd33713fb">By copying all log attributes into the <strong>log body</strong>:</p><ul local-id="a1d0b1bb-0c8a-4f4f-bbe9-d5bbcbcee874"><li local-id="a3708939-1043-499c-8d0c-cba5cb4500db"><p local-id="1c6c4a29-0a27-45f9-b77f-194d5982c5cd">All parsed fields become visible in Grafana log views</p></li><li local-id="c7b2e62e-c1cb-4ec3-bc24-0ee3cab402b1"><p local-id="579c40af-a732-4c9d-b973-2a76d70da674">Field-based searching and filtering works more reliably</p></li><li local-id="a92ef854-d38d-49cf-8431-2f920e5d48c2"><p local-id="16e98ae5-00e9-4563-a566-d296d8da6a7a">Logs remain readable even when label extraction is limited</p></li><li local-id="0f91f6b7-fadc-417f-903c-4785c5eb19ad"><p local-id="2769867b-ce0a-4ef7-b8ba-872c0c32cb42">No log information is lost during export</p></li></ul><hr local-id="f6a69f61-c9bc-408c-9fe8-a862a7bdf18a"/><h1 local-id="78a30c28-32b2-4668-9776-7b67d62db92d" id="FluentBitLogsCollector-Exporters">Exporters</h1><p local-id="b82b2916-4b10-42ee-9cf5-8c6b5026d4a4">Exporters define where processed logs are sent.</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">exporters:
+  debug:
+    verbosity: detailed
+
+  otlp/central:
+    endpoint: &quot;127.0.0.1:8895&quot;
+    tls:
+      insecure: true
+
+  otlp/log-metrics:
+    endpoint: &quot;127.0.0.1:8007&quot;
+    tls:
+      insecure: true</pre>
+</div></div><p local-id="eda41380-6475-4044-9ccb-67f7a5229abb" /><h2 local-id="f1753060-22d9-4b4c-8f1c-6b0a30b5a0a4" id="FluentBitLogsCollector-Explanation.2">Explanation</h2><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="85065ee5-9f64-4f3b-b7b1-fc5b91f42bef" class="confluenceTable"><tbody><tr ac:local-id="d827e62c-5827-4287-a187-252208e935f4"><th data-local-id="bec46981-8784-4586-b015-8eb5875b1324" class="confluenceTh"><p local-id="f120b261-e008-41dc-9123-21f87cb28ca5">Exporter</p></th><th data-local-id="ca718099-515b-4ac4-a095-a643305c0b8b" class="confluenceTh"><p local-id="8f2ae3fe-e79d-4d54-809f-2e8b82ca7ee1">Purpose</p></th></tr><tr ac:local-id="a4951198-dc33-4a50-bb5b-a6f45e405342"><td data-local-id="c7df704f-75c5-4181-a2f5-4da6e449d99b" class="confluenceTd"><p local-id="011e6f71-4a00-4112-bf99-6b81b09dc80f">debug</p></td><td data-local-id="795b1781-1435-45ed-a075-c89a33ecff63" class="confluenceTd"><p local-id="1def747e-9ae1-440a-9840-f7231287cd85">Outputs logs to console for validation and troubleshooting</p></td></tr><tr ac:local-id="92e9f503-1c25-4426-9020-10bbd0ae15a6"><td data-local-id="b995b346-d2fe-4697-ad8c-8d1a838fc213" class="confluenceTd"><p local-id="9e880561-b598-4eea-a3a9-ffdde380a9f2">otlp/central</p></td><td data-local-id="66d9e852-6d04-49f8-ba9e-416736c6da2f" class="confluenceTd"><p local-id="39ae8c3d-7aac-47d4-8673-3f6729646c14">Sends logs to the Central Collector</p></td></tr><tr ac:local-id="1c47df06-b364-4446-9214-7fd05ff7376a"><td data-local-id="f1134e9d-87b9-4cdc-bfc5-9276eead535a" class="confluenceTd"><p local-id="90927ac3-fa49-4176-8aba-5f2cf5687c68">otlp/log-metrics</p></td><td data-local-id="5e229fae-6ee6-4a2e-9631-35b308fb011f" class="confluenceTd"><p local-id="36870b11-4bcd-4cdb-8653-c44857f4852e">Sends logs to the Log Metrics Collector</p></td></tr></tbody></table></div><p local-id="b7a5c7e5-ff1c-4eb7-bd87-6a030756bae5">This setup allows the same log stream to be reused for both <strong>observability</strong> and <strong>metric extraction</strong>.</p><hr local-id="30b6cf89-dfc9-4c4c-adc6-b3e90c22bb7e"/><h1 local-id="8839985e-7812-40e0-b486-1b820367220e" id="FluentBitLogsCollector-Pipelines">Pipelines</h1><p local-id="2d13c976-74da-4e84-9851-e47b1f9c3c3e">Pipelines define how logs flow through the collector.</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">service:
+  telemetry:
+    metrics:
+      readers:
+        - periodic:
+            exporter:
+              otlp:
+                protocol: http/protobuf
+                endpoint: &quot;127.0.0.1:8896&quot;
+
+  pipelines:
+    logs/fluentbit:
+      receivers: [fluentforward]
+      processors: [transform]
+      exporters: [debug, otlp/central, otlp/log-metrics]</pre>
+</div></div><p local-id="1d679264-51b0-4c2f-b4ce-5b8b0de258a6" /><h2 local-id="8863852e-a673-45e8-b289-6f77c003953c" id="FluentBitLogsCollector-Explanation.3">Explanation</h2><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="36036f69-88fd-4def-90ab-ab9be19af521" class="confluenceTable"><tbody><tr ac:local-id="6fb2cdd6-a8d7-4e89-8da4-6e29ae4e9628"><th data-local-id="90cdb3d8-c1b1-43d4-b65e-3177f8f517fd" class="confluenceTh"><p local-id="22a0624e-c524-4bd9-b4dc-ea4e0b351a6e">Pipeline</p></th><th data-local-id="3d04ff5b-97be-498f-a6f4-9215dd3f5d22" class="confluenceTh"><p local-id="3b8a0b60-72c0-4d27-b4f9-3ed18f808fe8">Purpose</p></th></tr><tr ac:local-id="a95ffdd4-26e7-4060-88e0-90fa2a144053"><td data-local-id="b29b61bd-1213-4ac7-93a2-8e82b12cc37b" class="confluenceTd"><p local-id="a480ccae-553d-4c7c-8445-5619b080cffe">logs/fluentbit</p></td><td data-local-id="d281edcb-c2fc-4f55-bb22-e33607732076" class="confluenceTd"><p local-id="91295c1e-c1e4-42ce-860d-00539624c3c1">Processes logs received from Fluent Bit and sends the telemetry to the central collector and the log metrics collector</p></td></tr><tr ac:local-id="85b131cb-72c9-43fb-a1b6-9365be56eeca"><td data-local-id="96ed6cb3-0dc2-4865-a9b4-aec825db57b9" class="confluenceTd"><p local-id="05b5cfef-fde7-4444-a1db-3a15c5c85d3b"><code>telemetry</code></p></td><td data-local-id="64783e8a-6817-475d-850b-10a724359bf1" class="confluenceTd"><p local-id="3eae3039-3b60-4308-9a8e-ce7ad19a2021">Periodically exports internal telemetry to the central collector</p></td></tr></tbody></table></div><p local-id="f7363d13-c1a4-46d3-b08d-7a7a7d73f415">This pipeline functions as the <strong>handoff point</strong> between Fluent Bit and the OpenTelemetry collector architecture.</p><hr local-id="190aa3be-3ed1-4911-b99a-2f258cbbaa54"/><h1 local-id="de9f3542-9ba5-43a9-b6e3-15b9c61d5b5b" id="FluentBitLogsCollector-RelatedDocumentation">Related Documentation</h1><ul local-id="8a595a3c-6ece-4829-8356-d37fb70512cd"><li local-id="c9c5009a-c847-4402-96b2-0542306bb224"><p local-id="c78cbc8c-90d7-4256-a16c-2b7d05ec072b"><strong>Fluent Bit Output – OpenTelemetry Output</strong><br/><a href="OpenTelemetry-Output_611319840.html" data-linked-resource-id="611319840" data-linked-resource-version="2" data-linked-resource-type="page">OpenTelemetry Output</a> </p></li><li local-id="3deade13-eece-4f5d-ac3c-f7437a9e0424"><p local-id="94673320-a372-42e7-8dc3-556c0f8f128b"><strong>Central Collector</strong><br/><a href="Central-Collector_605257739.html" data-linked-resource-id="605257739" data-linked-resource-version="5" data-linked-resource-type="page">Central Collector</a> </p></li><li local-id="c957b2a7-ae5e-4db2-acc6-9b4e32836557"><p local-id="aeb81252-c64b-4167-b1f7-c31c4a15de8c"><strong>Log Metrics Collector</strong><br/><a href="Log-Metrics-Collector_604438542.html" data-linked-resource-id="604438542" data-linked-resource-version="3" data-linked-resource-type="page">Log Metrics Collector</a> </p></li><li local-id="bb41143a-79e1-4897-9109-98cef3528428"><p local-id="9b1c7e33-7daa-4086-ba3b-cda358e5e9fa"><strong>OpenText Content Server Logs</strong><br/><a href="Logs_492535812.html" data-linked-resource-id="492535812" data-linked-resource-version="10" data-linked-resource-type="page">Logs</a> </p></li><li local-id="5dff1a0f-b9d1-4e66-80c5-e1edbe09858c"><p local-id="13ed1f06-e0c6-417d-9198-9b0ca182e635"><strong>Fluent Forward Receiver</strong><br/><a class="external-link" data-card-appearance="inline" href="https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/fluentforwardreceiver" local-id="caa807f0-7f29-4ecf-8918-55a20ea2eeac" rel="nofollow">https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/fluentforwardreceiver</a> </p></li></ul><p local-id="c3c2f3da-98a3-4a71-96e6-b4dd17093caf" />
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on dec 30, 2025 14:33</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

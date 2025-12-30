@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Monitoring Expansion : Web Server Client Timing Logs Input</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Monitoring Expansion</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Overzicht_373653886.html">Overzicht</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Components_491388972.html">Components</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Fluent-bit_492339201.html">Fluent-bit</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Monitoring Expansion : Web Server Client Timing Logs Input
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                            
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Bram Verkuijlen</span>, last modified on dec 19, 2025
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p local-id="6240b9ec-2eb1-482a-8c1a-65a6ae90ca5e"><strong>Config file:</strong> <code>inputs/ot_timing_ctl_logs.conf</code></p><p local-id="94381d7a-3943-4b04-8b65-0428523edde0">This configuration ingests <strong>Web Server Client Timing Logs</strong> from OTCM.<br/>These logs capture detailed request timing information between the web server and Content Server, including execution time, response time, and per-request metrics.</p><p local-id="8bb30ffc-bc28-4937-a110-c5dfedc70344">For detailed fields, examples, and metrics, refer to the <strong>Web Server Client Timing Logs</strong> documentation page.<br/><a href="Web-Server-Client-Timing-Logs-Input_610566159.html">Web Server Client Timing Logs Input</a> </p><hr local-id="23feb1b5-0e94-4ef9-a2bf-8380e5afa1a5"/><h1 local-id="760b6494-55cb-4901-a68e-7ae43b666c5e" id="WebServerClientTimingLogsInput-TableofContents">Table of Contents</h1><style type='text/css'>/*<![CDATA[*/
+div.rbtoc1767101594421 {padding: 0px;}
+div.rbtoc1767101594421 ul {list-style: default;margin-left: 0px;padding-left: ;}
+div.rbtoc1767101594421 li {margin-left: 0px;padding-left: 0px;}
+
+/*]]>*/</style><div class='toc-macro rbtoc1767101594421'>
+<ul class='toc-indentation'>
+<li><a href='#WebServerClientTimingLogsInput-Inputconfiguration'>Input configuration</a>
+<ul class='toc-indentation'>
+<li><a href='#WebServerClientTimingLogsInput-Explanation'>Explanation</a></li>
+</ul>
+</li>
+<li><a href='#WebServerClientTimingLogsInput-Metadataenrichmentfilter'>Metadata enrichment filter</a>
+<ul class='toc-indentation'>
+<li><a href='#WebServerClientTimingLogsInput-Explanation.1'>Explanation</a></li>
+</ul>
+</li>
+<li><a href='#WebServerClientTimingLogsInput-Parsingfilter'>Parsing filter</a>
+<ul class='toc-indentation'>
+<li><a href='#WebServerClientTimingLogsInput-Explanation.2'>Explanation</a></li>
+</ul>
+</li>
+<li><a href='#WebServerClientTimingLogsInput-Typeconversionfilter'>Type conversion filter</a>
+<ul class='toc-indentation'>
+<li><a href='#WebServerClientTimingLogsInput-Explanation.3'>Explanation</a></li>
+</ul>
+</li>
+<li><a href='#WebServerClientTimingLogsInput-Parserdefinition'>Parser definition</a>
+<ul class='toc-indentation'>
+<li><a href='#WebServerClientTimingLogsInput-Explanation.4'>Explanation</a></li>
+</ul>
+</li>
+<li><a href='#WebServerClientTimingLogsInput-Relateddocumentation'>Related documentation</a></li>
+</ul>
+</div><hr local-id="9ed97682-03dc-4bca-bf35-ce89513d6d3c"/><h1 local-id="32c2fd5c-e706-4f81-93e3-b1c5ade14023" id="WebServerClientTimingLogsInput-Inputconfiguration">Input configuration</h1><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"># Opentext Web Server Client Timing Logs
+# Configured in OTCM via:
+# http://&lt;OTCM-HOST&gt;/OTCS/cs.exe?func=admin.configurelogging
+
+[INPUT]
+    Name       tail
+    db         C:\Monitoring Expension\Fluent Bit\db\timingctllogs.db
+    Path       C:\OPENTEXT\OTCS\logs\timing_logs\llclient*
+    Path_Key   file
+    tag        cs.timingctllogs
+    skip_long_lines on</pre>
+</div></div><p local-id="f900d472-ca85-4526-b1c5-9a942d18076a" /><h2 local-id="74d6721f-0c68-413f-a86a-675316ebb571" id="WebServerClientTimingLogsInput-Explanation">Explanation</h2><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="0336be1d-b69e-4546-893b-d4d332258d69" class="confluenceTable"><tbody><tr ac:local-id="5d92a337-4859-4cf4-9990-25624b957983"><th data-local-id="0174810f-221d-48a1-b557-1129a37b2ef6" class="confluenceTh"><p local-id="18f95697-07cf-42e7-a992-7040569c5f31">Setting</p></th><th data-local-id="25532929-4441-4c5f-8c72-e0178ea8f57e" class="confluenceTh"><p local-id="f34372d2-e6c8-4fbd-bf13-276409cf55b9">Explanation</p></th></tr><tr ac:local-id="cd3b1d1b-09cf-402a-b5db-447ffab1ed32"><td data-local-id="22f8b5d1-6bcd-421e-9b44-57e548f4c528" class="confluenceTd"><p local-id="8e0f4fe1-14ce-4895-9fc8-af81820cafe1"><code>Name tail</code></p></td><td data-local-id="447545fd-7cd6-4686-8576-bf0bee4e4da0" class="confluenceTd"><p local-id="05787311-a60b-4f19-94bd-e701208c61fd">Reads log files from disk and follows them as they grow</p></td></tr><tr ac:local-id="c28ee607-2f2f-48a9-b0ff-68e4507a4cd4"><td data-local-id="1f09b5dc-8dfc-4175-b36b-570bae926303" class="confluenceTd"><p local-id="d31be0f1-cbac-4e03-a719-ba65fc0c8722"><code>db</code></p></td><td data-local-id="77cfcda6-1593-4b5b-b121-afc3e46ace83" class="confluenceTd"><p local-id="14fb4d27-9b6a-4fc0-a94e-1b05c19135b5">Stores file offsets to prevent duplicate ingestion after restarts</p></td></tr><tr ac:local-id="db89e7d3-745f-470e-bddf-cd9f1c207fde"><td data-local-id="9832a368-4081-49cb-8020-82a363616576" class="confluenceTd"><p local-id="fd03bf87-fdf0-4db0-9882-a91ed8efcfa6"><code>Path</code></p></td><td data-local-id="2be86cf4-819b-45df-9a9d-36f70a8658c9" class="confluenceTd"><p local-id="1be618e1-cee0-43c6-a5bf-075ae8c1fa11">Location of OTCM Web Server Client Timing Logs</p></td></tr><tr ac:local-id="802d1c7d-f672-4941-b861-a975ac29ac39"><td data-local-id="7a84e1b5-d49a-4a29-9b4f-e8f00b0ce00c" class="confluenceTd"><p local-id="c1de2396-740d-4d49-9cc5-c793c6e725fe"><code>Path_Key file</code></p></td><td data-local-id="d099cd7d-7a7a-4ad2-9f80-dc21587b9a86" class="confluenceTd"><p local-id="226bf3c1-a434-42dc-bdce-91a7a3bf233f">Adds the source file path to each record</p></td></tr><tr ac:local-id="b2e8ee8d-1b8d-4a35-a7f5-56fbe35212f7"><td data-local-id="d2e49198-3cf6-4fdc-b206-0b692607b59f" class="confluenceTd"><p local-id="5ab61c72-e14a-4ec7-9476-93046626eda8"><code>tag cs.timingctllogs</code></p></td><td data-local-id="4dcf57f2-d134-43fc-8d64-9ea141103ff0" class="confluenceTd"><p local-id="fee9d894-0ec5-48e5-8224-fbc5ecd8b4ab">Identifies timing log events for filtering and routing</p></td></tr><tr ac:local-id="e63b737f-3de7-48ca-8bd5-367bc7a0bfa6"><td data-local-id="2cf60870-6a46-44ec-9c73-6e5dd37268bd" class="confluenceTd"><p local-id="85109c45-a2ca-4a23-ad52-bea28fbc0eb5"><code>skip_long_lines on</code></p></td><td data-local-id="32307fc9-80ae-4e1a-8bfa-393f495a364f" class="confluenceTd"><p local-id="eac53160-d988-48ae-894b-b3a2b9603dc1">Prevents Fluent Bit from crashing on unusually long lines</p></td></tr></tbody></table></div><hr local-id="a8aa5b1b-85f5-4f8a-a3d9-d71238c2e3b7"/><h1 local-id="925c7753-327b-4af8-9513-c4152eda8f0d" id="WebServerClientTimingLogsInput-Metadataenrichmentfilter">Metadata enrichment filter</h1><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">[FILTER]
+    Name   modify
+    Match  cs.timingctllogs
+
+    Add applicationID -
+    Add applicationVersion 24.4
+    Add company opentext
+    Add componentCode timings
+    Add level INFO
+    Add logger -
+    Add message -
+    Add server Opentext-xECM-f:2099
+    Add serviceCode xecm
+</pre>
+</div></div><p local-id="68821322-01af-43e1-bfd8-7edae8b93943" /><h2 local-id="ee3c8bf9-c127-4ab2-ac7b-5a7f991c15fa" id="WebServerClientTimingLogsInput-Explanation.1">Explanation</h2><p local-id="a7e3fc53-afa3-430b-8219-172627934581">Adds static metadata to each log entry to ensure consistency across log types and compatibility with downstream observability tooling.</p><hr local-id="4541a6fa-080e-4db7-9638-2143b064a0e6"/><h1 local-id="1a59c307-d928-4480-9d0f-151435b2caef" id="WebServerClientTimingLogsInput-Parsingfilter">Parsing filter</h1><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">[FILTER]
+    Name         parser
+    Match        cs.timingctllogs
+    Key_name     log
+    Parser       timingctllogs_parser
+    Reserve_Data True</pre>
+</div></div><p local-id="b8b01a26-1a15-4320-a8cd-a75b19b367bc" /><h2 local-id="3d31fa34-b06a-486d-81f0-8cc9a0866bca" id="WebServerClientTimingLogsInput-Explanation.2">Explanation</h2><p local-id="53526df6-8868-4134-9ee5-92599188d975">Parses raw CSV log lines into structured fields using a regex parser.</p><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="b3f5e056-f97c-4292-92d6-f4034024031e" class="confluenceTable"><tbody><tr ac:local-id="240045b9-8aeb-403a-a4b1-4d664b96da75"><th data-local-id="a0fa0ccd-257c-4d44-8d3b-7bc5e88d3b36" class="confluenceTh"><p local-id="f91168fd-8bbb-4871-9e8b-41db4d857b01">Setting</p></th><th data-local-id="741d7322-7403-4c8c-9c76-f7029c7bae89" class="confluenceTh"><p local-id="99862464-3a14-446c-a14d-a81b20daf471">Explanation</p></th></tr><tr ac:local-id="2f699ad9-041a-453f-9ff8-49adf729c3d4"><td data-local-id="063f2b00-2a00-4c75-9ed9-6ecfa538fa47" class="confluenceTd"><p local-id="c8ae9c2d-8a47-403b-86ba-961c93530215"><code>Key_name log</code></p></td><td data-local-id="14e81a20-119e-4e1f-9c12-e6f100fef340" class="confluenceTd"><p local-id="ed922180-7bd0-4809-a320-9405669c3522">Field containing the raw log line</p></td></tr><tr ac:local-id="a6707ca4-fd1a-4ff0-b09b-5ea9153cdbc4"><td data-local-id="7993ee4b-32cd-4770-bcc0-ab62851f2a7e" class="confluenceTd"><p local-id="a73c01e6-be77-4ae7-a9d5-ac664346b00e"><code>Parser timingctllogs_parser</code></p></td><td data-local-id="7c58e6fd-af8b-4f39-bbe1-8f8710a3cf15" class="confluenceTd"><p local-id="4ce186e9-b88a-4cbe-932a-0a6bfc85ec1f">Custom parser for Web Server Client Timing Logs</p></td></tr><tr ac:local-id="3aa23909-8f7c-429f-b613-ed7d0830c8ef"><td data-local-id="47e438de-f57a-42af-abe5-a663957a9f6b" class="confluenceTd"><p local-id="957be316-1fe0-4aad-8024-60a4797f7603"><code>Reserve_Data True</code></p></td><td data-local-id="26b7c69f-3a39-4e3b-99be-cb83874528fe" class="confluenceTd"><p local-id="6ebd329b-5532-49d5-a5e1-f4258565e205">Keeps original fields alongside parsed values</p></td></tr></tbody></table></div><hr local-id="17467ab3-b77d-4197-a0f4-93e2b29e7926"/><h1 local-id="e03b29d9-410c-4983-bf07-48c8b1314ff3" id="WebServerClientTimingLogsInput-Typeconversionfilter">Type conversion filter</h1><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">[FILTER]
+    Name type_converter
+    Match cs.timingctllogs
+    str_key ExecTime ExecTime int
+    str_key ResponseTime ResponseTime int</pre>
+</div></div><p local-id="ef4c7f84-0d1c-4007-8c9c-f641d12ce600" /><h2 local-id="14965c41-ac91-41e3-b13e-12eb6a7dab9c" id="WebServerClientTimingLogsInput-Explanation.3">Explanation</h2><p local-id="9dac9680-5ad6-42c0-9991-32fe9e5e50c1">Converts selected fields from strings to integers for metric aggregation.</p><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="d28c1ad0-82fd-43da-8d28-b2012b427f5e" class="confluenceTable"><tbody><tr ac:local-id="418fb27b-f97a-4425-9f6e-41f31d3e2e46"><th data-local-id="c672c967-92f7-4eba-a1e5-01202a6a6cf2" class="confluenceTh"><p local-id="341f4032-9c6c-4944-9c3d-b46ee6572cdb">Field</p></th><th data-local-id="f5d4dc31-dde5-4470-a697-fbb5641583d6" class="confluenceTh"><p local-id="b23aa7e0-fe9a-4c56-bd71-599951ec85b6">Purpose</p></th></tr><tr ac:local-id="6076ff4b-573a-4e50-adde-64e15a168c20"><td data-local-id="9166410f-b527-4c1b-aa2d-d89ef0bdcecf" class="confluenceTd"><p local-id="8e8f05de-4e64-4cc2-847d-beade7b97506"><code>ExecTime</code></p></td><td data-local-id="3801c1b9-8913-4e93-893f-e810529a9e6d" class="confluenceTd"><p local-id="0a06ba64-8cde-4fbf-badd-ff3cb63112e3">Total execution time of the request (converted to int)</p></td></tr><tr ac:local-id="44e4d603-787b-44e0-a02f-88d096e5bd70"><td data-local-id="20b0d054-0ab1-4911-aa8a-a90cce1a6712" class="confluenceTd"><p local-id="f0ffde6e-8006-4895-8173-302155dcc64b"><code>ResponseTime</code></p></td><td data-local-id="31829860-74a2-4d42-aa5b-76147af6724c" class="confluenceTd"><p local-id="d71961d3-ab45-4ac1-b976-14dd53a01427">Total response time (converted to int)</p></td></tr></tbody></table></div><hr local-id="af247f5b-3e61-48ea-8ae2-52d861fcdb9b"/><h1 local-id="6c7c28c4-35bf-40e6-bb17-c09bdf942483" id="WebServerClientTimingLogsInput-Parserdefinition">Parser definition</h1><p local-id="910e8b44-550e-4c80-a0c1-652f22b9d97c"><strong>Config file:</strong> <code>parsers.conf</code></p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">[PARSER]
+    Name   timingctllogs_parser
+    Format regex
+    Regex  ^(?&lt;Date&gt;[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}),(?&lt;Time&gt;[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]{1,3})?),(?&lt;FuncAction&gt;[A-Za-z0-9_.]+),(?&lt;IP&gt;(?:[0-9]{1,3}(?:\.[0-9]{1,3}){3}|::1|[A-Fa-f0-9:]+)),(?&lt;ExecTime&gt;[0-9?]+),(?&lt;AcceptTime&gt;[0-9?]+),(?&lt;ServerTime&gt;[0-9?]+),(?&lt;ResponseTime&gt;[0-9?]+),(?&lt;ObjectId&gt;[0-9?]+),(?&lt;ResponseSize&gt;[0-9?]+),(?&lt;ServerName&gt;[A-Za-z0-9_.-]+),(?&lt;RequestID&gt;[0-9a-fA-F-]{36})$
+    Time_Key Time
+    Time_Format %H:%M:%S.%L</pre>
+</div></div><p local-id="b4125078-8d46-4bfa-b568-bffa09216758" /><h2 local-id="21ace999-c46b-435d-9bb1-7d3e8e1c42c9" id="WebServerClientTimingLogsInput-Explanation.4">Explanation</h2><p local-id="ff703f81-5af0-4b65-a9bd-2a8e34f37cbf">The parser converts CSV log lines into structured key/value fields for downstream processing.</p><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="0f8ca2ee-f341-45fb-904b-74c52239a990" class="confluenceTable"><tbody><tr ac:local-id="7559faf9-c6f1-4475-83b8-f592e2768ca5"><th data-local-id="d2bbe9c8-7d33-4b6e-bf12-5ac7fa006a31" class="confluenceTh"><p local-id="3cdc34f8-28f7-4fbe-a2f6-550ee4a19312">Element</p></th><th data-local-id="0e4949e1-7cb7-4cc3-a8ac-ba9436caea10" class="confluenceTh"><p local-id="63a80248-39e6-4fc6-a2ea-c11b725228b2">Purpose</p></th></tr><tr ac:local-id="6ebcc3e4-a5bf-4ca9-b6a1-d584669eaebf"><td data-local-id="74ba15bf-fcf6-4cc3-a8f2-e9c2d91d4440" class="confluenceTd"><p local-id="af4543b5-a98e-495f-bfc9-ad6251b06afa"><code>Regex</code></p></td><td data-local-id="6fb26d9f-1c21-436a-90b9-e020a028a3f4" class="confluenceTd"><p local-id="7767f8e2-277e-4f8b-9284-b4cd19c84b7c">Matches the CSV format of Web Server Client Timing Logs</p></td></tr><tr ac:local-id="d54dec9b-c40b-498b-a16c-24e9ea64b370"><td data-local-id="cfc0e656-3084-49a2-a665-d607fe9a95be" class="confluenceTd"><p local-id="4af077f6-e7b6-4088-ab70-25a2bcb7957e"><code>Time_Key</code></p></td><td data-local-id="2b1e965e-90e7-40f8-9e18-5e4ac5649888" class="confluenceTd"><p local-id="a2459845-6259-44d9-8754-113c7671eb7c">Field to use as the timestamp for each record</p></td></tr><tr ac:local-id="c3649266-4680-49e9-86a1-926db7043e26"><td data-local-id="3f929193-e530-406d-b9eb-d77057d1d04d" class="confluenceTd"><p local-id="456c9310-d1f5-4e42-a9d3-4542f0087a0c"><code>Time_Format</code></p></td><td data-local-id="c35d5fab-060c-4298-806e-af7fc0ed920a" class="confluenceTd"><p local-id="547cd691-8237-4e53-ad98-c19727f1d6af">Format for parsing the timestamp</p></td></tr></tbody></table></div><hr local-id="ca3aad14-45de-4860-ab9b-db051048270a"/><h1 local-id="ceb42960-6cf1-40b8-9479-41485f2a2932" id="WebServerClientTimingLogsInput-Relateddocumentation">Related documentation</h1><ul local-id="8dcf0f82-ea51-4b3a-a01d-aec924f35947"><li local-id="a66a01c4-f14b-4729-8824-126615898e09"><p local-id="38c46364-1ac4-470e-af78-76c3b6dba7e4"><strong>Web Server Client Timing Logs</strong> – detailed fields, structure, and examples<br/><a href="Web-Server-Client-Timing-Logs-Input_610566159.html">Web Server Client Timing Logs Input</a> </p></li><li local-id="efcacaf8-bc28-43bf-bb64-893db1ce494f"><p local-id="4bc1d1dd-7b72-465f-b0b6-a976f70d508e"><strong>Web Server Client Timing Logs</strong> <strong>settings in Content management server</strong><br/><a href="Admin-Panel-Configuration_605028361.html#Instance-Log-Settings" data-linked-resource-id="605028361" data-linked-resource-version="3" data-linked-resource-type="page">Admin Panel Configuration</a><a href="Admin-Panel-Configuration_605028361.html#Instance-Log-Settings" data-linked-resource-id="605028361" data-linked-resource-version="3" data-linked-resource-type="page">Admin Panel Configuration</a></p></li></ul>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on dec 30, 2025 14:33</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

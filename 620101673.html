@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Monitoring Expansion : POC Port &amp; Folder Structure Compatibility</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Monitoring Expansion</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Overzicht_373653886.html">Overzicht</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Known-issues_604078083.html">Known issues</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Monitoring Expansion : POC Port &amp; Folder Structure Compatibility
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                            
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Bram Verkuijlen</span> on dec 29, 2025
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p local-id="3d818353-79e9-46d3-ab2a-5324b8511bd3"><strong>Issue Description</strong><br/>The POC relies on specific ports and folder paths for the components (Collectors, Loki, Prometheus, Fluent Bit). On other systems, conflicts may occur due to:</p><ul local-id="9abd12d2-adef-493d-bd06-79c47283ba1e"><li local-id="047807a5-94a2-448d-9f0a-23de07d2b9ea"><p local-id="06417c4b-e6d3-4ea8-9fcc-b4b5fad41b38"><strong>Duplicate or in-use ports</strong> (e.g., OTLP, Prometheus, Loki endpoints)</p></li><li local-id="29bf2b17-932b-4742-853b-d2efe91fd3fc"><p local-id="538ab936-2259-4640-87b3-76b118b0ced0"><strong>Different folder structures</strong> or missing directories for log storage and configuration</p></li></ul><p local-id="7c643c0a-5f49-402b-94d9-f505043a5ce6">These issues may prevent the POC from running without manual adjustments.</p><hr local-id="41b65880-0939-4e70-ae50-a702a34ea2ee"/><p local-id="e0d90f2a-9a80-447d-8934-5c54ed10881b"><strong>Impact</strong></p><ul local-id="0c4d2020-bc28-46af-a627-467ac4085f17"><li local-id="6716cb40-53af-478b-b4b3-65c0b5bc85f9"><p local-id="7ac83698-47a0-4210-b611-d729b471f7b6">POC may fail to start if ports are already in use</p></li><li local-id="f38ca8d5-0c13-4c00-8cfa-d4961bb401ce"><p local-id="dde7dcc5-d7b2-4c04-ad3e-ab0d03c33589">Logs may not be collected or metrics may not be exposed correctly if folder paths differ</p></li><li local-id="60d150aa-8c3b-424b-8674-4f44fe26fd75"><p local-id="26f37666-0587-458b-9826-f033c4e26703">Component connectivity could break if endpoints are modified</p></li></ul><hr local-id="772fa9fa-0794-450f-b4dc-d4894e18d479"/><p local-id="069b5482-9661-42eb-b94e-e83f66da2be5"><strong>Planned Mitigations</strong></p><ul local-id="680c8074-f24e-4772-ba73-5a447c807e45"><li local-id="f05ae7e5-f65d-4d83-9ef1-78fefec2b0c9"><p local-id="df04b3bb-499d-43bc-a618-9aa6a27a3d09">Implement a <strong>main </strong><code>config.yml</code> to centralize port and folder configuration</p></li><li local-id="cc9c7178-37b3-4ec3-afaa-57d46e7249a2"><p local-id="728c08bc-b21b-4951-a8a3-9fc9b6917a67">Make the folder structure <strong>loosely coupled</strong> to allow flexibility across different systems</p></li><li local-id="a005e42a-6742-4cd8-9e37-0074855aefbf"><p local-id="9c02c149-0596-4cb5-8afe-97aa6434f45f">Include validation checks to detect port conflicts and missing directories at startup</p></li></ul><hr local-id="171de614-6047-4cb1-8e51-63bce58ee8d9"/><p local-id="9922133d-7d38-42e0-bcc9-9a7fce9edcc1"><strong>Status / Notes</strong></p><ul local-id="62f25ed6-ecb8-408a-b4b8-fe7deec5a2b7"><li local-id="42a4c658-28a2-4172-9366-cca735d0668c"><p local-id="c6a083cf-ba9e-4a76-9561-6cafcafa5aba">This issue is <strong>documented and planned</strong> for future improvements in the Roadmap &amp; Improvements section<br/><a href="Roadmap_491225099.html" data-linked-resource-id="491225099" data-linked-resource-version="5" data-linked-resource-type="page">Roadmap &amp; Improvements</a> </p></li><li local-id="f2bc0275-ec94-4bab-ac52-fdca662fdcb9"><p local-id="a0e2e7a4-8c60-4f5d-b937-7006b5d81ba8">Due to time constraints during the internship, no fixes have been applied yet</p></li><li local-id="9415c848-3645-4586-9b56-51baf04b550d"><p local-id="d4fa58d3-a485-49e6-9cbb-8c6ffb07acac">Cross-platform testing (Linux, different Windows versions) is still to be performed</p></li></ul>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on dec 30, 2025 14:33</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

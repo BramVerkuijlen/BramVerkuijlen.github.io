@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Monitoring Expansion : Loki</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Monitoring Expansion</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Overzicht_373653886.html">Overzicht</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Components_491388972.html">Components</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Monitoring Expansion : Loki
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                            
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Bram Verkuijlen</span>, last modified on dec 29, 2025
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p local-id="165c3315-7498-479c-894e-8fc9ed11902a">This section documents <strong>Loki</strong> as used in the Monitoring Expansion POC. It describes its role in the observability pipeline, the configuration used, and how it integrates with other components like the Central Collector and Grafana.</p><p local-id="733c8634-b53e-4c77-86d4-f6b58bead02b">The goal of this part of the documentation is not to explain Loki in detail as a logging platform, but to describe:</p><ul local-id="56667023-67e5-4d6d-a419-d15813a4826b"><li local-id="4a0968ca-cb50-4244-b53d-5d1e786a3726"><p local-id="f5142e28-bbd4-4d2c-9bee-c5ede8bbfa6c">What data Loki receives in this POC</p></li><li local-id="a1559479-3950-425f-9a86-4fb3dd3dd05c"><p local-id="2415f92c-9126-4c4e-b4c8-fa2a31d5d1a0">How Loki is configured</p></li><li local-id="5172f051-5ba9-4f6b-a969-aec43adb8f68"><p local-id="fddd8307-c141-4bb0-984d-5568a79aec93">How Loki integrates with the pipeline</p></li><li local-id="b495e4dc-d289-4324-aca5-36a63ebe7471"><p local-id="4081aae3-ee75-4a55-bc10-f54d479b63df">Limitations and considerations</p></li></ul><p local-id="08efe218-7cb4-41d1-95ab-bf050443b29d">This documentation is based on hands-on technical research performed during the internship project.</p><hr local-id="483da473-858b-4ae6-a5ae-87a2e6ff05b9"/><h1 local-id="a03ea814-9f9a-4c51-be94-f65a5013588a" id="Loki-TableofContents">Table of Contents</h1><style type='text/css'>/*<![CDATA[*/
+div.rbtoc1767101594886 {padding: 0px;}
+div.rbtoc1767101594886 ul {list-style: default;margin-left: 0px;padding-left: ;}
+div.rbtoc1767101594886 li {margin-left: 0px;padding-left: 0px;}
+
+/*]]>*/</style><div class='toc-macro rbtoc1767101594886'>
+<ul class='toc-indentation'>
+<li><a href='#Loki-Purpose'>Purpose</a>
+<ul class='toc-indentation'>
+<li><a href='#Loki-Context'>Context</a></li>
+<li><a href='#Loki-KeyResponsibilities'>Key Responsibilities</a></li>
+<li><a href='#Loki-ArchitectureRole'>Architecture Role</a></li>
+</ul>
+</li>
+<li><a href='#Loki-LimitationsandConstraints'>Limitations and Constraints</a></li>
+<li><a href='#Loki-ConfigurationOverview'>Configuration Overview</a>
+<ul class='toc-indentation'>
+<li><a href='#Loki-GlobalSettings'>Global Settings</a></li>
+<li><a href='#Loki-Storage&amp;Schema'>Storage &amp; Schema</a></li>
+<li><a href='#Loki-Server&amp;Ingestion'>Server &amp; Ingestion</a></li>
+<li><a href='#Loki-PatternIngester'>Pattern Ingester</a></li>
+<li><a href='#Loki-RelatedDocumentation'>Related Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div><hr local-id="7909afb2-69d3-4f18-af20-98c9c12b2501"/><h1 local-id="d73cb674-c99a-48bd-bf29-0ac691853475" id="Loki-Purpose">Purpose</h1><p local-id="0616a0d3-893c-4c95-891b-ca2a871d3e43">Loki serves as the <strong>log storage backend</strong> for the observability pipeline:</p><ul local-id="14fedddb-3a08-4fcb-9840-69be28e0795d"><li local-id="62c9a3d3-bf9b-4e78-8196-f0fe6164a14e"><p local-id="7af1d5fc-62c4-4868-8b9d-ac6794fc0e72">Receives logs forwarded by the <strong>Central Collector</strong><br/><a href="Central-Collector_605257739.html" data-linked-resource-id="605257739" data-linked-resource-version="5" data-linked-resource-type="page">Central Collector</a> </p></li><li local-id="7af6f2ab-1cde-4d14-9428-20768e8ef34b"><p local-id="76d3fe46-aadd-4be0-9f61-192a56c91456">Stores logs in a time-series format for efficient querying</p></li><li local-id="19233bdd-9ec4-4773-924e-9f63206bd96f"><p local-id="a01e82ae-8185-4305-95ec-de0b3b87898b">Provides log data for Grafana dashboards<br/><a href="Grafana_491520010.html" data-linked-resource-id="491520010" data-linked-resource-version="5" data-linked-resource-type="page">Grafana</a> </p></li></ul><p local-id="03249011-2d85-4c34-bcb0-1690a55f4d76">Loki <strong>does not process or transform logs</strong>; it stores and indexes logs for later retrieval.</p><hr local-id="ab03955e-0160-42f1-a47c-03fbf3d660ab"/><h2 local-id="1fc3bfbf-22fc-4559-b5bc-0476d0ec81de" id="Loki-Context">Context</h2><p local-id="7339bda4-ed17-418c-bc1c-bf48e1572c51">In this POC, Loki is deployed on the same Windows VM as other components for simplicity. It can also run on a separate host as long as it is network-accessible by the Central Collector.</p><ul local-id="bbcea6be-79d0-485c-8313-f1a7449efd0a"><li local-id="6d3ed8f1-173b-4258-850d-b033a868d9be"><p local-id="fbd8290e-9b2c-4ce3-8853-06922770498d">Loki Version:<strong> 3.6.3</strong></p></li><li local-id="738e9a94-91c1-4872-a8ea-f6cb09729a51"><p local-id="772a7ff3-f9f1-47c7-a8fe-b6feed6f9aa7">Operating System: <strong>Windows Server</strong></p></li><li local-id="0233ca98-a8a5-4164-951f-689c85a6f0e4"><p local-id="6cca948d-7f9f-46cb-98f1-ba7eeefd825d">Architecture: Standalone instance using <strong>filesystem storage</strong></p></li></ul><p local-id="9f0870bd-b325-4dca-a6aa-b276c338bf44">Loki interacts with:</p><ul local-id="6bb91052-d583-4c57-bae7-144d7a4327ed"><li local-id="8bdd6a38-8975-4602-a607-c424bfff2d3a"><p local-id="77e972b0-0751-4752-8021-536f4fb2548d"><strong>Central Collector</strong> – receives logs via OTLP/logs export<br/><a href="Central-Collector_605257739.html" data-linked-resource-id="605257739" data-linked-resource-version="5" data-linked-resource-type="page">Central Collector</a> </p></li><li local-id="b8a87e66-9207-4923-aa2c-e2760e264d28"><p local-id="6781213a-ca3d-4657-bc4d-ed04f10c2c57"><strong>Grafana</strong> – visualizes logs stored in Loki<br/><a href="Grafana_491520010.html" data-linked-resource-id="491520010" data-linked-resource-version="5" data-linked-resource-type="page">Grafana</a> </p></li><li local-id="e4cc6121-7265-496a-b0ff-664bd906563d"><p local-id="e0a80478-a577-4c4a-ab79-c38e26136bff"><strong>Prometheus</strong> – optionally scrapes internal Loki metrics<br/><a href="Prometheus_602570758.html" data-linked-resource-id="602570758" data-linked-resource-version="3" data-linked-resource-type="page">Prometheus</a> </p></li></ul><hr local-id="e3c05f42-970f-4ee6-b06c-3b59bd01e687"/><h2 local-id="940a7f24-e8ab-46e9-9821-76928e8309d5" id="Loki-KeyResponsibilities">Key Responsibilities</h2><p local-id="e738b601-bab1-43e8-8082-fd538fae35d3">Loki acts as the <strong>central log storage and query engine</strong>:</p><ul local-id="ee991bb4-40e4-458e-8a38-3a4e9a717e2b"><li local-id="181d49f7-2106-4726-93e8-1d0c52bec14b"><p local-id="25d79388-4ba9-4347-b2ad-f001394ae809">Receives logs from OpenTelemetry Central Collector</p></li><li local-id="4591cda7-aa70-441b-8ead-05a6df044dc7"><p local-id="7ad457dd-a7a3-46c2-8e89-1380e845deb9">Stores logs in TSDB (time-series database) format</p></li><li local-id="e169ee10-c2bd-4162-b5db-d7c9edc942a5"><p local-id="815397cd-d809-498d-9fe0-375fc63adb91">Supports queries and dashboards in Grafana</p></li><li local-id="a925ec7d-f9b4-4bd8-954a-0a806287445a"><p local-id="fa9eb9e6-aaf9-4491-b32a-8e4e94369ce1">Provides basic log-derived metrics for Prometheus</p></li></ul><p local-id="502d5de8-b832-4577-96b4-a9d67376219b">Loki does <strong>not</strong>:</p><ul local-id="71497484-3958-4a53-9f47-a7cf31dee685"><li local-id="f770a849-cdca-4928-bc50-a8d3f9b2af2c"><p local-id="c284b32b-5178-492a-955a-8088deef1370">Transform or enrich logs</p></li><li local-id="dd32c33d-9edb-45d8-87e6-fd5e52e5bbde"><p local-id="78b6b7d4-8173-4425-9a06-dc30f8e5b863">Collect metrics other than basic internal statistics</p></li><li local-id="e40e6f25-9c40-46c6-87a2-05f76ef97cd9"><p local-id="5b0f23e0-6cd9-450f-857c-5c5bf5e0d0a4">Generate alerts</p></li></ul><hr local-id="79e7c06c-10cd-426a-8ad5-e2f5df8d10d5"/><h2 local-id="0ee77dfa-315b-454c-900d-05d9bb1ffcc0" id="Loki-ArchitectureRole">Architecture Role</h2><p local-id="2540ae6f-f9d5-424f-be0f-7503d08b2b54">Loki functions as the <strong>log storage layer</strong> in the observability pipeline:<br/><a href="601260048.html" data-linked-resource-id="601260048" data-linked-resource-version="3" data-linked-resource-type="page">Architecture</a> </p><ul local-id="d518fb7d-919c-411b-bcbc-ee1ca477e04a"><li local-id="401576bc-e9d7-42db-8dcd-855d9417aee9"><p local-id="d6b2ee87-07a1-4c14-83e3-f0de4d0e1305">Positioned downstream of the Central Collector, which feeds logs</p></li><li local-id="485635e4-5898-4f56-9d5f-0e18585ba090"><p local-id="41b60198-32ed-46f2-a8cc-88ae33642cd9">Logs are stored for long-term querying and visualization in Grafana</p></li><li local-id="e48ce693-0618-4446-a1f0-dd2035bef06a"><p local-id="68880a28-29d7-4c46-a583-f9460d276d29">Pattern-based ingestion allows for metric extraction from log data</p></li></ul><p local-id="47d48af0-066d-4ce8-990a-796344f18967">Key architectural points:</p><ul local-id="3f8e0ba1-1229-4a07-a598-650fb223c1da"><li local-id="26a7427c-8e4c-4219-b6df-ff2ca3716011"><p local-id="f897bfa0-1e9e-4de9-b6d3-846afe747683">Centralized log storage for all telemetry</p></li><li local-id="be704b20-4e38-4c0a-87e3-0c7317726064"><p local-id="401290ad-9d2a-4717-ada5-0f03ef8fb51e">Provides time-series query access via Grafana</p></li><li local-id="bfd5aca5-80f0-4f4d-9c74-da879a494c3b"><p local-id="66a90621-1a9d-4434-a7e9-faa324d395dd">Scalable with replication and persistent storage in production (not configured in this POC)</p></li></ul><hr local-id="6b61fe18-7981-4278-b064-bba6329ada8e"/><h1 local-id="06468cea-30e6-4fae-aecb-2f50ee6a18a9" id="Loki-LimitationsandConstraints">Limitations and Constraints</h1><ul local-id="de2a451a-ae77-4278-ba62-308feb371c9d"><li local-id="f248476d-713c-4ca6-8b62-d898e987ee1e"><p local-id="12f639e1-2ce7-4430-bb9e-e8a375865c0c">No authentication enabled (<code>auth_enabled: false</code>) for POC simplicity</p></li><li local-id="4e567f1c-cf7d-4a51-9af4-ecf9503d5202"><p local-id="023f76ec-29dd-4e75-b2dd-906df056cf4e">Uses in-memory kvstore and local filesystem; limited durability and scalability</p></li><li local-id="8eee2060-528b-424c-ad2f-6efcbaaa4431"><p local-id="233587fc-92c2-42d1-aa27-68195daa4ff4">Retention is not configured beyond default filesystem storage</p></li><li local-id="733d630a-8a0c-44e9-a521-3dedd0414dde"><p local-id="14cccbeb-529f-43b5-9885-b10b127ce8f7">Not optimized for production-scale workloads</p></li><li local-id="b9154f76-7ee3-4ae6-86f8-98a7975b622b"><p local-id="8b9b2e0e-2e34-432e-8a4d-90cde8734016">Metrics and analytics reporting to Grafana Labs is optional and disabled</p></li></ul><hr local-id="203b52de-955e-4146-b503-d7092dd46cc6"/><h1 local-id="441ac8a2-10cf-4997-8743-ec5f49b56371" id="Loki-ConfigurationOverview">Configuration Overview</h1><p local-id="c49380d2-e0e6-4179-9e14-7f763dbb2174">The Loki configuration for this POC is:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">auth_enabled: false
+
+server:
+  http_listen_port: 3100
+
+common:
+  ring:
+    instance_addr: 127.0.0.1
+    kvstore:
+      store: inmemory
+  replication_factor: 1
+  path_prefix: /tmp/loki
+
+query_range:
+  results_cache:
+    cache:
+      embedded_cache:
+        enabled: true
+        max_size_mb: 100
+
+limits_config:
+  volume_enabled: true
+  metric_aggregation_enabled: true
+  enable_multi_variant_queries: true
+
+schema_config:
+  configs:
+    - from: 2020-10-24
+      store: tsdb
+      object_store: filesystem
+      schema: v13
+      index:
+        prefix: index_
+        period: 24h
+
+storage_config:
+  filesystem:
+    directory: /tmp/loki/chunks
+
+pattern_ingester:
+  enabled: true
+  metric_aggregation:
+    loki_address: localhost:3100
+
+frontend:
+  encoding: protobuf</pre>
+</div></div><blockquote local-id="08e1947f-72a1-42d0-ac9a-0ef0c726a3b2"><p local-id="1ce35607-a02f-4293-a138-06ca07a32cab">Please refer to the official documentation for more detailed information on how to further configure Loki.<br/><a class="external-link" data-card-appearance="inline" href="https://grafana.com/docs/loki/latest/" local-id="71db6c44-c89d-4b45-8516-02b2a0c69b34" rel="nofollow">https://grafana.com/docs/loki/latest/</a> </p></blockquote><h2 local-id="407e1e7e-54b0-4d01-9767-37b0fcc8f00b" id="Loki-GlobalSettings">Global Settings</h2><ul local-id="4f6443a4-99f4-4194-a612-21676a056c31"><li local-id="7013a7d1-894f-4518-a239-d3badc07e994"><p local-id="01957509-c260-4c09-b9b4-605a99d0ea75"><code>auth_enabled: false</code> – disables authentication for simplicity</p></li><li local-id="4ebd60a7-b36c-4cd0-9cc8-9730c46c33f6"><p local-id="b5cf3d59-e00c-41a8-8e9c-a634ce850c74"><code>server.http_listen_port: 3100</code> – HTTP port for Loki queries</p></li><li local-id="3a075b6a-895f-4699-ba17-32f24584af99"><p local-id="98fbcc6f-512f-4369-86e0-e161432cbdd8"><code>common.ring</code> – used for sharding/replication (POC uses in-memory)</p></li><li local-id="ddcd0ef7-30a7-489c-bf14-6b7ebefdbb4e"><p local-id="c4d0ec89-c7fa-4e28-b9a8-1e23ff626ff3"><code>replication_factor: 1</code> – single instance replication</p></li><li local-id="901dc01d-9163-4d4f-bf4a-2a7472ff60a0"><p local-id="8727fe13-5e63-4f42-b027-3e5e1d3bba85"><code>path_prefix: /tmp/loki</code> – base directory for storage</p></li></ul><p local-id="ba45c2ca-d297-4ad8-90d4-cda101488922" /><h2 local-id="0d8cbac4-d822-44ad-aa4b-b90eb8d9504b" id="Loki-Storage&amp;Schema">Storage &amp; Schema</h2><ul local-id="56da4eb7-8de4-453c-ade1-c599ac519212"><li local-id="3d4c29e5-b56b-4745-8a7e-07a5c874fcdb"><p local-id="a79569fd-f2f6-44c5-af49-b644215ecdaf"><code>storage_config.filesystem.directory</code> – where log chunks are stored (<code>/tmp/loki/chunks</code>)</p></li><li local-id="451f77fc-a056-43ed-a577-415727407e2f"><p local-id="d27338b9-37af-4834-92cb-24ca86281b1b"><code>schema_config</code> – defines TSDB layout, indexing, and time-based partitioning</p></li><li local-id="c0eed1bb-0d9f-4743-95ee-0cb220139254"><p local-id="ae8ee8f9-9bac-48c1-b94f-6db30c1f5de0"><code>index.prefix</code> and <code>index.period</code> – naming and rotation of index files</p></li></ul><p local-id="e8f7a474-4a83-4bfe-ad15-f2bd9e3d4e93" /><h2 local-id="96ea7ac2-1a74-44b6-8c8e-33edb5c10ad9" id="Loki-Server&amp;Ingestion">Server &amp; Ingestion</h2><ul local-id="e8f45dca-0400-4f98-ab08-ace59097c3e5"><li local-id="5a600956-0ab1-4fa0-ac0f-d6455b6e39dc"><p local-id="1b3404d7-960e-4035-97f0-4a9148231073">Receives logs from <strong>Central Collector</strong> via OTLP/logs endpoint</p></li><li local-id="95fd2149-853d-42e5-8366-839a94eab618"><p local-id="d80e0efa-1301-42a4-87dd-010b1885d98b">Query cache enabled (<code>query_range.results_cache</code>) to improve Grafana query performance</p></li><li local-id="bde8af86-92ae-49fe-ba09-b460aec9dde0"><p local-id="3eb3f354-8dd5-44a8-a9c6-e568a9bd2fa9"><code>limits_config</code> enables volume metrics and multi-variant queries for log-derived metrics</p></li></ul><p local-id="382d2675-7cc8-49cb-82c3-552b51411dd5" /><h2 local-id="22f9c2ad-69af-4c75-ace8-1d796df61edd" id="Loki-PatternIngester">Pattern Ingester</h2><ul local-id="0f77ef95-3c4b-460a-87c9-6388f7a4ac24"><li local-id="1ee31289-89ff-4e1b-a01f-c93fdc67fc71"><p local-id="87b2a88b-ee80-4631-8f3a-8667f4c0477a">Enabled (<code>pattern_ingester.enabled: true</code>)</p></li><li local-id="c7394d33-511e-4e2d-9560-79a75a907942"><p local-id="b508c7bd-6a97-435c-9d17-591615afa3de">Supports log-derived metric aggregation (<code>metric_aggregation.loki_address</code>)</p></li><li local-id="e847ccb2-6946-4c06-a5c2-b2fde1e9c317"><p local-id="611b5fd4-0b98-4bf0-a02b-9e1b9a3d81d3">Allows extraction of structured metrics from unstructured logs</p></li></ul><hr local-id="1660e705-379d-43d0-92d6-46b956a529a4"/><h2 local-id="49a7faa1-0b33-4e1e-8307-3085f1165f44" id="Loki-RelatedDocumentation">Related Documentation</h2><ul local-id="53e6b00f-56f2-4f0d-89cb-c46865f7eaf7"><li local-id="4a8ed247-7e5a-4ef8-879f-0f90531d5115"><p local-id="66d5ec4b-f48b-4238-add3-078f9f284bbe"><strong>Central Collecto</strong>r – Loki receives log telemetry from here<br/><a href="Central-Collector_605257739.html" data-linked-resource-id="605257739" data-linked-resource-version="5" data-linked-resource-type="page">Central Collector</a> </p></li><li local-id="9028caed-bcbd-4ed0-8c9f-b18df4387aa4"><p local-id="990d8629-2423-47d8-a158-90eabdd593ff"><strong>Grafana </strong>– Visualizes logs stored in Loki<br/><a href="Grafana_491520010.html" data-linked-resource-id="491520010" data-linked-resource-version="5" data-linked-resource-type="page">Grafana</a> </p></li><li local-id="8c7905df-1a62-478e-be53-715b7de9b330"><p local-id="3734f790-7d3e-4d1d-8877-e6aa8227f65b"><strong>Prometheus </strong>– Scrapes Loki metrics for monitoring purposes<br/><a href="Prometheus_602570758.html" data-linked-resource-id="602570758" data-linked-resource-version="3" data-linked-resource-type="page">Prometheus</a> </p></li></ul>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on dec 30, 2025 14:33</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

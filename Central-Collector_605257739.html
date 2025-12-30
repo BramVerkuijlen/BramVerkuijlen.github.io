@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Monitoring Expansion : Central Collector</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Monitoring Expansion</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Overzicht_373653886.html">Overzicht</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Components_491388972.html">Components</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="OpenTelemetry_491978770.html">OpenTelemetry</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Monitoring Expansion : Central Collector
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                            
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Bram Verkuijlen</span>, last modified on dec 29, 2025
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p local-id="3fe3f509-2580-490e-8a3f-2ff74c4b7095"><strong>Collector distribution:</strong> OpenTelemetry Collector <strong>Core</strong><br/><a class="external-link" data-card-appearance="inline" href="https://github.com/open-telemetry/opentelemetry-collector" local-id="935aedd7-7d12-4064-a25a-b14e83106947" rel="nofollow">https://github.com/open-telemetry/opentelemetry-collector</a> </p><p local-id="96827010-6c3e-4341-b4d2-50227517647d">This configuration is for the <strong>Central Collector</strong> used in the Monitoring Expansion POC. It aggregates logs and metrics from Fluent Bit and other collectors, processes them, and exports them to <strong>Loki</strong> (logs) and <strong>Prometheus</strong> (metrics).<br/><a href="Loki_602079237.html" data-linked-resource-id="602079237" data-linked-resource-version="2" data-linked-resource-type="page">Loki</a> <a href="Prometheus_602570758.html" data-linked-resource-id="602570758" data-linked-resource-version="3" data-linked-resource-type="page">Prometheus</a> </p><p local-id="b6e74bd2-d1ca-4cdf-9034-5ab512f9c4d3">For detailed information about input logs and metrics, refer to their respective documentation pages.</p><hr local-id="1a1d918b-6076-4d90-9176-55b4cbe8d6ac"/><h1 local-id="fa752b2c-6665-4149-a669-cc74786fa1f8" id="CentralCollector-TableofContents">Table of Contents</h1><style type='text/css'>/*<![CDATA[*/
+div.rbtoc1767101594696 {padding: 0px;}
+div.rbtoc1767101594696 ul {list-style: default;margin-left: 0px;padding-left: ;}
+div.rbtoc1767101594696 li {margin-left: 0px;padding-left: 0px;}
+
+/*]]>*/</style><div class='toc-macro rbtoc1767101594696'>
+<ul class='toc-indentation'>
+<li><a href='#CentralCollector-Receivers'>Receivers</a>
+<ul class='toc-indentation'>
+<li><a href='#CentralCollector-Explanation'>Explanation</a></li>
+</ul>
+</li>
+<li><a href='#CentralCollector-Processors'>Processors</a>
+<ul class='toc-indentation'>
+<li><a href='#CentralCollector-Explanation.1'>Explanation</a></li>
+</ul>
+</li>
+<li><a href='#CentralCollector-Exporters'>Exporters</a>
+<ul class='toc-indentation'>
+<li><a href='#CentralCollector-Explanation.2'>Explanation</a></li>
+</ul>
+</li>
+<li><a href='#CentralCollector-Pipelines'>Pipelines</a>
+<ul class='toc-indentation'>
+<li><a href='#CentralCollector-Explanation.3'>Explanation</a></li>
+<li><a href='#CentralCollector-RelatedDocumentation'>Related Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div><hr local-id="0c721c21-f2bc-4bd1-8bbc-0ec6c55a6292"/><h1 local-id="fd4b237e-f825-444a-8154-763127604ab2" id="CentralCollector-Receivers">Receivers</h1><p local-id="50ffdf75-fcc0-42cd-9801-62e695b67d29">Receivers define how telemetry enters the collector.</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:8895
+      http:
+        endpoint: 0.0.0.0:8896
+        cors:
+          allowed_origins:
+           - &quot;http://*&quot;
+           - &quot;https://*&quot;</pre>
+</div></div><p local-id="f87d0727-7c46-4733-9ed3-fdb20495d58f" /><h2 local-id="41ca5626-6588-4a82-bc29-3f3eec0090da" id="CentralCollector-Explanation"><strong>Explanation</strong></h2><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="6f915c1e-546b-47ab-b92a-e0098acf36ef" class="confluenceTable"><tbody><tr ac:local-id="d931d3a9-2772-4ce7-9f2d-3ea0df5af752"><th data-local-id="9eef85c6-3fb2-47b1-a8c6-256e31a77a64" class="confluenceTh"><p local-id="c0952c59-87ac-4b14-920f-761c7f5b37ae">Setting</p></th><th data-local-id="d84ba20a-0f3f-4653-9afe-e72a24f0df3e" class="confluenceTh"><p local-id="17e5abee-6b46-4fca-9aed-9830915b2d9d">Purpose</p></th></tr><tr ac:local-id="fcf48f9b-9293-47e6-8140-3edc03656086"><td data-local-id="61a230c4-c0d1-45d4-85bb-dc37b0366ef4" class="confluenceTd"><p local-id="06a8c385-83ce-44ba-a1c1-62fb127fc5a5"><code>otlp</code></p></td><td data-local-id="40caac1b-922b-4935-b5c4-e2bf2766195c" class="confluenceTd"><p local-id="882d00d8-e6b8-43c0-a1c7-4dd0c9be4974">OTLP receiver, accepts telemetry in OTLP format</p></td></tr><tr ac:local-id="dafbe0bd-ee27-4301-b852-cf3808076a26"><td data-local-id="9faf3b82-3159-48ff-871b-c82b5e3f2328" class="confluenceTd"><p local-id="7d61a03b-0749-4b79-affb-6f95ef3c1d54"><code>protocols.grpc.endpoint</code></p></td><td data-local-id="7920493a-3432-4374-be04-6d052d3c119a" class="confluenceTd"><p local-id="a9969f3e-5b3d-4224-858b-2ad5597e39b8">GRPC port for OTLP ingestion</p></td></tr><tr ac:local-id="220a7cd8-1eaa-4027-afa5-09103082116c"><td data-local-id="e4fb8412-cca5-45fe-87dc-5c37cc8939c3" class="confluenceTd"><p local-id="e27330ac-7657-43d8-8640-ef478ddf60da"><code>protocols.http.endpoint</code></p></td><td data-local-id="7835da25-76de-4822-920b-9bc1f0aa3edb" class="confluenceTd"><p local-id="98362e5c-d0a5-4caf-8ac5-b954dd29c3f0">HTTP port for OTLP ingestion</p></td></tr><tr ac:local-id="f4d76a51-bbe8-401f-9a27-c7e3f3a71f58"><td data-local-id="dd76fb70-a284-479f-a984-d0a0c7be8438" class="confluenceTd"><p local-id="7e30cda2-f228-47dc-bfe4-5a712a469da8"><code>cors.allowed_origins</code></p></td><td data-local-id="fee473a8-17a0-4aaf-b643-5997c1e9e011" class="confluenceTd"><p local-id="2328ba3b-beb6-4e34-a1e6-92f923803e91">Allows browser-based requests from these origins</p></td></tr></tbody></table></div><hr local-id="d657621a-d594-4cb7-bddd-f995695ac89f"/><h1 local-id="cea426ff-ef65-447a-817e-afa2154efbd1" id="CentralCollector-Processors">Processors</h1><p local-id="3dbe5a9f-8828-4609-a5c6-106daede7a8f">Processors transform, batch, or enrich telemetry before export.</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">processors:
+  batch:
+    timeout: 5s
+    send_batch_size: 1024
+    send_batch_max_size: 8192</pre>
+</div></div><p local-id="3792975c-7c63-44b7-b079-fb4cc90a9e21" /><h2 local-id="cf9019d6-4ca9-4829-9973-018b047633d0" id="CentralCollector-Explanation.1"><strong>Explanation</strong></h2><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="521c15a5-7e4a-4973-b29b-4dfc600417ca" class="confluenceTable"><tbody><tr ac:local-id="e72f145b-ff82-4680-add5-14b0485d964e"><th data-local-id="76268c9c-b781-4736-98d2-ee8b20a12de2" class="confluenceTh"><p local-id="32f85ef7-b96e-42ce-8a54-2b2e9dd534ae">Setting</p></th><th data-local-id="dc947c91-9169-48b8-aea5-b7a5b3948b57" class="confluenceTh"><p local-id="93db5aa1-850a-41ec-b5fb-95faed314c13">Purpose</p></th></tr><tr ac:local-id="8a60fce5-8a4a-4b51-afec-193bbdccaf29"><td data-local-id="c219bb3e-ba4a-4411-a184-199a36605871" class="confluenceTd"><p local-id="cdbcdd8a-7166-4665-aaf7-24b878486b5d"><code>batch</code></p></td><td data-local-id="c8e8c883-f2a7-4afb-88b3-e5ec841ce7ab" class="confluenceTd"><p local-id="05c407c3-ce52-4537-96f3-0c4e5a8e7027">Groups telemetry to improve performance and reduce network load</p></td></tr><tr ac:local-id="df7abfa7-dd5e-4cf7-bb34-13dbb6a2f220"><td data-local-id="2d359827-d839-42e7-ac93-696cd69f80a5" class="confluenceTd"><p local-id="661740b4-a538-41a3-88d2-64e375ef3aba"><code>timeout</code></p></td><td data-local-id="cf000ae0-c3e4-43e4-97d4-a296be0ee6d6" class="confluenceTd"><p local-id="ec56ba58-440c-4368-990b-0a9161e93c98">Maximum time to wait before sending batch</p></td></tr><tr ac:local-id="d5d60efa-787c-46c3-b121-43afdd8e8ef1"><td data-local-id="e2f8ad98-3a48-49a2-997b-5308391749e1" class="confluenceTd"><p local-id="2aa22b82-2c50-4a34-9300-4208ee4ac5e8"><code>send_batch_size</code></p></td><td data-local-id="fba26ab8-8298-4b43-b10a-cce02d4002b0" class="confluenceTd"><p local-id="c7caae9e-7ea2-4273-8d22-fcfede2ce78a">Number of records per batch</p></td></tr><tr ac:local-id="3ef6737e-3dbf-428b-80ab-fc8d1c73941d"><td data-local-id="b6d9869a-ae8c-46ea-825b-f6f5da318806" class="confluenceTd"><p local-id="f3af4255-410c-47f4-b7a1-e4c7328179fe"><code>send_batch_max_size</code></p></td><td data-local-id="f3a4557c-ab93-436c-b647-f3eedd0e7a01" class="confluenceTd"><p local-id="46d357c2-6dc6-42f6-8827-3146e49ce4cc">Maximum batch size</p></td></tr></tbody></table></div><blockquote local-id="8a9d383b-2724-4907-a2e6-7c6b9b40f397"><p local-id="11a66156-440f-4d68-a937-3574308cb5d1">Other processors like filtering, enrichment, or metric manipulation can be added as needed.</p></blockquote><hr local-id="8269e886-242c-402b-9436-25ddc93d8e0e"/><h1 local-id="a5b7bbc3-8c55-4793-8780-e86df68fb1f1" id="CentralCollector-Exporters">Exporters</h1><p local-id="7120d293-3480-4572-b44b-697a41a6aa28">Exporters define where the telemetry is sent.</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">exporters:
+  debug:
+    verbosity: detailed
+  prometheus/metrics:
+    endpoint: &quot;0.0.0.0:9466&quot;
+    namespace: &quot;OTCM&quot;
+    send_timestamps: true
+    enable_open_metrics: true
+    resource_to_telemetry_conversion:
+      enabled: true
+    translation_strategy: &quot;UnderscoreEscapingWithSuffixes&quot;
+    metric_expiration: 10m
+  otlphttp/logs:
+    endpoint: &quot;http://127.0.0.1:3100/otlp&quot;
+    tls:
+      insecure: true</pre>
+</div></div><p local-id="6f3ce202-50bb-4342-b330-afd82ee5b206" /><h2 local-id="f7f57fa4-f0ab-4777-ae92-3269c93107e9" id="CentralCollector-Explanation.2"><strong>Explanation</strong></h2><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="0a91a172-0a65-4585-a54e-e6467f30ae0f" class="confluenceTable"><tbody><tr ac:local-id="df3be319-654e-4927-89b2-905384cfba5c"><th data-local-id="caad037d-3595-4762-83b3-fb5ac70f7716" class="confluenceTh"><p local-id="2c626864-8232-4bd5-8691-64f1a4041566">Exporter</p></th><th data-local-id="463e5057-c588-4d2a-87d9-7d71fd998d6a" class="confluenceTh"><p local-id="727e24c6-b240-49f0-8d4b-90c2ea5f07be">Purpose</p></th></tr><tr ac:local-id="dd30d918-d582-43ed-a9d3-343e246f11a4"><td data-local-id="50e8e7b6-a857-40a4-a934-e268cf7e8258" class="confluenceTd"><p local-id="15888247-d12a-4af1-8766-c71b7f97e849"><code>debug</code></p></td><td data-local-id="3c5bed2e-18b6-4f11-96e8-711b8b02f000" class="confluenceTd"><p local-id="df571bcb-3d1d-423c-9e62-eed3e87d92f2">For debugging: prints telemetry to console</p></td></tr><tr ac:local-id="677cee3d-1a8d-4c25-8886-db694dfd4b33"><td data-local-id="9f3be8d2-32f8-4d47-ad6f-0abe54772d00" class="confluenceTd"><p local-id="ea0401a4-8467-42e6-826d-07d4615a4a1a"><code>prometheus/metrics</code></p></td><td data-local-id="62743907-c76c-467a-bcc3-ade889dabf36" class="confluenceTd"><p local-id="2a9628ff-fdbf-4c00-8349-b336dd2ceb4d">Exposes metrics for Prometheus scraping</p></td></tr><tr ac:local-id="3a72ce71-6f63-4ea2-a1e3-8703e943f344"><td data-local-id="5cffe45c-01ed-40bc-b8e5-ef3e983117dd" class="confluenceTd"><p local-id="b14375e3-afec-46c1-bd53-5a1e9c078197"><code>otlphttp/logs</code></p></td><td data-local-id="a2a9d801-40e9-448b-9c84-984f1f4eb745" class="confluenceTd"><p local-id="899a1c77-d34a-4d08-bf3e-2f2274fb6617">Sends logs to Loki or other OTLP endpoints</p></td></tr></tbody></table></div><hr local-id="bc5cbf4d-58fb-4787-9591-5aa41cd70fa0"/><h1 local-id="e054d0fa-bc52-4d01-a063-2f5c9d9d6e39" id="CentralCollector-Pipelines">Pipelines</h1><p local-id="a6c336c7-3c2e-4886-96cc-0df64cbf04e9">Pipelines define how telemetry flows through receivers, processors, and exporters.</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">service:
+  telemetry:
+    metrics:
+      readers:
+        - pull:
+            exporter:
+              prometheus:
+                host: &#39;0.0.0.0&#39;
+                port: 8892
+
+  pipelines:
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [prometheus/metrics]
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [debug, otlphttp/logs]</pre>
+</div></div><p local-id="4091689d-c9cb-461b-969e-88b5a5e90bde" /><h2 local-id="dcd89fc7-b557-4402-be46-554a16eee2f1" id="CentralCollector-Explanation.3"><strong>Explanation</strong></h2><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="fa138b08-a8e9-4f2d-b35e-88e1bb7706f0" class="confluenceTable"><tbody><tr ac:local-id="aa5b8312-d303-41b3-aec8-4a339c5bad3a"><th data-local-id="1365183c-c0a9-45b9-ab3d-37e9e5fbe781" class="confluenceTh"><p local-id="ede852a3-790c-4b34-8465-db48afdf7ab3">Pipeline</p></th><th data-local-id="c5738a0e-db10-4734-a515-cbb2d8ca42df" class="confluenceTh"><p local-id="809c500a-d568-4194-a36c-99fac4f37297">Purpose</p></th></tr><tr ac:local-id="be504772-bb90-4b31-855d-853b18008102"><td data-local-id="0ab9c7e8-a6d4-421e-8c7f-c742cf8f23de" class="confluenceTd"><p local-id="2b025e0a-b9c8-4d9b-b65a-323fa44cdd5a"><code>metrics</code></p></td><td data-local-id="ab437226-b039-41f0-afe8-bc9ac7388c70" class="confluenceTd"><p local-id="1d760cfa-8106-48ee-b810-2cb20f59d98c">Processes OTLP metrics, batches them, and exposes via Prometheus</p></td></tr><tr ac:local-id="6a9a4661-e726-4c7b-b1a4-8528826012a2"><td data-local-id="4f8cad72-923f-4dc5-a37d-75b01148724a" class="confluenceTd"><p local-id="5e503cde-8b81-49e2-8fad-f7a221359c39"><code>logs</code></p></td><td data-local-id="5fffae28-6970-487a-8354-5efabc7e8b71" class="confluenceTd"><p local-id="74c7be2f-4187-4484-9f08-3f0fec7928f7">Processes OTLP logs from Fluent Bit or other collectors, batches them, and exports to debug and Loki</p></td></tr><tr ac:local-id="93a5eb81-3bce-423e-9676-7815352b1967"><td data-local-id="af3c25a6-e161-4059-a417-d2772d18cbd8" class="confluenceTd"><p local-id="ba163ad2-1c93-49af-ba9a-2b23630c8381"><code>readers.pull</code></p></td><td data-local-id="94b11321-ed49-4bab-938b-47649ce5511d" class="confluenceTd"><p local-id="aec46c86-7266-42e7-a6ad-4665fb6af3bb">Prometheus scraping configuration</p></td></tr></tbody></table></div><hr local-id="0c984c6d-835d-4e63-8c30-c770c191ea42"/><h2 local-id="08ee55b3-78d6-4d3a-a180-fbbc6e37960c" id="CentralCollector-RelatedDocumentation">Related Documentation</h2><ul local-id="4644ade5-b05f-4bd5-bc34-94c1da37a880"><li local-id="ccacb405-dda0-4e66-8c5f-d038e510067f"><p local-id="ff44c45d-eb60-4eea-9a4e-796241c2485e"><strong>OpenTelemetry Collector</strong> – Core Collector reference<br/><a class="external-link" data-card-appearance="inline" href="https://github.com/open-telemetry/opentelemetry-collector" local-id="5fbc7044-6c8f-47be-a7ba-192d1be13cc1" rel="nofollow">https://github.com/open-telemetry/opentelemetry-collector</a> </p></li><li local-id="4dbe3d40-d408-4e55-8730-639e10986149"><p local-id="10295717-ef5b-48e3-9e90-d91e9e7d41ab"><strong>Health Metrics Collector</strong><br/><a href="Health-Metrics-Collector_604602375.html" data-linked-resource-id="604602375" data-linked-resource-version="6" data-linked-resource-type="page">Health Metrics Collector</a> </p></li><li local-id="4b6eef8c-e5e3-4871-9708-7f8ccbf1ed59"><p local-id="cc9d0d24-efc3-44b3-87dc-5b2d09cd8923"><strong>API Metrics Collector</strong><br/><a href="API-Metrics-Collector_603979784.html" data-linked-resource-id="603979784" data-linked-resource-version="6" data-linked-resource-type="page">API Metrics Collector</a> </p></li><li local-id="efa1defc-12f0-484c-8265-f3b58af75c40"><p local-id="ac9faad1-4737-4ba6-b5e8-cf95373d6dd3"><strong>Fluent bit logs Collector</strong><br/><a href="Fluent-Bit-Logs-Collector_603881497.html" data-linked-resource-id="603881497" data-linked-resource-version="4" data-linked-resource-type="page">Fluent Bit Logs Collector</a> </p></li><li local-id="bedaf832-7d45-44c1-8c77-281dfdfc937d"><p local-id="a291467f-7fb1-4037-ac21-e3d5349bf02b"><strong>Log Metrics Collector</strong><br/><a href="Fluent-Bit-Logs-Collector_603881497.html" data-linked-resource-id="603881497" data-linked-resource-version="4" data-linked-resource-type="page">Fluent Bit Logs Collector</a> </p></li><li local-id="e321c75d-2bc9-40c8-8788-cb22b54a68ca"><p local-id="0d7a6cd7-98c2-4e8b-b6bd-0fac9087826c"><strong>Prometheus</strong><br/><a href="Prometheus_602570758.html" data-linked-resource-id="602570758" data-linked-resource-version="3" data-linked-resource-type="page">Prometheus</a> </p></li><li local-id="448432ce-b574-4283-8cac-983bc3f247b7"><p local-id="57e6089e-024d-42b4-aa58-6a99b6da3465"><strong>Loki</strong><br/><a href="Loki_602079237.html" data-linked-resource-id="602079237" data-linked-resource-version="2" data-linked-resource-type="page">Loki</a></p></li><li local-id="50ec94bb-4574-4820-b7df-460dcf7a9010"><p local-id="67e4576c-cb53-4d49-b356-4433ff92eef5"><strong>Architecture</strong><br/><a href="601260048.html" data-linked-resource-id="601260048" data-linked-resource-version="3" data-linked-resource-type="page">Architecture</a>  </p></li></ul>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on dec 30, 2025 14:33</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

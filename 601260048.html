@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Monitoring Expansion : Architecture &amp; Data flow</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Monitoring Expansion</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Overzicht_373653886.html">Overzicht</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="491782177.html">Data flow &amp; Integration</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Monitoring Expansion : Architecture &amp; Data flow
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                            
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Bram Verkuijlen</span>, last modified on dec 29, 2025
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p local-id="421e3b81-22e8-406f-a0de-5e3c71d12bd4">This section describes the architecture of the Monitoring Expansion POC, how telemetry flows between components, and the responsibilities of each component. It includes both metrics and logs and how they are integrated into the overall observability pipeline.</p><hr local-id="c8ace458-41c3-4f38-a2e4-d2daceeeb7c2"/><h1 local-id="d797bb9f-b015-4865-ac32-c018585b4a21" id="Architecture&amp;Dataflow-TableofContents">Table of Contents</h1><p local-id="1c9f6a2f-c0ca-4ff3-aa17-c9e57d097098" /><style type='text/css'>/*<![CDATA[*/
+div.rbtoc1767101595147 {padding: 0px;}
+div.rbtoc1767101595147 ul {list-style: default;margin-left: 0px;padding-left: ;}
+div.rbtoc1767101595147 li {margin-left: 0px;padding-left: 0px;}
+
+/*]]>*/</style><div class='toc-macro rbtoc1767101595147'>
+<ul class='toc-indentation'>
+<li><a href='#Architecture&amp;Dataflow-Overview'>Overview</a></li>
+<li><a href='#Architecture&amp;Dataflow-Components&amp;Responsibilities'>Components &amp; Responsibilities</a></li>
+<li><a href='#Architecture&amp;Dataflow-Diagram&amp;Legend:'>Diagram &amp; Legend:</a>
+<ul class='toc-indentation'>
+<li><a href='#Architecture&amp;Dataflow-Legend:'>Legend:</a></li>
+<li><a href='#Architecture&amp;Dataflow-Notes'>Notes</a></li>
+</ul>
+</li>
+</ul>
+</div><hr local-id="6a1b4f06-b3bd-4609-a632-4636e2c040d6"/><h1 local-id="e70ec436-0b12-4c5f-9bd5-35c4ad1ff0a6" id="Architecture&amp;Dataflow-Overview">Overview</h1><p local-id="c4ab4dde-34a6-40e5-8b6e-b34b977321ae">The architecture is designed around a <strong>black-box monitoring approach</strong> for OTCM (OpenText Content Management). Since OTCM cannot host native OpenTelemetry agents, all observability data is collected externally:<br/><a href="492863490.html" data-linked-resource-id="492863490" data-linked-resource-version="10" data-linked-resource-type="page">OpenText Content Server (xECM)</a> </p><ul local-id="bbe9099e-0fca-4b83-8d29-ab1c515af303"><li local-id="9d09a683-44c3-4d9d-be4a-aa3618a8252d"><p local-id="cd1b5f4e-7d75-443b-ad68-eb4277328952"><strong>Logs</strong> from OTCM are collected via file scraping using Fluent Bit.<br/><a href="Fluent-bit_492339201.html" data-linked-resource-id="492339201" data-linked-resource-version="9" data-linked-resource-type="page">Fluent-bit</a> </p></li><li local-id="5e1357f9-aae6-4649-8cec-3c4675cace11"><p local-id="8c3bd016-da9e-42bb-ab18-3c346d0c6722"><strong>Metrics</strong> from the Windows host and API endpoints are collected via OpenTelemetry collectors.<br/><a href="OpenTelemetry_491978770.html" data-linked-resource-id="491978770" data-linked-resource-version="8" data-linked-resource-type="page">OpenTelemetry</a> </p></li><li local-id="99c52a4f-e18b-4777-8a4e-f5580c98dbfd"><p local-id="d5d55cad-9c45-4a68-99b4-00fd27b9955b">All collectors forward their telemetry to a <strong>Central Collector</strong>, which aggregates, processes, and exposes data to backend systems.<br/><a href="Central-Collector_605257739.html" data-linked-resource-id="605257739" data-linked-resource-version="5" data-linked-resource-type="page">Central Collector</a> </p></li><li local-id="1cb7c953-ee0a-40ee-bb7e-c05c45af8d39"><p local-id="daf0bfa5-d1d5-426f-8678-b34ddb8f7e77"><strong>Prometheus</strong> scrapes metrics from the Central Collector, while <strong>Loki</strong> stores logs.<br/><a href="Prometheus_602570758.html" data-linked-resource-id="602570758" data-linked-resource-version="3" data-linked-resource-type="page">Prometheus</a> <a href="Loki_602079237.html" data-linked-resource-id="602079237" data-linked-resource-version="2" data-linked-resource-type="page">Loki</a> </p></li><li local-id="092eabb3-a140-4f9a-ab7d-114eca4bfb25"><p local-id="f48b631f-88fe-4168-9d16-b04a87deb991"><strong>Grafana</strong> visualizes both logs and metrics by connecting to Prometheus and Loki.<br/><a href="Grafana_491520010.html" data-linked-resource-id="491520010" data-linked-resource-version="5" data-linked-resource-type="page">Grafana</a> </p></li></ul><hr local-id="09b2b4b3-e5e3-4059-9986-6da00519b9a1"/><h1 local-id="d27f9f7c-a559-4051-ae81-5b5149e48f59" id="Architecture&amp;Dataflow-Components&amp;Responsibilities">Components &amp; Responsibilities</h1><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="c38919a0-2c14-4af3-9981-a3483cba6154" class="confluenceTable"><tbody><tr ac:local-id="2e84adae-bea5-4e42-bc82-23e84bb89da8"><th data-local-id="fa1c0559-f05a-4141-a915-297c620f010a" class="confluenceTh"><p local-id="e39172c1-180e-47a6-95be-8ecb9ff2a752">Component</p></th><th data-local-id="37d352da-194e-4470-97ea-5e3e3ca1fbd1" class="confluenceTh"><p local-id="9569d21c-ed14-4a52-a5b8-16e525baf019">Responsibility</p></th><th data-local-id="105ae9d4-7f04-42c4-94be-e196d0b5e7a5" class="confluenceTh"><p local-id="84f03de0-5680-4175-8355-500d1a14cf37">Notes</p></th></tr><tr ac:local-id="38fcfd85-78ce-4c8e-84cc-f0bde89f11f1"><td data-local-id="5be2f926-f6bb-4208-beb1-9a208d29e805" class="confluenceTd"><p local-id="e64a53ed-791b-4e8a-a5ae-9f2e03292afb">OTCM (Content Management Server)</p></td><td data-local-id="b1bdeac1-b467-46ce-811e-2b330e6c7e02" class="confluenceTd"><p local-id="25854adb-567d-4afa-9a1d-39c095746a34">Generates logs and exposes API endpoints for availability/performance</p></td><td data-local-id="46466f82-148d-4fee-9ba0-c2fce8fc476d" class="confluenceTd"><p local-id="0eb32f85-9b56-4d25-9d1c-cbc82c6ac1bb">Source of all observability data</p></td></tr><tr ac:local-id="454c648e-2495-40c5-895e-4f674eb762b4"><td data-local-id="b6fcbe3f-3332-4782-b7dd-1d8044f47a31" class="confluenceTd"><p local-id="294724eb-daf8-43c6-8554-831e9f5234d5">Windows Host</p></td><td data-local-id="608c932b-4fdd-4046-915e-d11e32b8f5f3" class="confluenceTd"><p local-id="9eeb703a-9cc4-49a9-8534-b6d02c62d203">Provides system-level metrics (CPU, memory, disk, etc.)</p></td><td data-local-id="6a21685b-c9e0-4fca-af88-6c0f9189e2a2" class="confluenceTd"><p local-id="53d39dac-5d5e-44a3-9625-82e726ba9984">Metrics are collected by the Host/System Metrics Collector</p></td></tr><tr ac:local-id="7d290e2e-28ee-42c4-b98b-aca2aca15157"><td data-local-id="8aac5424-f489-4efa-8af4-60c6f0a15372" class="confluenceTd"><p local-id="f4d3821c-822e-4640-b105-3194ef065ecf">Fluent Bit</p></td><td data-local-id="64b5de15-1e97-4543-aaaa-fcc5bba05cb2" class="confluenceTd"><p local-id="83e4d1f2-9a5f-4db3-a26a-6a2b492ccb89">Reads OTCM logs and forwards to Fluent Bit Logs Collector</p></td><td data-local-id="c5448675-1d25-4f15-af7e-f617cc7c35a5" class="confluenceTd"><p local-id="003ceab2-4804-4af4-aa41-061064d6a0a7">Lightweight log shipper</p></td></tr><tr ac:local-id="9222aa4d-6a17-4dee-9a8b-ea7b59e0cf3b"><td data-local-id="6fd64cc0-f0be-412e-be9e-74b190825c5b" class="confluenceTd"><p local-id="be4429bf-75fd-4fdf-81fa-89c66b885be8">OpenTelemetry Collectors</p></td><td data-local-id="1085095d-9900-4d70-b221-c98ddfc0e22d" class="confluenceTd"><p local-id="78527951-7cbf-4c6d-beda-6b7fb7d23300">Collect, process, and forward telemetry</p></td><td data-local-id="69fdc1c5-501a-401a-9580-af63cbe0ed57" class="confluenceTd"><p local-id="364dd618-d736-49a0-8693-787eadb5ee71">Includes Log Metrics Collector, Fluent Bit Logs Collector, API Collector, Host/System Metrics Collector, Central Collector</p></td></tr><tr ac:local-id="470ec956-65d5-442d-b482-68cf03c08801"><td data-local-id="00dba94d-947e-4430-bde1-7999a81a164b" class="confluenceTd"><p local-id="ba2c2140-b151-4c28-993c-c2e06dc2bdb7">Central Collector</p></td><td data-local-id="69d8a9e2-9868-4f95-8060-d3d56ae59551" class="confluenceTd"><p local-id="0c745346-1fed-4817-b15a-745d62132137">Aggregates all telemetry, exposes metrics endpoint, forwards logs to Loki</p></td><td data-local-id="8401ef07-ac4c-43b4-acdc-ee6a9e0b98da" class="confluenceTd"><p local-id="6928d9b4-e961-468b-abf0-e7cde0066bfb">Single point of truth for metrics and log aggregation</p></td></tr><tr ac:local-id="3d329ad8-722d-4e97-abbb-47e438613786"><td data-local-id="4e410d52-2246-49e6-9cd3-3f055e2c7653" class="confluenceTd"><p local-id="dd85cf26-d019-4084-9527-1e3d98a7e88a">Log Metrics Collector</p></td><td data-local-id="807a1d41-cc25-4d04-8a82-da1e9ce25436" class="confluenceTd"><p local-id="ee64c097-1c1a-47b6-b1f1-b5c998f219ea">Extracts metrics from logs and sends to Central Collector</p></td><td data-local-id="bab659af-1a55-4925-a0b4-252cc318a0a3" class="confluenceTd"><p local-id="03929c50-c670-40fb-87cf-670c3a1b4934">Creates derived metrics from log data</p></td></tr><tr ac:local-id="4acaefef-a39c-407a-9d23-3dff01e58a90"><td data-local-id="e542b849-c3f1-4f25-926c-7c745d53d93f" class="confluenceTd"><p local-id="5718cb9b-53b9-4fa0-b10f-c05c5446b307">Prometheus</p></td><td data-local-id="dcfec6d5-ddcf-4830-9177-612a81405257" class="confluenceTd"><p local-id="5cb406fb-ac4c-48cd-8b06-eef4dfe63340">Scrapes metrics from Central Collector for visualization</p></td><td data-local-id="0a48f24c-751f-4132-ae9b-d510c25bd34a" class="confluenceTd"><p local-id="a29be962-4440-4d92-95fb-beba3942205b">Can be installed locally or on a separate host</p></td></tr><tr ac:local-id="1bc18a23-32ed-43fc-ace5-ad59b4f7ad7e"><td data-local-id="369e7c70-7603-4dcb-9728-869c0c5ddcb1" class="confluenceTd"><p local-id="04994e7c-1359-42dc-9e2a-7b975b0d8e50">Loki</p></td><td data-local-id="72f19ee2-4f90-47ce-a745-949c8b07d81d" class="confluenceTd"><p local-id="a1e0149c-de5f-4d27-ac9e-54706a21d2f7">Stores logs for Grafana dashboards</p></td><td data-local-id="ab0830f5-6462-4dc0-bea3-6b40735bfadc" class="confluenceTd"><p local-id="779b6606-da70-40c4-8eef-4d7b67eb2edb">Receives logs from Central Collector</p></td></tr><tr ac:local-id="7dadbc6e-33aa-4b0a-998f-2a8318853df5"><td data-local-id="05e455ab-cf32-4a7b-a8d3-f3ab0e131401" class="confluenceTd"><p local-id="786ffeaf-54fe-4446-9fc2-2392b6a682af">Grafana</p></td><td data-local-id="38b2c806-cd45-4cad-ad42-226b4a4e4468" class="confluenceTd"><p local-id="10a63dda-fba3-4b17-a267-6c9844f80f62">Visualizes logs and metrics</p></td><td data-local-id="b8dc66e1-58d6-43f6-9bfa-33414ea62ff8" class="confluenceTd"><p local-id="0f681cc8-e470-4781-b960-f6f580423f6f">Connects to Prometheus and Loki as data sources</p></td></tr></tbody></table></div><hr local-id="9b92d481-2ccc-43b2-aa12-1addeb1cfc93"/><h1 local-id="b0ed8fa1-e0d1-4629-b360-ef57c9338e75" id="Architecture&amp;Dataflow-Diagram&amp;Legend:"><strong>Diagram &amp; Legend:</strong></h1><span class="confluence-embedded-file-wrapper image-left-wrap-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image image-wrap-left" alt="Observability Datastroom OTCM (POC)-POC Final.png" width="1321" loading="lazy" src="attachments/601260048/620494878.png?width=1321" data-image-src="attachments/601260048/620494878.png" data-height="605" data-width="1321" data-unresolved-comment-count="0" data-linked-resource-id="620494878" data-linked-resource-version="2" data-linked-resource-type="attachment" data-linked-resource-default-alias="Observability Datastroom OTCM (POC)-POC Final.png" data-base-url="https://amexio-group.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="601260048" data-linked-resource-container-version="3" data-media-id="6782cf39-f970-4649-adbb-c6c1a4dd542a" data-media-type="file"></span><h2 local-id="1f63af41-1683-4486-a919-e903b573e376" id="Architecture&amp;Dataflow-Legend:"><strong>Legend:</strong></h2><ul local-id="59617ba7-a4d9-4228-9d5a-4dcdc1f9a20b"><li local-id="60e977f4-912d-4113-bece-8671b3e1ae53"><p local-id="14797986-d6d1-44cf-aae1-35b329dbf91b"><strong>Boxes</strong> represent components</p></li><li local-id="2999b215-9d28-4096-afa7-5ea1e05f18b6"><p local-id="dd0f684f-43ac-416a-af80-c94c2ee5f8a3"><strong>Arrows</strong> indicate the direction of data flow</p></li><li local-id="08f45ddb-4d58-47fd-bb0d-93f0f59c2f88"><p local-id="2f43c6eb-5d98-4996-a028-60b545a6fb4e"><strong>Colors</strong> indicate the type of telemetry:</p><ul local-id="2325d775-9b61-468c-82ac-6c4885dbee32"><li local-id="e1071dce-e6b5-46d1-a62e-d27898392c49"><p local-id="9f923938-468d-4349-b7ee-b7b4fedbc697">Green – Source systems: Content Management Server, Windows Host, Log Files</p></li><li local-id="5ff8b717-782a-4455-8199-aeb1a1632e34"><p local-id="edf503d5-8d7c-4a24-b3cf-d1c5b080458c">Blue – Logs flow</p></li><li local-id="5c8c28bc-a75d-4317-8bae-0462f820bc4f"><p local-id="717b63f2-53fb-495f-a56e-13bb27bc9d26">Red – Metrics flow</p></li><li local-id="701b2872-6969-48d3-9f8b-58704e0bd2c5"><p local-id="18753740-4c1f-437f-a627-bac2408a9319">Purple – Combined flows</p></li></ul></li></ul><hr local-id="f36ab759-76ba-48c4-a215-64caa76d4b28"/><h2 local-id="35ef0062-c914-4b02-b19e-6c159e7be5a1" id="Architecture&amp;Dataflow-Notes">Notes</h2><ul local-id="a45687cf-b7de-4587-9bb6-1e90e2fd6fe1"><li local-id="b8853deb-a82e-419f-a1cd-4207bf5c833c"><p local-id="f1bfcb2e-260a-4a76-8ae0-abaac0f2d196">All collectors and backends run on the same windows VM as Content Management Server</p></li><li local-id="6c83f87a-1c40-4a59-bf4d-cb39030210a9"><p local-id="3cda8d6a-eaac-41d8-aa29-2781cd65a5c6">Grafana is optional but recommended for visualization</p></li><li local-id="d99a6c57-0eff-49c5-8943-90e3ad6678c2"><p local-id="2726659e-4851-4779-a932-9a79c23738a5">Internal metrics from collectors are forwarded through the Central Collector’s to Prometheus</p></li></ul>
+                    </div>
+
+                                        <div class="pageSection group">
+                        <div class="pageSectionHeader">
+                            <h2 id="attachments" class="pageSectionTitle">Attachments:</h2>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/601260048/620527632.png">Observability Datastroom OTCM (POC)-POC Final.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/601260048/620494878.png">Observability Datastroom OTCM (POC)-POC Final.png</a> (image/png)
+                                <br/>
+                                                    </div>
+                    </div>
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on dec 30, 2025 14:33</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

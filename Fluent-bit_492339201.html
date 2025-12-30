@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Monitoring Expansion : Fluent-bit</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Monitoring Expansion</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Overzicht_373653886.html">Overzicht</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Components_491388972.html">Components</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Monitoring Expansion : Fluent-bit
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                            
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Bram Verkuijlen</span>, last modified on dec 19, 2025
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p local-id="98b0073c-8ba0-4d81-a917-31a8893d600a">OTCM does not provide native support for remote log shipping. To enable centralized collection and processing of logs, <strong>Fluent Bit</strong> is used as a lightweight log shipper.</p><hr local-id="f27ce6d9-a2d6-436e-9ca0-5a86281ba391"/><h1 local-id="4cfa2a68-4b08-4c15-a708-6fc45abb32b7" id="Fluent-bit-TableofContents">Table of Contents</h1><style type='text/css'>/*<![CDATA[*/
+div.rbtoc1767101594291 {padding: 0px;}
+div.rbtoc1767101594291 ul {list-style: default;margin-left: 0px;padding-left: ;}
+div.rbtoc1767101594291 li {margin-left: 0px;padding-left: 0px;}
+
+/*]]>*/</style><div class='toc-macro rbtoc1767101594291'>
+<ul class='toc-indentation'>
+<li><a href='#Fluent-bit-Overview'>Overview</a>
+<ul class='toc-indentation'>
+<li><a href='#Fluent-bit-WhyFluentBit?'>Why Fluent Bit?</a></li>
+</ul>
+</li>
+<li><a href='#Fluent-bit-ModularConfigurationOverview'>Modular Configuration Overview</a>
+<ul class='toc-indentation'>
+<li><a href='#Fluent-bit-ExampleMainConfiguration'>Example Main Configuration</a>
+<ul class='toc-indentation'>
+<li><a href='#Fluent-bit-ExplanationofSections'>Explanation of Sections</a>
+<ul class='toc-indentation'>
+<li><a href='#Fluent-bit-Inputs(@INCLUDEinputs/*.conf)'>Inputs (@INCLUDE inputs/*.conf)</a></li>
+<li><a href='#Fluent-bit-Outputs(@INCLUDEoutputs/*.conf)'>Outputs (@INCLUDE outputs/*.conf)</a></li>
+<li><a href='#Fluent-bit-Parsers'>Parsers</a></li>
+<li><a href='#Fluent-bit-Filters'>Filters</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href='#Fluent-bit-BenefitsofModularApproach'>Benefits of Modular Approach</a></li>
+</ul>
+</li>
+<li><a href='#Fluent-bit-Notes'>Notes</a></li>
+<li><a href='#Fluent-bit-Subpages'>Subpages</a></li>
+</ul>
+</div><hr local-id="b0714ae4-f847-44db-b63d-99b1ddace4fc"/><h1 local-id="5c9f75b4-2800-4456-abca-ba77cd48c301" id="Fluent-bit-Overview">Overview</h1><p local-id="031f9a1f-4f08-474d-9b31-666814b043b2">Fluent Bit provides the following functionality for the POC:</p><ul local-id="22021466-2e7e-4f85-a533-9ca9b33631f4"><li local-id="27a1ab28-7570-4cfb-a957-6d4c3f2c332e"><p local-id="60a7fac6-3dbb-4f90-b73c-d7b95901f257">Reads relevant OpenText Content management log files directly from the Windows VM (thread timing logs, client logs, SQL logs, security logs, Java logs).</p></li><li local-id="966e6356-e2ad-4f85-a3c3-3f45f7b529f5"><p local-id="b915ab19-bc59-4af5-b59e-d1d0984377ed">Forwards logs to the <strong>OpenTelemetry Collector</strong>.<br/><a href="Fluent-Bit-Logs-Collector_603881497.html" data-linked-resource-id="603881497" data-linked-resource-version="4" data-linked-resource-type="page">Fluent Bit Logs Collector</a> </p></li><li local-id="e47bedbb-3696-43e2-a01d-ecd0f6f74ef7"><p local-id="2b1883a8-6a22-4221-b778-add9ca47e13a">Exposes a local HTTP input endpoint to receive system monitoring events pushed by OTCM.<br/><a href="605978637.html" data-linked-resource-id="605978637" data-linked-resource-version="5" data-linked-resource-type="page">System Monitoring (JSON Events)</a> </p></li><li local-id="aebf038a-395c-41b1-a1b4-38d62e1de0cd"><p local-id="263b826e-3050-4dda-a613-f81d9044a8ce">Supports basic log processing such as filtering, parsing, and tagging.</p></li></ul><p local-id="dd52633f-2ea5-4918-8b17-e437f4f29ec3" /><h2 local-id="eee99d5f-a78a-4d8e-b285-6b0a92b2b690" id="Fluent-bit-WhyFluentBit?"><strong>Why Fluent Bit?</strong></h2><ul local-id="62320da8-b24e-4700-b70a-77ce5a499ad4"><li local-id="64de913b-561b-4003-b68b-5fe4c81a8900"><p local-id="1778767a-b512-418c-9322-3915c6cb6429">Lightweight and efficient.</p></li><li local-id="8585c96d-1932-4fee-800a-7cd40e90d52f"><p local-id="3e008579-5ff8-4ee5-8cf9-99a344216026">Compatible with OTCM’s log files.</p></li><li local-id="0ff886e9-d261-49cb-a43a-a611d84f3b45"><p local-id="5101f062-b7c2-4b85-9d50-01573d6f8a70">Allows modular configuration via classic <code>.conf</code> files.</p></li><li local-id="49b2684b-058f-4fed-8ee6-f42a8d0b47d7"><p local-id="c41bf874-e81a-402a-a152-683cf9f6a1c5">Can be replaced by OpenTelemetry Collector in the future if needed.</p></li></ul><hr local-id="de4c353d-c2d6-4fef-a785-a410b4daa23d"/><h1 local-id="921911bd-0ca2-4c7e-902e-0ac17f568e87" id="Fluent-bit-ModularConfigurationOverview">Modular Configuration Overview</h1><p local-id="04c2aa82-2a24-403f-b481-a9938840815d">Fluent Bit configurations are split across multiple <code>.conf</code> files using the <code>@INCLUDE</code> directive. This provides:</p><ul local-id="acbb32ed-343b-4a57-b295-a70633533140"><li local-id="be5cbb37-9a3d-4e10-93ce-132b778a93f8"><p local-id="bb8475cf-96d5-4dc5-ad1c-6c8dde7a9a5f">Modify, enrich, or filter logs between input and output.</p></li><li local-id="a84a8995-09e7-4f9a-96ee-95f4dc2e638d"><p local-id="d532539d-0191-463d-9fe2-d7b3cb2a6925">Examples: add metadata, normalize timestamps, filter by severity.</p></li><li local-id="ab05eb48-6d9e-43bf-87bb-ea894052710f"><p local-id="77149271-e5ca-4d0d-833b-6c759e56f3e4">Applied selectively using tags.</p></li></ul><blockquote local-id="940e28cf-7c32-403e-b026-6042c97d3cf9"><p local-id="ed35a212-14f6-4a86-b0af-4c7da98355b5">Official documentation on using <code>@INCLUDE</code><br/><a class="external-link" data-card-appearance="inline" href="https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/yaml/includes-section" local-id="1d8723bf-3b4f-4268-aa62-5adc6b3b29e1" rel="nofollow">https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/yaml/includes-section</a> </p></blockquote><p local-id="d44494a3-accf-41d6-85f7-5ad549672bdb" /><h2 local-id="58c6f6f2-900a-4aba-9508-0aa158b61ed0" id="Fluent-bit-ExampleMainConfiguration">Example Main Configuration</h2><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">[SERVICE]
+    # Flush interval (seconds)
+    flush        1
+
+# Run in foreground (Off) or background (On)
+daemon       Off
+
+# Verbosity: error, warning, info, debug, trace
+log_level    info
+
+# Optional config files
+parsers_file parsers.conf
+plugins_file plugins.conf
+
+# HTTP metrics server
+http_server  Off
+http_listen  0.0.0.0
+http_port    2020
+
+# Storage metrics &lt;https://docs.fluentbit.io/manual/administration/buffering-and-storage&gt;
+storage.metrics on.
+
+Inputs
+
+@INCLUDE inputs/ot_monitoring.conf
+@INCLUDE inputs/ot_security_logs.conf
+@INCLUDE inputs/ot_timing_thread_logs.conf
+@INCLUDE inputs/ot_timing_ctl_logs.conf
+
+Output
+
+@INCLUDE outputs/stdout.conf
+@INCLUDE outputs/otlp.conf</pre>
+</div></div><h3 local-id="8852c678-7edb-46ef-b88b-7caf180cd77b" id="Fluent-bit-ExplanationofSections">Explanation of Sections</h3><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="1e2fefb3-9cb6-4c87-9476-b9ecb104f0eb" class="confluenceTable"><colgroup><col style="width: 600.0px;"/><col style="width: 550.0px;"/><col style="width: 649.0px;"/></colgroup><tbody><tr ac:local-id="cac45c58-2a4f-4f79-a1f5-b408e80a1c9d"><th data-local-id="04a519a3-3ac4-4cec-8054-35539f107df9" class="confluenceTh"><p local-id="8d6aacdc-77e0-4cba-a46b-edf0c112a468">Section</p></th><th data-local-id="22f6e43c-cb16-483a-87d7-c2b89abc4311" class="confluenceTh"><p local-id="de43b8dc-30e7-460e-bc38-187f7d48e16d">Purpose</p></th><th data-local-id="3cf3715b-8e2d-4828-8f5d-40528f3f668f" class="confluenceTh"><p local-id="3b2d17bb-0ecc-4f03-908c-8d455482b044">Links</p></th></tr><tr ac:local-id="47a36a84-b7c6-4aef-a05f-f0fa39659fa6"><td data-local-id="c3419769-3ffb-4604-81aa-21729ab48107" class="confluenceTd"><p local-id="88e0ab6e-9048-4c41-b750-4a8fcafc17e7"><code>[SERVICE]</code></p></td><td data-local-id="acd6f959-6024-48e8-a064-baaa91a5654c" class="confluenceTd"><p local-id="f20d3ecb-732f-4911-83cb-0343e3765b83">General Fluent Bit settings for service behavior and metrics</p></td><td data-local-id="95aace81-8aa3-400a-94da-353a168fa74e" class="confluenceTd"><p local-id="3ae8ee06-f8d9-482c-9475-4a707e8d4de3"><a class="external-link" data-card-appearance="inline" href="https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/yaml/service-section" local-id="68d9b583-ca58-496c-9441-7b0a1df89455" rel="nofollow">https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/yaml/service-section</a> </p></td></tr><tr ac:local-id="bc4d3a2d-e12a-4313-a6d7-3a1cfaffb39a"><td data-local-id="5da17cbf-696e-4557-82f2-5cccb3f2522c" class="confluenceTd"><p local-id="3d034cb5-dcf4-4fda-ad9a-8bde20a3a048"><code>flush</code></p></td><td data-local-id="dc79320b-ea71-4214-85c3-e2869a7ee62b" class="confluenceTd"><p local-id="3ea7b295-de9b-4d1d-bbdc-85e65d4ba9a4">Interval in seconds to flush buffers to outputs</p></td><td data-local-id="e50628b0-2b95-4b5a-a009-35ca9bea6cf7" class="confluenceTd"><p local-id="05c0aa7c-af6f-47d0-82bb-38dc9b2bc7a9"><a class="external-link" data-card-appearance="inline" href="https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/yaml/environment-variables-section" local-id="2600b3ca-5846-4f27-a34c-a0c22776e241" rel="nofollow">https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/yaml/environment-variables-section</a> </p></td></tr><tr ac:local-id="eda5a4b6-8f38-4a94-a45c-cd1e3dceda09"><td data-local-id="ced2b1da-ccdb-4843-a5d2-6bf639a9331b" class="confluenceTd"><p local-id="3b04095d-74f4-4b8c-baf3-7a90985795d5"><code>daemon</code></p></td><td data-local-id="41e94b7d-8f8e-4789-8b37-fd26f2774eae" class="confluenceTd"><p local-id="f8624f2c-5cc9-4f38-9fba-4cb7eaaf47fc">Run Fluent Bit in background (<code>On</code>) or foreground (<code>Off</code>)</p></td><td data-local-id="704cb359-3d54-4a9a-be9e-f7c26e0631db" class="confluenceTd"><p local-id="52a4cec4-e5be-4019-aa36-92e6208e4981"><a class="external-link" data-card-appearance="inline" href="https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/yaml/environment-variables-section" local-id="1265786f-ad22-49f1-890e-546afecc864b" rel="nofollow">https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/yaml/environment-variables-section</a> </p></td></tr><tr ac:local-id="87b5cd24-5540-4844-926a-4286b91b6b5d"><td data-local-id="a3fcd56a-2502-4fc1-80f1-2ce955173232" class="confluenceTd"><p local-id="53a58038-80f9-4a0c-bb7f-5c57e98ba0aa"><code>log_level</code></p></td><td data-local-id="5d9167b0-d2fb-4dfb-aae3-4cdd08cc6e70" class="confluenceTd"><p local-id="2c84ef22-e894-4aab-9c7c-348f3ba6c668">Logging verbosity (<code>error</code>, <code>warning</code>, <code>info</code>, <code>debug</code>, <code>trace</code>)</p></td><td data-local-id="c769c5ba-2caf-45b1-a7a2-22aeae48f2c9" class="confluenceTd"><p local-id="064738f2-7c35-4bac-9312-1a0d95681b6d"><a class="external-link" data-card-appearance="inline" href="https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/yaml/environment-variables-section" local-id="98c3e4c8-12a9-4b18-9c21-ce4b8d373428" rel="nofollow">https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/yaml/environment-variables-section</a> </p></td></tr><tr ac:local-id="f921bb0c-d3cf-4282-b3f6-22d85aa9a3c7"><td data-local-id="16bba3d2-dab6-49d3-86d7-7c880c48e6f1" class="confluenceTd"><p local-id="265f5654-222c-40b2-aa08-204556852097"><code>parsers_file</code> / <code>plugins_file</code></p></td><td data-local-id="de0b3571-47f8-4cb8-bdf0-b7b93756dfec" class="confluenceTd"><p local-id="1e364e59-a0a8-413d-afcd-56e309b225dc">External files defining parsers or plugin configuration</p></td><td data-local-id="62269bfc-cc48-4355-984c-fa67103a5f49" class="confluenceTd"><p local-id="d067a6b3-2e8f-4ef6-b702-a14f23d7a812"><a class="external-link" data-card-appearance="inline" href="https://docs.fluentbit.io/manual/data-pipeline/parsers" local-id="9ecd80c4-01a5-4fa6-830b-f606cedc95b8" rel="nofollow">https://docs.fluentbit.io/manual/data-pipeline/parsers</a> / <a class="external-link" data-card-appearance="inline" href="https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/yaml/plugins-section" local-id="aab53bf2-95db-4af9-8b0c-b09330c70bea" rel="nofollow">https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/yaml/plugins-section</a> </p></td></tr><tr ac:local-id="6226a6f3-71cc-47aa-b588-ff0d5c9bc082"><td data-local-id="786d53db-c97e-4661-bb03-13f7a60caf4c" class="confluenceTd"><p local-id="ff27d849-865f-4288-954c-84f367694122"><code>http_server</code>, <code>http_listen</code>, <code>http_port</code></p></td><td data-local-id="5279504a-7ac2-4c86-be9f-f684a08819b0" class="confluenceTd"><p local-id="a9de5b9c-7a2d-4a40-9c84-8ca0ea163546">Optional HTTP endpoint for metrics or monitoring</p></td><td data-local-id="a88cce21-e351-4e7b-afdd-3f4980f5cece" class="confluenceTd"><p local-id="d247a2c5-b198-414b-a4ae-f5f821222658"><a class="external-link" data-card-appearance="inline" href="https://docs.fluentbit.io/manual/data-pipeline/inputs/http" local-id="087042a6-657c-458a-aa20-d99b3d914a1c" rel="nofollow">https://docs.fluentbit.io/manual/data-pipeline/inputs/http</a> </p></td></tr><tr ac:local-id="501653d6-1542-4ee0-8b7f-38197c0cb158"><td data-local-id="6a083525-bd35-443f-9fda-4188d9d1bb5d" class="confluenceTd"><p local-id="ec0cae65-c89c-45b1-9719-afd35874e1ac"><code>storage.metrics</code></p></td><td data-local-id="99e49e7c-dd50-499b-aca6-b9448b7ad1d9" class="confluenceTd"><p local-id="0e00830e-9329-4583-afd2-a0c7704da4ed">Enable internal buffering metrics</p></td><td data-local-id="006e9e19-96b7-44b8-9ccb-532ddead2aae" class="confluenceTd"><p local-id="ecd3a605-d23c-4a76-bc5a-160c9553f8b7"><a class="external-link" data-card-appearance="inline" href="https://docs.fluentbit.io/manual/administration/buffering-and-storage?q=storage+metrics" local-id="5bf09e7b-f1ae-43d5-821c-c8a8f6cd22f2" rel="nofollow">https://docs.fluentbit.io/manual/administration/buffering-and-storage?q=storage+metrics</a> </p></td></tr></tbody></table></div><h4 local-id="4013cfda-bba7-4a88-a711-11248e61a4a2" id="Fluent-bit-Inputs(@INCLUDEinputs/*.conf)">Inputs (<code>@INCLUDE inputs/*.conf</code>)</h4><ul local-id="1b7f5e30-c06d-49a8-991a-a39cdfabdcca"><li local-id="882a66ac-c2b1-4e00-b96c-94027e5796f9"><p local-id="1c5c12ab-7c19-4e67-9930-45f36bb33897">Define log sources Fluent Bit reads (thread logs, security logs, system monitoring).</p></li><li local-id="61b7feb8-76f6-439b-9df0-43f65a7e7aec"><p local-id="cdaa716d-7be6-42d3-bd96-c66cc94a491c">Each input config references the log type and optionally the parser.</p></li><li local-id="581eefd8-d491-44d5-9823-7be8a6b64650"><p local-id="533dac5c-4fe4-4d2d-a42e-75de458f1333">Modular inclusion allows enabling/disabling log streams.</p></li></ul><p local-id="b9f0ffbf-03df-4bd1-abed-c389bfe239c9"><a class="external-link" data-card-appearance="inline" href="https://docs.fluentbit.io/manual/data-pipeline/inputs" local-id="f757fc4f-15e8-4da5-8584-c8d70bf26b3f" rel="nofollow">https://docs.fluentbit.io/manual/data-pipeline/inputs</a> </p><p local-id="0b591ae4-a461-487d-b853-2c4b3fa446ba" /><h4 local-id="eb0d49da-6122-48b7-a130-24a5ab51c2c9" id="Fluent-bit-Outputs(@INCLUDEoutputs/*.conf)">Outputs (<code>@INCLUDE outputs/*.conf</code>)</h4><ul local-id="46fa56bc-4e7c-42a6-b528-956002e7e0ad"><li local-id="fe7faabc-48b2-4c92-a2b0-f5e510b6db69"><p local-id="49396153-3858-416c-bb12-f41579439245">Define where Fluent Bit sends logs (console, OTLP, HTTP, etc.).</p></li><li local-id="c1e73e43-e30d-43df-91b4-79d0ac94691b"><p local-id="6e4a0681-9014-44fe-b853-20639e664564">Can match on tags to forward only specific log streams.</p></li><li local-id="59a65a5c-f27f-4b94-818a-cc4a959c1d2a"><p local-id="a7ea6699-2288-4432-b0c5-b630c878cbb1">Modular outputs allow adding new destinations without changing main config.</p></li></ul><p local-id="6a806de7-ee18-4ced-8d44-d451adcb3aae"><a class="external-link" data-card-appearance="inline" href="https://docs.fluentbit.io/manual/data-pipeline/outputs" local-id="928fdcc8-f852-4108-a6af-bfdb102a2f76" rel="nofollow">https://docs.fluentbit.io/manual/data-pipeline/outputs</a> </p><p local-id="80eb182b-13cf-49ea-868d-add11506b821" /><h4 local-id="be5aa187-987a-41e4-b4fc-0fb370ff6940" id="Fluent-bit-Parsers">Parsers</h4><ul local-id="b1ba7172-bd2f-4807-94ba-36fefe7cf530"><li local-id="66d2dfe1-4f12-450f-8398-91e2b5c563fe"><p local-id="36b2cad4-54c9-4568-a9e2-f68c8ac33f38">Used to convert raw logs into structured data (JSON, key/value).</p></li><li local-id="abb090df-1cd8-44cb-b022-002c382fb3e5"><p local-id="ff9d05a4-9563-47f0-9e05-a2af91a830ba">Parsers can be stored in a separate file (<code>parsers.conf</code>) and referenced in inputs.</p></li><li local-id="eb39bb93-53d0-41ce-8b06-2255f6d69da8"><p local-id="2cd1b0a4-2cd0-4b68-a809-f7231bc886e8">Supports regex, JSON, and other formats for flexibility.</p></li></ul><p local-id="43475fde-e4cf-439c-b095-9e7ce690fb0b"><a class="external-link" data-card-appearance="inline" href="https://docs.fluentbit.io/manual/data-pipeline/parsers" local-id="ca2d8648-938d-4a5d-97ac-9b2235daf2d1" rel="nofollow">https://docs.fluentbit.io/manual/data-pipeline/parsers</a> </p><p local-id="ae872cd3-5c43-4052-8738-f93891c249cb" /><h4 local-id="144fc04f-c767-4288-907c-313c0765a5d7" id="Fluent-bit-Filters">Filters</h4><ul local-id="3150ecb0-b489-4955-982a-cfdbf988a447"><li local-id="7f509653-bba5-4689-a23e-4cb999e0f290"><p local-id="daea0b95-09f0-47c9-be0d-cd2fcd993329">Modify, enrich, or filter logs between input and output.</p></li><li local-id="57004106-3cd6-480f-ad8b-7bd3192e0b75"><p local-id="17589473-ef70-499e-8c76-acb50461971b">Examples: add metadata, normalize timestamps, filter by severity.</p></li><li local-id="a02e153f-d09c-43d4-843c-076b3b63adfe"><p local-id="836e503c-db20-4b10-bae7-e8c379ba468d">Applied selectively using tags.</p></li></ul><p local-id="dd3c764c-6b23-4085-8ff1-eab4eff824ba"><a class="external-link" data-card-appearance="inline" href="https://docs.fluentbit.io/manual/data-pipeline/filters" local-id="b94d9a37-e947-4120-8761-325c5236150d" rel="nofollow">https://docs.fluentbit.io/manual/data-pipeline/filters</a> </p><p local-id="f0f06e36-f160-4e92-b8b5-bcc21f2c45a5" /><h2 local-id="1d02e5f4-ccc2-420e-9a48-97e2825eb8dd" id="Fluent-bit-BenefitsofModularApproach">Benefits of Modular Approach</h2><ul local-id="8cbb3b67-a58f-40d2-b470-d3c3f8b891e0"><li local-id="43ba7ca1-fdee-4ff6-bded-e2cbe566690c"><p local-id="7ec807fa-4f45-41ac-8d2d-a25d639e4a16">Easier maintenance and readability.</p></li><li local-id="5b257c1b-d268-4fd0-b756-90cf02ea34f0"><p local-id="6831dbec-175a-4ce6-a780-5b83635f543e">Enables selective log collection.</p></li><li local-id="bbfeba49-5705-4a97-8fb4-f71f4098d40e"><p local-id="0de5c702-25fb-4fe1-bd2a-dbd6c3b2dbef">Allows independent testing of inputs/outputs.</p></li><li local-id="15eb5db7-2494-4fda-b9b9-ff7d7b0afe1d"><p local-id="0b49ab58-b3da-4001-9359-037780c2ad8c">Supports future expansion or replacement with OpenTelemetry Collector.</p></li></ul><hr local-id="f8ae8b62-5efe-4158-b0fb-9e615e9aecdc"/><h1 local-id="32ae03a9-3cc7-4591-a80f-7777591b7869" id="Fluent-bit-Notes">Notes</h1><ul local-id="c2b0e4f8-6167-460e-8acb-9cf9596b8103"><li local-id="6934776a-c06e-4826-97f4-ec66ae101cdc"><p local-id="bb9fb286-3a81-45b7-b9f3-01c1beaf95c5"><strong>Lightweight choice</strong>: Fluent Bit was chosen for its efficiency and ease of OTCM integration.</p></li><li local-id="c12fea8c-5c43-42a4-ab59-31b5c4b74737"><p local-id="08c4d463-b9f5-4024-bbfa-c44893392a42"><strong>Future replacement</strong>: OpenTelemetry Collector could potentially replace Fluent Bit for more advanced observability needs.</p></li><li local-id="a66f5fe6-3df2-44de-9dbf-ce6521820b0d"><p local-id="3777d24c-57d7-4ddf-b75c-b7a377a4cd23"><strong>Configuration</strong>: Classic <code>.conf</code> files were used to simplify modular management.</p></li><li local-id="45cc1a6d-db81-45b0-b4b1-dc23d057ea3f"><p local-id="70e7993c-dd42-4f13-9063-d1c3cee7be92"><strong>Logging coverage</strong>: Currently covers OTCM logs, system monitoring events, and optional filters for enrichment.</p></li></ul><hr local-id="67847320-c727-4857-8365-e1cc866bd667"/><h1 local-id="d297f36e-8c22-48a8-a312-97d1d9c53594" id="Fluent-bit-Subpages">Subpages</h1><ul class='childpages-macro'><li><a href="Thread-Summary-Timing-Logs-Input_610107412.html" data-linked-resource-id="610107412" data-linked-resource-version="3" data-linked-resource-type="page">Thread Summary Timing Logs Input</a></li><li><a href="System-Monitoring-input_610402315.html" data-linked-resource-id="610402315" data-linked-resource-version="4" data-linked-resource-type="page">System Monitoring input</a></li><li><a href="Security-Logs-Input_610959378.html" data-linked-resource-id="610959378" data-linked-resource-version="4" data-linked-resource-type="page">Security Logs Input</a></li><li><a href="Web-Server-Client-Timing-Logs-Input_610566159.html" data-linked-resource-id="610566159" data-linked-resource-version="3" data-linked-resource-type="page">Web Server Client Timing Logs Input</a></li><li><a href="Stdout-Output_610336819.html" data-linked-resource-id="610336819" data-linked-resource-version="2" data-linked-resource-type="page">Stdout Output</a></li><li><a href="OpenTelemetry-Output_611319840.html" data-linked-resource-id="611319840" data-linked-resource-version="2" data-linked-resource-type="page">OpenTelemetry Output</a></li></ul>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on dec 30, 2025 14:33</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

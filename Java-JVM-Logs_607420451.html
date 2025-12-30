@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Monitoring Expansion : Java JVM Logs</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Monitoring Expansion</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Overzicht_373653886.html">Overzicht</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Components_491388972.html">Components</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="492863490.html">OpenText Content Server (xECM)</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Logs_492535812.html">Logs</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Monitoring Expansion : Java JVM Logs
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                            
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Bram Verkuijlen</span>, last modified on dec 19, 2025
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p local-id="ceb2768b-7b6b-4776-a4d5-ff3c00cc45b9"><strong>Location:</strong> <code>C:\OPENTEXT\OTCS\logs\</code><br/><strong>Format:</strong> TEXT (<code>otjava*.log.*</code>)</p><hr local-id="45f4f48a-035d-4304-9e69-43991f91a467"/><h1 local-id="9b3a89ef-ab8d-4f5a-83a0-0f135a70f161" id="JavaJVMLogs-TableofContents">Table of Contents</h1><style type='text/css'>/*<![CDATA[*/
+div.rbtoc1767101594181 {padding: 0px;}
+div.rbtoc1767101594181 ul {list-style: default;margin-left: 0px;padding-left: ;}
+div.rbtoc1767101594181 li {margin-left: 0px;padding-left: 0px;}
+
+/*]]>*/</style><div class='toc-macro rbtoc1767101594181'>
+<ul class='toc-indentation'>
+<li><a href='#JavaJVMLogs-Purpose/Overview'>Purpose / Overview</a></li>
+<li><a href='#JavaJVMLogs-KeyFields&amp;Metrics'>Key Fields &amp; Metrics</a></li>
+<li><a href='#JavaJVMLogs-Relevance'>Relevance</a>
+<ul class='toc-indentation'>
+<li><a href='#JavaJVMLogs-Correlation'>Correlation</a></li>
+<li><a href='#JavaJVMLogs-ObservabilityContext'>Observability Context</a></li>
+</ul>
+</li>
+<li><a href='#JavaJVMLogs-Example(Text)'>Example (Text)</a></li>
+<li><a href='#JavaJVMLogs-Monitoring&amp;MetricPotential'>Monitoring &amp; Metric Potential</a></li>
+<li><a href='#JavaJVMLogs-RelatedLogTypes'>Related Log Types</a></li>
+</ul>
+</div><hr local-id="46591bd8-b3a3-4798-a2f2-f3ac2eff053d"/><h1 local-id="48ecbace-54f1-4578-9c6c-aab3d331f32e" id="JavaJVMLogs-Purpose/Overview">Purpose / Overview</h1><p local-id="9d1e71b9-f827-488c-a896-0ee269828952">Java JVM Logs capture output from specific Java classes and methods in OTCM.</p><p local-id="fd61df09-0d8f-41e8-bdda-cd5e06b73dd2">These logs are primarily <strong>used for troubleshooting</strong> and <strong>debugging startup or runtime issues</strong>, rather than routine monitoring.</p><p local-id="cd02f9ec-5a68-4319-abba-4659354ea714">They can be activated or controlled via <strong>java.server.logging.properties</strong>, and typically record:</p><ul local-id="b16bf28a-d645-4ae0-9b85-3b72283951f2"><li local-id="fd7252b3-9cd0-4a61-a16c-760d35d1c83c"><p local-id="fd1b3a8b-1f27-46c6-859a-6cc1db5db3a0">Start and end points of Java methods</p></li><li local-id="f7231ce8-41de-4885-b0ec-2f1835240042"><p local-id="d28fe9ac-d05b-4f0f-8b42-1d97a5a60f43">Internal JVM actions</p></li><li local-id="cd9267c7-a81c-4eae-a7db-ae19b8ed2605"><p local-id="f4c6d8fb-a7eb-487b-9872-ea5df7f5c659">System or network-related information (e.g., generated host IDs, network interfaces)</p></li></ul><p local-id="99a0203c-52c9-42f3-9d83-1c806ae8e981">These logs are <strong>not performance-oriented</strong>; they do not track request timing or system metrics.</p><hr local-id="d1b7824c-bf6e-4a89-a1a3-da423d18e037"/><h1 local-id="3e8ebf6d-f6a0-4ac1-be7a-44e766fac4fe" id="JavaJVMLogs-KeyFields&amp;Metrics">Key Fields &amp; Metrics</h1><div class="table-wrap"><table data-table-width="1800" data-layout="default" data-local-id="22a95bbe-a211-466d-aa20-cbe5c0e36a9d" class="confluenceTable"><tbody><tr ac:local-id="0da45814-965f-4e04-beb8-41bf76ff2343"><th data-local-id="9d838c16-efc5-4df5-9026-54eba9710890" class="confluenceTh"><p local-id="b71c2f9d-16a5-470c-b60a-ccbb9ad586b5">Field</p></th><th data-local-id="2a2d1467-8da1-4e2e-9eeb-987d123569d7" class="confluenceTh"><p local-id="0fb188d1-c406-4288-96a7-0ba6bd3a9199">Description / Metric</p></th></tr><tr ac:local-id="4984e5d8-9463-403c-a2c4-e1214b87313c"><td data-local-id="e74f37de-bf64-4e7f-b8fb-11c2bec7d394" class="confluenceTd"><p local-id="518a3f1c-b73f-4331-ac4b-de4c04e08219">Timestamp</p></td><td data-local-id="ee47eb42-8fa6-4b4a-b8d1-a0ddd8ee0005" class="confluenceTd"><p local-id="31315469-5677-4d60-92fc-a9fbd14c30cc">Date and time of the log entry</p></td></tr><tr ac:local-id="6bb37d97-63b7-4fc7-8e3b-854b174ddf87"><td data-local-id="75e1e252-42b8-4a93-8b21-289d7eb4c057" class="confluenceTd"><p local-id="7201126b-8a11-4b5e-8b9f-2e87bf69373e">Class &amp; Method</p></td><td data-local-id="3388fe0e-2145-4271-ace4-13ff1def8177" class="confluenceTd"><p local-id="5eda092c-a6e1-48a2-b6c1-09cbc118593f">The Java class and method being executed</p></td></tr><tr ac:local-id="8a46514f-def6-4479-bba7-cc4dfe4aa68d"><td data-local-id="de6356ba-cd05-46e9-a018-d93097a55907" class="confluenceTd"><p local-id="421aec92-42e6-4e45-bb28-a25848bc69eb">Log Level</p></td><td data-local-id="84758e84-7c93-4d60-8db3-69aaf75ae3d6" class="confluenceTd"><p local-id="635ff34c-afd3-45a6-b6d4-6e88e45d12f9">Severity level (INFO, DEBUG, WARN, ERROR)</p></td></tr><tr ac:local-id="aed3499a-6127-44e2-a9d6-7308b0c908e9"><td data-local-id="bdb09b90-5228-483b-b5ca-a4ecb1966ac0" class="confluenceTd"><p local-id="af3aaab7-5e84-49d9-9863-bc2fb46040e7">Message</p></td><td data-local-id="900f33ea-1200-459b-8f96-4cfea688511b" class="confluenceTd"><p local-id="e18694d8-0ced-4904-89dc-0d6f67d69053">Description of the action or method status</p></td></tr></tbody></table></div><hr local-id="375f4f36-f593-42f3-8093-9ad9518c8351"/><h1 local-id="f685769a-4755-411e-912f-b4c8e440b51c" id="JavaJVMLogs-Relevance">Relevance</h1><p local-id="38ee8d91-caa2-426b-a9ea-76334b8f0b98">Java JVM Logs are <strong>valuable for troubleshooting and debugging Java-related issues</strong>.</p><div class="table-wrap"><table data-table-width="1800" data-layout="default" data-local-id="0bdc6a3e-7124-48bf-b0fd-9c107e58cf34" class="confluenceTable"><tbody><tr ac:local-id="f7ab75b6-abbc-475a-a08e-d35d0183d36a"><th data-local-id="dd5fd4bc-07d8-4dd8-ab7b-3d7f744f9b56" class="confluenceTh"><p local-id="9ebb4e61-b04d-4cbf-92c5-63039cb11755">Aspect</p></th><th data-local-id="157ada58-b59e-42e8-bdb2-57ae7aa578d8" class="confluenceTh"><p local-id="df227c3a-5dbf-4183-b359-9b6f1d908168">Value</p></th></tr><tr ac:local-id="9e591b4b-8730-462f-8c1c-2946a0c27ad8"><td data-local-id="21ac87a1-963b-4481-bfc9-3b12331ea6c9" class="confluenceTd"><p local-id="4f92a2a8-3322-4e70-8a38-3895955e8343">Troubleshooting</p></td><td data-local-id="dce781d1-d515-4ed5-9d65-309a75ec7147" class="confluenceTd"><p local-id="5c7f5eae-6853-4104-944b-298be8d08bb4">★★★★★ – Essential for debugging Java method execution and startup issues</p></td></tr><tr ac:local-id="e927c06a-3941-415e-adb5-fb3824938321"><td data-local-id="26415c4b-1a22-405d-b108-0155163cf101" class="confluenceTd"><p local-id="c4c48eb4-843f-4869-8708-ecf33229e8fe">Functional insight</p></td><td data-local-id="404ff197-dba1-4877-9fa2-c5b39994a8e1" class="confluenceTd"><p local-id="a9b9cdd6-75ec-4d28-bbea-9e4942baa981">★★☆☆☆ – Shows method calls and JVM internal actions</p></td></tr><tr ac:local-id="124a6046-e442-4328-91e2-2d8fbeb22cad"><td data-local-id="c589c1d1-a2bd-4bf3-8784-fa597056617a" class="confluenceTd"><p local-id="33805ef0-e8ff-43f9-ad73-d778837110c9">Performance metrics</p></td><td data-local-id="4938db3b-5463-44fc-a993-472c9c5fd49c" class="confluenceTd"><p local-id="8de5e8eb-c250-421c-ab39-667685459527">★☆☆☆☆ – No request timing or system load data</p></td></tr><tr ac:local-id="155144a5-229e-489e-a12a-3680ccf10de1"><td data-local-id="3da8227d-e914-4cb9-b9bb-5abb3f192323" class="confluenceTd"><p local-id="8210a387-aa9c-401e-85c6-44799e62ab9b">Correlation value</p></td><td data-local-id="f934fac7-d951-47da-ac93-bacb09b7c582" class="confluenceTd"><p local-id="d8e769c6-1f5f-4b2a-8f86-a15e38f24861">★★☆☆☆ – Can sometimes link to startup or system events</p></td></tr></tbody></table></div><h2 local-id="d865a958-4d85-4cf5-8414-f642bbe62c81" id="JavaJVMLogs-Correlation">Correlation</h2><p local-id="ce0ff22a-54d9-4156-89d5-4bf9bdc9a514">Java JVM Logs can potentially be cross-referenced with:</p><ul local-id="ccbf0bb3-4eff-4e63-8698-cdfb5d14b1e5"><li local-id="73c166e2-3928-4b0e-87aa-a8cb5df83318"><p local-id="f09db5b5-939e-4aed-a57b-130537580ad4"><strong>System Monitoring Events</strong> – JVM startup or crash events<br/><a href="605978637.html" data-linked-resource-id="605978637" data-linked-resource-version="5" data-linked-resource-type="page">System Monitoring (JSON Events)</a> </p></li><li local-id="c2c89f56-cdac-463b-a9c6-d775a0d229f2"><p local-id="ec7595f9-b335-4f50-ad77-e90f2e523383"><strong>Thread / Timing Logs</strong> – For identifying method-level issues affecting request processing<br/><a href="Thread-Logs_606142483.html" data-linked-resource-id="606142483" data-linked-resource-version="3" data-linked-resource-type="page">Thread Logs</a> <a href="Thread-Summary-Timing-Logs_606371861.html" data-linked-resource-id="606371861" data-linked-resource-version="5" data-linked-resource-type="page">Thread Summary Timing Logs</a> </p></li></ul><p local-id="3cee7fd5-706d-4986-b516-ea4a669a7c5f" /><h2 local-id="316a930b-bd7b-4058-9178-b025a832157f" id="JavaJVMLogs-ObservabilityContext">Observability Context</h2><ul local-id="a8eb4830-6b86-4f75-a6e7-7ed7fb6102bd"><li local-id="5cd81cff-bd83-4efa-8b6a-374c91d033af"><p local-id="1dd58f3b-c0fc-492c-a7a8-a71e6d335423">Logs are primarily created on <strong>server startup</strong> or when <strong>specific classes are activated</strong> via configuration.</p></li><li local-id="e440fa17-48cc-4ea9-814f-4f19c6c9dd69"><p local-id="17fd96e2-c937-4125-9c2f-cef1c0899974">Useful for <strong>diagnosing method failures</strong>, <strong>class loading issues</strong>, or <strong>network interface problems</strong> during agent initialization.</p></li><li local-id="c70a37bc-bfa5-4af9-9793-028473e0328f"><p local-id="8e946009-e3a5-42dc-8c5b-07f08a6e42ef"><strong>Not suited for dashboards or real-time performance monitoring</strong>.</p></li></ul><hr local-id="02cba4e2-af20-4895-a851-ae1785b1b02d"/><h1 local-id="7530c29d-3de0-4114-8afd-976b4ae8e520" id="JavaJVMLogs-Example(Text)">Example (Text)</h1><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">Dec 19, 2025 9:54:17 AM com.opentext.cluster.Utils getHostName
+INFO: ******************* Start com.opentext.cs.Commands.getHostName *******************
+Dec 19, 2025 9:54:17 AM com.opentext.cluster.Utils getHostName
+INFO: ******************* End com.opentext.cs.Commands.getHostName *******************
+Dec 19, 2025 9:54:17 AM com.opentext.cluster.Utils getHostID
+INFO: ******************* Start com.opentext.cs.Commands.getHostID *******************
+Dec 19, 2025 9:54:17 AM com.opentext.cluster.Utils getHostID
+INFO: Generating unique id for agent using network interface: ethernet_32860
+Dec 19, 2025 9:54:17 AM com.opentext.cluster.Utils getHostID
+INFO: ******************* End com.opentext.cs.Commands.getHostID *******************</pre>
+</div></div><hr local-id="29d00a53-b198-4f1b-94c0-6738d366565a"/><h1 local-id="a92e19af-7005-49a2-aef1-8a0575e9c651" id="JavaJVMLogs-Monitoring&amp;MetricPotential">Monitoring &amp; Metric Potential</h1><div class="table-wrap"><table data-table-width="1800" data-layout="center" data-local-id="b164fabf-5765-489e-91f5-39a071c9e1e9" class="confluenceTable"><tbody><tr ac:local-id="d1cbcffa-ab20-49d4-9e34-c6f09edb6029"><th data-local-id="fc0aff43-5770-4bfe-93d1-36082f52000a" class="confluenceTh"><p local-id="10242769-c8b2-402c-8a9e-3391b0fc8925">Metric</p></th><th data-local-id="867b2a80-746c-4b4d-b687-a0bf8b3d0ae3" class="confluenceTh"><p local-id="be596f64-e4da-4f93-a4e8-7dce9ebe87e9">Value / Description</p></th></tr><tr ac:local-id="718af61c-0c82-42b0-ad03-369e05079ee7"><td data-local-id="16b08028-ad79-435a-a7c9-ff1d4df2830c" class="confluenceTd"><p local-id="745d1704-9e02-4e51-b818-17f7235c1464">Method Start/End</p></td><td data-local-id="36a326ac-cf0e-4abc-abb2-40c9bf0abfdc" class="confluenceTd"><p local-id="fd0e6beb-0e68-42af-8cb4-79803981a1ea">Track which methods executed successfully</p></td></tr><tr ac:local-id="3f02b9dd-72d0-4b92-a924-489b1afbda02"><td data-local-id="ff71a616-6244-403c-8b59-26c9d6e3a00a" class="confluenceTd"><p local-id="d1e1933f-53ae-4c7d-8d13-cc65b5e8dff0">JVM Initialization</p></td><td data-local-id="59ae4d4b-cb04-472a-bb9b-39d58b1819e4" class="confluenceTd"><p local-id="8e038e0c-d534-431b-95fe-879b4965b46f">Useful for debugging agent startup problems</p></td></tr><tr ac:local-id="8b915f4b-1f4f-49d3-89f1-d5c11ef088f0"><td data-local-id="5bafe36d-bda5-4c12-8364-431df887348b" class="confluenceTd"><p local-id="460cc45e-49e0-4ab1-b9ef-ad9bb58f080b">Network / Host Info</p></td><td data-local-id="c831a5cb-e886-45f2-9150-cc8975fc78eb" class="confluenceTd"><p local-id="02dc9ec7-4b6c-4de4-ae88-2e955fa302d2">Inspect generated host IDs and used network interfaces</p></td></tr><tr ac:local-id="be071e93-e14d-4014-8526-3af9850dede1"><td data-local-id="5c3e3e98-de7c-4eea-a1f5-731b8543fa1f" class="confluenceTd"><p local-id="699180fd-9b0b-490d-9343-3adcf4ed8c8d">Errors &amp; Exceptions</p></td><td data-local-id="b9bb74bd-6711-498b-a199-e6fc4985e8f9" class="confluenceTd"><p local-id="f1deb69a-c0ae-43fc-a0b4-80e98f25fd24">Identify Java runtime issues</p></td></tr></tbody></table></div><blockquote local-id="f0bd2d13-c542-491d-a3f3-261fa093ce9b"><p local-id="fdb97211-dcbb-49e7-af75-02a6d85cfc77">These logs are <strong>not useful for dashboards or real-time metrics</strong>, as they primarily capture method execution and startup details rather than request performance or system metrics.</p></blockquote><hr local-id="9c8baf2e-92c9-4282-a88b-d20b9c24b0db"/><h1 local-id="1c85ccfa-6297-4069-a878-05fc6921cda5" id="JavaJVMLogs-RelatedLogTypes">Related Log Types</h1><ul local-id="fdc77d01-e596-4e24-939b-2233dffefccd"><li local-id="4b6836d1-1b00-4908-b8ca-69eb23859e71"><p local-id="6c28505e-f58e-4cbe-af20-c4fa4eb4e6c6"><strong>System Monitoring Events</strong> – JVM crash, admin server, or cache events<br/><a href="605978637.html" data-linked-resource-id="605978637" data-linked-resource-version="5" data-linked-resource-type="page">System Monitoring (JSON Events)</a> </p></li><li local-id="72e84d87-314b-43af-abee-259b6ba0ef76"><p local-id="dda630f7-dfe9-4a96-a52f-d3eaad5323b6"><strong>Thread / Thread Summary Timing Logs</strong> – For backend processing insights if JVM methods affect requests<br/><a href="Thread-Logs_606142483.html" data-linked-resource-id="606142483" data-linked-resource-version="3" data-linked-resource-type="page">Thread Logs</a> <a href="Thread-Summary-Timing-Logs_606371861.html" data-linked-resource-id="606371861" data-linked-resource-version="5" data-linked-resource-type="page">Thread Summary Timing Logs</a> </p></li></ul>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on dec 30, 2025 14:33</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Monitoring Expansion : Thread Logs</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Monitoring Expansion</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Overzicht_373653886.html">Overzicht</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Components_491388972.html">Components</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="492863490.html">OpenText Content Server (xECM)</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Logs_492535812.html">Logs</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Monitoring Expansion : Thread Logs
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                            
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Bram Verkuijlen</span>, last modified on dec 18, 2025
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p local-id="4e53ea5c-7583-485e-a769-ab4938c25732"><strong>Location:</strong> <code>OPENTEXT\OTCS\logs\thread_logs\</code><br/><strong>Format:</strong> Text (<code>thread*.out</code>)</p><hr local-id="1cbadf0e-9800-4fce-aa2f-4388a5d313a3"/><h1 local-id="378daf17-147c-42f6-9dae-4a71d261550e" id="ThreadLogs-TableofContents">Table of Contents</h1><style type='text/css'>/*<![CDATA[*/
+div.rbtoc1767101593447 {padding: 0px;}
+div.rbtoc1767101593447 ul {list-style: default;margin-left: 0px;padding-left: ;}
+div.rbtoc1767101593447 li {margin-left: 0px;padding-left: 0px;}
+
+/*]]>*/</style><div class='toc-macro rbtoc1767101593447'>
+<ul class='toc-indentation'>
+<li><a href='#ThreadLogs-Purpose/Overview'>Purpose / Overview</a>
+<ul class='toc-indentation'>
+<li><a href='#ThreadLogs-KeyFields&amp;Metrics'>Key Fields &amp; Metrics</a></li>
+</ul>
+</li>
+<li><a href='#ThreadLogs-Relevance'>Relevance</a>
+<ul class='toc-indentation'>
+<li><a href='#ThreadLogs-Correlation'>Correlation</a></li>
+<li><a href='#ThreadLogs-ObservabilityContext'>Observability Context</a></li>
+</ul>
+</li>
+<li><a href='#ThreadLogs-Example'>Example</a></li>
+<li><a href='#ThreadLogs-Monitoring&amp;MetricsPotential'>Monitoring &amp; Metrics Potential</a></li>
+<li><a href='#ThreadLogs-RelatedLogTypes'>Related Log Types</a></li>
+</ul>
+</div><hr local-id="b76e4bfb-105f-47dc-ad32-417befd4b25e"/><h1 local-id="c1a26942-cd44-4a4a-907a-6768ecd11798" id="ThreadLogs-Purpose/Overview">Purpose / Overview</h1><p local-id="b9a11af6-b948-4018-9692-bc5a052b2c05">Thread Logs record <strong>runtime activity of individual server threads</strong> within the OpenText Content Server.<br/>They provide detailed insight into <strong>thread lifecycle events</strong>, <strong>functional execution</strong>, and <strong>runtime warnings or errors</strong>.</p><p local-id="c773407e-b33c-4e66-b31f-63b6f901e364">Unlike timing logs, Thread Logs are <strong>not primarily performance-focused</strong>, but they are extremely valuable for:</p><ul local-id="d77fce8e-cf96-443d-92d4-202604fb9a89"><li local-id="6b5dad9d-edfc-4855-abce-8c7349c9642b"><p local-id="d4bd2725-f2e5-41b3-ae3e-a8f1279ecb4f">Functional troubleshooting</p></li><li local-id="35eec961-3615-427d-9c64-0dd0b61ecd6c"><p local-id="d290836a-c80d-46c2-9a85-95acb064a6bc">Error analysis</p></li><li local-id="62e1bd6e-b894-4831-a0e6-42e6bc2cb2e8"><p local-id="a613329e-0259-49bb-b516-728631a22b27">Understanding internal request handling and failures</p></li></ul><p local-id="ef33fcd4-ca62-445a-9b3b-15b7c6050cc5">While SQL executions are not logged directly, <strong>database-related issues</strong> (connection failures, timeouts, misconfigurations) often surface here as warnings or errors.</p><hr local-id="5799a586-1051-4ed6-8116-c588acf09e86"/><h2 local-id="f367a898-a93c-46ef-99f2-ac50a150a669" id="ThreadLogs-KeyFields&amp;Metrics">Key Fields &amp; Metrics</h2><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="8c0578d4-af39-4ee5-b18f-332b4de3c51e" class="confluenceTable"><tbody><tr ac:local-id="bd8c0727-8f3e-40f4-b3a1-673bef08e619"><th data-local-id="02c55aea-1c0b-46d6-8fda-b9f5e3f19eeb" class="confluenceTh"><p local-id="78318468-32a4-4070-af9b-b4ca89dfe394">Field</p></th><th data-local-id="7d7642e7-d0e0-4573-ae6f-7ee75ff54c58" class="confluenceTh"><p local-id="f17d1b86-a041-45ac-ab89-d502097cf99d">Description</p></th></tr><tr ac:local-id="c2679e57-2c6f-41ad-a1b1-4de2f183a801"><td data-local-id="32f00325-7e4f-4c13-8f84-015c1e92deef" class="confluenceTd"><p local-id="d3873ed8-7d0d-43b5-a6d7-674a1538be85">Timestamp</p></td><td data-local-id="fccf15df-eb97-442c-9b57-61a0359e735b" class="confluenceTd"><p local-id="f5421ba5-5041-4491-8e75-f6e03d3469f3">Date and time when the log entry was written</p></td></tr><tr ac:local-id="fd5dfa96-704c-4394-b0f0-4dee9dfa4680"><td data-local-id="671cb7a8-202c-4fdc-ad5b-1a6e57a6ef3f" class="confluenceTd"><p local-id="66bc0851-c2b7-47df-b375-e1d3372d9fec">Level</p></td><td data-local-id="868fd99d-9cc6-4b78-9100-911830c6d84b" class="confluenceTd"><p local-id="d6e3bf82-73e9-4bf5-b8b9-b52d1bb001b3">Log severity (INFO, WARN, ERROR)</p></td></tr><tr ac:local-id="be343ab3-6c50-4a69-ae4c-ee7127df0472"><td data-local-id="e6fe13e3-072c-4055-83e4-3363e7ee5fe6" class="confluenceTd"><p local-id="a249f593-9ae2-4cf2-99e8-b56a95631b72">Thread / Component</p></td><td data-local-id="9a2d8ae3-56cf-486b-88ec-31cb81b37096" class="confluenceTd"><p local-id="55ddb359-8ade-47eb-bf97-341c6b32422b">Thread or module generating the log entry</p></td></tr><tr ac:local-id="f1e77064-5a9b-41e2-9439-6a0f9e6e87ac"><td data-local-id="3b0e502a-51d2-4fac-b0cf-83e55df613d1" class="confluenceTd"><p local-id="14e8ee5e-a7f8-4412-825e-046b77a4608a">Message</p></td><td data-local-id="ee9dfdb4-5cda-403e-8893-a7db644ded26" class="confluenceTd"><p local-id="f3b11bfd-c887-445a-9f99-f69da8750dc8">Detailed description of the action, warning, or error</p></td></tr><tr ac:local-id="f1783c40-90ac-4573-afc1-05510a758104"><td data-local-id="b49f0ee6-178e-41ec-9e6c-c19d4e5fe4dd" class="confluenceTd"><p local-id="cb4af1f8-e2c6-45d4-a384-4194fb1c5a93">User / Context (optional)</p></td><td data-local-id="d4eda319-df4a-4cec-957a-8e3e0eb1727d" class="confluenceTd"><p local-id="e1ee59f6-3123-41e6-9e9b-7bfeebfe823b">User or session-related information, if available</p></td></tr></tbody></table></div><hr local-id="86cef485-4dfd-4f5a-9241-54b08dd3fcb9"/><h1 local-id="5479341d-a257-41f3-98d1-b716cf9332ae" id="ThreadLogs-Relevance">Relevance</h1><p local-id="aca8ed83-a742-4240-bf21-bb0e438c6850">Thread Logs provide detailed insight into the <strong>internal execution behavior</strong> of OpenText Content Server threads. While they are not performance-focused logs, they are a <strong>primary source for diagnosing functional and runtime issues</strong> when available.</p><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="d1373880-c7fc-4753-b616-dda1338c2e4e" class="confluenceTable"><colgroup><col style="width: 901.0px;"/><col style="width: 899.0px;"/></colgroup><tbody><tr ac:local-id="14213c56-67f7-4a9d-ad37-a817c4a21c62"><th data-local-id="a4bb2ab2-d8c6-46e6-befe-739a58399c39" class="confluenceTh"><p local-id="05d7bf12-40dd-4eb1-bb07-b9070b263a96">Aspect</p></th><th data-local-id="443fa354-fef8-4e4e-8fa6-0e446d8af197" class="confluenceTh"><p local-id="0a16f949-a6da-4cb4-a162-e1ffcdd1a052">Value</p></th></tr><tr ac:local-id="509f9d54-08f9-4bb9-8532-56b0889d6b24"><td data-local-id="af6dfbc0-a635-49ac-8617-c42c5c854ada" class="confluenceTd"><p local-id="bae553b4-2dbb-4e0d-832e-83ee9dccf8cb">Troubleshooting</p></td><td data-local-id="98d33b62-651b-4ba3-b614-37ed99011caa" class="confluenceTd"><p local-id="bd6e6b00-398b-49e7-8049-ca5cc7bbb833">★★★★★ – primary source for runtime errors</p></td></tr><tr ac:local-id="ac0f17b7-b8ae-41e1-bf04-55b6a1a20fde"><td data-local-id="52e88fb0-bd4c-46ae-a459-a3f6de62923e" class="confluenceTd"><p local-id="278ba4ab-fc3f-4488-8c63-4a426cd6b638">Functional insight</p></td><td data-local-id="8199f861-351b-4024-8c2e-fc9855140ee9" class="confluenceTd"><p local-id="f2d46391-23ef-4814-b6cf-db7bd798ffb8">★★★★☆ – shows internal execution flow</p></td></tr><tr ac:local-id="250cd756-6889-4780-a229-7b7da3d604aa"><td data-local-id="4b39fa7a-4de2-489f-a7a5-1642c3820aeb" class="confluenceTd"><p local-id="9e10075d-e32a-4567-a716-6290aa01f560">Performance metrics</p></td><td data-local-id="7893f019-3b82-4d1d-8df4-d162668cf659" class="confluenceTd"><p local-id="296b3b85-9b5b-4eef-a37a-49239745033b">★★☆☆☆ – limited, indirect indicators</p></td></tr><tr ac:local-id="0fe9a56a-33fd-427c-b371-a722e42d5d63"><td data-local-id="fb52fe7a-0679-454c-844f-de90eda0e443" class="confluenceTd"><p local-id="1ce09f66-75ac-429f-9d72-2b6238d20a74">Correlation value</p></td><td data-local-id="26e498ab-6cdf-49cd-b9e4-b4c356f4fc69" class="confluenceTd"><p local-id="a095183d-bafa-4c5f-a941-014368158344">★★★★☆ – useful when combined with timing &amp; client logs</p></td></tr></tbody></table></div><blockquote local-id="cfe6e68a-bbf9-4379-8ae0-b9a50fa1b9ee"><p local-id="d0323c13-fd4e-4122-bf0a-d8c75854fcec">Within this Proof of Concept, Thread Logs were <strong>not actively collected or centralized</strong> as part of the observability pipeline.</p><p local-id="db336d34-a800-4140-bb05-330efb8321c7">As a result, their relevance in this project is <strong>theoretical and architectural</strong> rather than validated through implementation. The documentation of Thread Logs is included to:</p><ul local-id="2630cb7c-6272-4b5f-a991-25cc5afb6862"><li local-id="cd24b2ad-6d23-46fd-adf0-10b849e333d4"><p local-id="c612b68f-a653-47cb-8c57-673200491f0e">Provide completeness of OTCM logging capabilities</p></li><li local-id="6f054be2-09bd-434a-9214-4a90932e48bf"><p local-id="69407f59-99e7-4be6-b71b-17d7fad0d1ce">Explain their potential value in a production-grade monitoring setup</p></li><li local-id="bc78e33a-a3c0-4a1e-a137-72df3a9ad539"><p local-id="ce7e3aba-ba84-4856-9822-df779549bb17">Highlight future opportunities for deeper troubleshooting and correlation</p></li></ul></blockquote><p local-id="c34149d2-cdf3-4af8-83fb-f634cbf5b38d" /><h2 local-id="ec592f1d-8655-4ea6-a663-1634b574ea8e" id="ThreadLogs-Correlation">Correlation</h2><p local-id="98263a8f-4a98-416c-9174-36f895cd773a">Thread Logs are especially useful when correlated with other OTCM log sources:</p><ul local-id="5e253029-1962-48f1-9f2c-30cbe8555324"><li local-id="750dcbf8-6876-48a2-a0cd-ea86deb40579"><p local-id="a70fccbf-03a1-4c3c-b7e9-d68c52a87455"><strong>Errors in Web Server Client Logs</strong><br/><a href="Web-Server-Client-Timing-Logs_606240778.html" data-linked-resource-id="606240778" data-linked-resource-version="4" data-linked-resource-type="page">Web Server Client Timing Logs</a> </p></li><li local-id="e1425083-2de2-49e1-a403-fadf9697f192"><p local-id="fc79da18-ac06-4a3e-90fb-04eb138247a1"><strong>Latency spikes in Thread Summary Timing Logs</strong><br/><a href="Thread-Summary-Timing-Logs_606371861.html" data-linked-resource-id="606371861" data-linked-resource-version="5" data-linked-resource-type="page">Thread Summary Timing Logs</a> </p></li><li local-id="5fd3a00d-1121-4455-9b44-d1bf15d5b5a2"><p local-id="604d9175-fd43-48ff-bd75-bcddde527aa7"><strong>Security or API-related failures</strong></p></li></ul><p local-id="6c6e2b49-8bcd-45f9-bcb0-c1398335a40a" /><h2 local-id="79807c15-bfda-4647-ab9d-49adb4426112" id="ThreadLogs-ObservabilityContext">Observability Context</h2><p local-id="7764fd46-a404-44e1-a84a-c2a4a67fa93e">Thread Logs should be treated as a <strong>high-volume, high-detail diagnostic signal</strong>. Their effective use depends on:</p><ul local-id="428221a0-3054-4a35-ba0c-26e41dedcb44"><li local-id="614e7985-1cbb-404a-8b25-d3722cdbd16f"><p local-id="4779650d-d81e-4d7c-ac98-1bf4f82324b5">Centralized collection</p></li><li local-id="30062a8d-3398-4ab0-aa78-5f01b2e190e4"><p local-id="eda0b773-63d0-4818-a42f-2a888715481a">Severity-based filtering</p></li><li local-id="da28e9fe-f507-4e8b-a1b3-928957e00f83"><p local-id="b578d616-c458-4180-99fa-b4297d031bc4">Timestamp and thread-based correlation</p></li></ul><p local-id="9e266947-db61-4711-82d6-95a824db7dcc">Without filtering and correlation, raw Thread Logs quickly become noisy and difficult to interpret, reinforcing the need for a structured observability pipeline.</p><hr local-id="f773414e-6dbc-4227-91dc-102bf8608e43"/><h1 local-id="eaf794d5-b2d8-49eb-bbb9-09167c43b308" id="ThreadLogs-Example">Example</h1><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">12/18/2025 14:54:40 WARN  apiError: ?
+12/18/2025 14:54:40 WARN  errMsg: De REST API-URL is niet gevonden in het toewijzingenregister
+12/18/2025 14:54:40 WARN  errDetail: ?
+12/18/2025 14:54:40 WARN  RestAPIRequestHandler._AddExtraHeaders() will default to the base headers.
+12/18/2025 14:54:40 WARN  AuthentPkg.IsUserLoginAllowed: Admin login is unrestricted
+12/18/2025 14:54:40 ERROR Dispatcher error: De REST API-URL is niet gevonden in het toewijzingenregister
+12/18/2025 14:54:43 WARN  LLConfig.ConfigPkg.Get: user session missing!
+12/18/2025 14:54:43 WARN  LLConfig.ConfigPkg.Get: user session missing!
+12/18/2025 14:54:43 ERROR Dispatcher error: De REST API-URL is niet geldig. Als u probeert een item te openen, bestaat dit mogelijk niet of hebt u geen toestemming om het te openen.
+12/18/2025 14:55:31 ERROR Error retrieving locale from session cache: Geen sessiegegevens gevonden.</pre>
+</div></div><hr local-id="9fd7e03d-7cc0-4921-aa74-f07d7d6719de"/><h1 local-id="cd19c6ca-17d6-4d2c-b0c0-572b82f858b5" id="ThreadLogs-Monitoring&amp;MetricsPotential">Monitoring &amp; Metrics Potential</h1><p local-id="6015a169-788f-4cbb-8cc0-09a38278c16b">Although Thread Logs are unstructured, they can still be used to derive metrics such as:</p><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="d5c581c2-f0e7-4dd8-bcfa-d65afdc030c5" class="confluenceTable"><tbody><tr ac:local-id="249edb18-2c1f-4a5f-b8e0-070262631339"><th data-local-id="91c3429a-15b3-48c2-9825-2bcadc76f4bb" class="confluenceTh"><p local-id="caf5f826-353d-424e-8666-0b5501ba07fe">Metric</p></th><th data-local-id="e3fbb257-0db9-4d5b-9aac-45c283bab153" class="confluenceTh"><p local-id="3eeb3fae-10cb-433d-92de-fcbc99e75c4f">Description</p></th></tr><tr ac:local-id="3b949183-0968-46ab-bb5f-fc069e46b7d5"><td data-local-id="258c7593-1366-4038-a707-466885aaefbd" class="confluenceTd"><p local-id="aca04b85-487f-4065-9f80-f0572622bcc0">Error / warning rate</p></td><td data-local-id="b5349ebc-0496-41d6-aa2f-28e7f1ab6bd6" class="confluenceTd"><p local-id="151f48a4-89ff-4ac2-85f8-c96d7783eb9b">Stability and reliability indicator</p></td></tr><tr ac:local-id="76fe6547-3a27-409d-b225-76a044a98ed3"><td data-local-id="1cf0e4c8-68c2-4639-9179-4a368a705572" class="confluenceTd"><p local-id="f1b4dbfa-c8f2-427d-882a-9ac2a6e56882">Error type frequency</p></td><td data-local-id="58fb34c5-454f-4219-a2e5-a709977cefea" class="confluenceTd"><p local-id="ff79eeb8-0a2b-4a0a-802f-f183669174f2">Identifies recurring configuration or API issues</p></td></tr><tr ac:local-id="cce51ded-94d9-471d-a055-440a4d46a1da"><td data-local-id="c1285042-e0c0-4528-8646-41bcdc4d8379" class="confluenceTd"><p local-id="79ae5986-2d13-4498-a874-24a8402ac331">Module-specific errors</p></td><td data-local-id="b39b3678-f174-488f-8590-34b92b414f5d" class="confluenceTd"><p local-id="b7ac4d57-ea49-44db-8997-1ed601a379bc">Detects unstable components</p></td></tr><tr ac:local-id="fdebd6de-b865-4dfd-a3e6-054ec5854628"><td data-local-id="9299e047-db40-4d5f-8d39-ceefbe2dfa80" class="confluenceTd"><p local-id="247ca8ba-cd04-4a4c-a205-aedd9cbd6d1d">Session-related failures</p></td><td data-local-id="4e042eba-eee1-4fe9-8893-7ed24a8982fd" class="confluenceTd"><p local-id="bceca450-d8d5-49c1-ad6c-fc171fb7bf81">Authentication and session health</p></td></tr></tbody></table></div><p local-id="ca166146-3096-44cc-a6cc-06626579d5d6">These metrics are commonly extracted using <strong>log parsing and aggregation</strong> (e.g. Fluent Bit → OpenTelemetry → Loki).</p><hr local-id="685533f7-9b13-41e6-a938-bd190d10f820"/><h1 local-id="af939dd1-e2eb-4672-9d90-aed21d19f754" id="ThreadLogs-RelatedLogTypes">Related Log Types</h1><ul local-id="99ae073d-3cde-482f-b616-42d77b6ce8ca"><li local-id="8e677d15-c0b9-4617-b160-11e6a5575bb3"><p local-id="83f45bcf-ac12-403b-be45-bf273eb7ffb3"><strong>Thread Summary Timing Logs</strong> – performance and SQL timing<br/><a href="Thread-Summary-Timing-Logs_606371861.html" data-linked-resource-id="606371861" data-linked-resource-version="5" data-linked-resource-type="page">Thread Summary Timing Logs</a> </p></li><li local-id="e779eb28-1cd2-4420-9c83-95a96deaff05"><p local-id="7a0c62ab-643a-48ef-b770-df3322ca3c0b"><strong>Web Server Client Logs</strong> – request-level functional logging<br/><a href="Web-Server-Client-Timing-Logs_606240778.html" data-linked-resource-id="606240778" data-linked-resource-version="4" data-linked-resource-type="page">Web Server Client Timing Logs</a> </p></li><li local-id="38400039-b2ab-4440-b96f-a83bf8094f91"><p local-id="7af1753d-e545-4a13-ac75-fc2e2d7942e7"><strong>System Monitoring Events</strong> – system health and alerts<br/><a href="605978637.html" data-linked-resource-id="605978637" data-linked-resource-version="5" data-linked-resource-type="page">System Monitoring (JSON Events)</a> </p></li></ul>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on dec 30, 2025 14:33</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

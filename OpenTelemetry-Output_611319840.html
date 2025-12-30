@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Monitoring Expansion : OpenTelemetry Output</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Monitoring Expansion</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Overzicht_373653886.html">Overzicht</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Components_491388972.html">Components</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Fluent-bit_492339201.html">Fluent-bit</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Monitoring Expansion : OpenTelemetry Output
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                            
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Bram Verkuijlen</span>, last modified on dec 19, 2025
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p local-id="30cf8779-d0c9-4881-9e5f-351e2db4c3ab"><strong>Config file:</strong> <code>outputs/otlp.conf</code></p><p local-id="02cedddf-96da-4455-a45c-6c72a1d5a70b">This output configuration forwards all ingested logs to a remote endpoint (in this POC, the OpenTelemetry Collector). It is used to integrate logs into an observability pipeline for centralized collection, processing, and analysis.</p><hr local-id="dd22e307-297d-4022-beac-388b83ad56bb"/><h1 local-id="664f9267-282e-4979-8bdf-73833cd5a798" id="OpenTelemetryOutput-TableofContents">Table of Contents</h1><style type='text/css'>/*<![CDATA[*/
+div.rbtoc1767101594455 {padding: 0px;}
+div.rbtoc1767101594455 ul {list-style: default;margin-left: 0px;padding-left: ;}
+div.rbtoc1767101594455 li {margin-left: 0px;padding-left: 0px;}
+
+/*]]>*/</style><div class='toc-macro rbtoc1767101594455'>
+<ul class='toc-indentation'>
+<li><a href='#OpenTelemetryOutput-Outputconfiguration'>Output configuration</a>
+<ul class='toc-indentation'>
+<li><a href='#OpenTelemetryOutput-Explanation'>Explanation</a></li>
+</ul>
+</li>
+<li><a href='#OpenTelemetryOutput-Usecase'>Use case</a></li>
+<li><a href='#OpenTelemetryOutput-Relateddocumentation'>Related documentation</a></li>
+</ul>
+</div><hr local-id="1297b229-bb14-47d6-a01a-674a56c92820"/><h1 local-id="937eae42-732c-4393-bddf-e6b88d1d546d" id="OpenTelemetryOutput-Outputconfiguration">Output configuration</h1><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">[OUTPUT]
+    Name   forward
+    Match  *
+    Host   127.0.0.1
+    Port   8006</pre>
+</div></div><p local-id="6ea38b7f-1b21-438f-8dc4-10c355c63eff" /><h2 local-id="4e9da383-2eb9-47ae-bfe1-1bcbabd48886" id="OpenTelemetryOutput-Explanation">Explanation</h2><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="d1ca5a45-e77f-4b62-9b1b-567fea1828e2" class="confluenceTable"><tbody><tr ac:local-id="43d7781e-5735-4a63-84b8-68b0cd977287"><th data-local-id="2523a0c1-8597-4a49-8fd0-a01991b9f0a2" class="confluenceTh"><p local-id="7594f387-626f-452f-b038-5ca2256998a7">Setting</p></th><th data-local-id="83024ebb-a49f-49f6-8e2f-5a6ba50b88f4" class="confluenceTh"><p local-id="72bc1d2e-3589-453f-88f4-29bbbeb1c538">Purpose</p></th></tr><tr ac:local-id="f21d4ce2-37aa-4513-84f9-dfd2fd860c01"><td data-local-id="bb6cd042-451e-40c8-b19c-0fdbab1c7413" class="confluenceTd"><p local-id="ddf49608-9cce-4e8a-bd8c-4b544c83f757"><code>Name forward</code></p></td><td data-local-id="5215c2fe-5fbc-4af8-bc40-8a3389fabbbe" class="confluenceTd"><p local-id="0629c455-aba8-47ee-a4af-04d7c909b847">Sends logs to a remote Fluent Bit or Fluentd forward endpoint</p></td></tr><tr ac:local-id="9c58f31c-3a7f-42b2-8027-ef433e6ba7f7"><td data-local-id="9098de38-3081-4f42-9cfa-ed5a98a7b754" class="confluenceTd"><p local-id="51de214b-640d-455b-b8e0-9aaf2423d423"><code>Match *</code></p></td><td data-local-id="8db0a464-a309-449d-b99c-f3d28bfddeda" class="confluenceTd"><p local-id="02f0c2db-294f-4ad5-82b4-9b15db5ba42f">Matches all logs regardless of tag</p></td></tr><tr ac:local-id="751b808a-d8d3-47c7-b138-2b9cbaeb395e"><td data-local-id="52133d05-c057-45c6-93d0-8e50088253cc" class="confluenceTd"><p local-id="51fc176f-4aee-43ec-93ea-e0f5c48fc655"><code>Host 127.0.0.1</code></p></td><td data-local-id="2e371385-e282-449b-bc4a-8873fb91362e" class="confluenceTd"><p local-id="9f9d95a5-801e-4cf4-941b-da0f3e2da3ee">Target host where the OpenTelemetry Collector (or other forward-compatible service) is running</p></td></tr><tr ac:local-id="068087a3-1adc-461c-b451-a09d9db48d3a"><td data-local-id="66bdf47e-382c-4e37-ba55-9eac881971a8" class="confluenceTd"><p local-id="f6c18513-5c78-480d-b7f4-9611538984bc"><code>Port 8006</code></p></td><td data-local-id="55421f19-bba5-498e-a6cb-ec0b6990f863" class="confluenceTd"><p local-id="7c3f35da-bf41-494c-a449-85f90d81d0b1">TCP port used by the collector to receive log data</p></td></tr></tbody></table></div><hr local-id="3a86956a-9a22-4ffd-be00-9404ff25c505"/><h1 local-id="dd0d7f38-7229-4113-8956-3a77dd6b08d7" id="OpenTelemetryOutput-Usecase">Use case</h1><ul local-id="14a8b786-e00b-4ffe-835c-f1e3b13a1461"><li local-id="a589d7bb-350b-45fc-bd0f-c7c81bc6648f"><p local-id="71b773fe-30f8-4d01-9d27-7877960df028">Centralized collection of all OTCM logs for observability</p></li><li local-id="384d9b03-b361-412a-8599-4d828316663f"><p local-id="88769045-e4e6-45f4-a2ed-63b29d1f315e">Integration with OpenTelemetry pipelines for further processing and metrics extraction</p></li><li local-id="9dcc8a13-6c6a-4bf8-a1fb-f139bbeefef3"><p local-id="383ab48d-c185-4c6f-afcb-b0cd44098bb9">Useful in production environments to offload logs from individual servers</p></li></ul><hr local-id="22c0eaf3-61d3-4d70-bf06-9837e9e47b7f"/><h1 local-id="68337d92-e0a1-4640-a583-9dcb1f34d7bb" id="OpenTelemetryOutput-Relateddocumentation">Related documentation</h1><ul local-id="2f70c08b-deb9-44d2-be77-d51c0a4c77f8"><li local-id="300331f3-7728-4377-b7bc-8adb13c2a74f"><p local-id="6a4f63f4-8e36-49fb-a92d-cf70a1bd9bab"><strong>Fluent Bit Logs Collector</strong> – the receiving collector<br/><a href="Fluent-Bit-Logs-Collector_603881497.html" data-linked-resource-id="603881497" data-linked-resource-version="4" data-linked-resource-type="page">Fluent Bit Logs Collector</a> </p></li></ul>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on dec 30, 2025 14:33</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

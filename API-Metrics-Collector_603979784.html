@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Monitoring Expansion : API Metrics Collector</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Monitoring Expansion</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Overzicht_373653886.html">Overzicht</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Components_491388972.html">Components</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="OpenTelemetry_491978770.html">OpenTelemetry</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Monitoring Expansion : API Metrics Collector
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                            
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Bram Verkuijlen</span>, last modified on dec 29, 2025
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p local-id="8dbbc857-4f70-45a6-a2aa-4923fa1bd9da"><strong>Collector distribution:</strong> OpenTelemetry Collector <strong>Contrib</strong><br/><a class="external-link" data-card-appearance="inline" href="https://github.com/open-telemetry/opentelemetry-collector-contrib" local-id="060ee13e-e40a-469f-b238-45e5de525eee" rel="nofollow">https://github.com/open-telemetry/opentelemetry-collector-contrib</a></p><p local-id="6d10cb4d-9054-4ac7-9db8-c6b05a6c6da6">This collector uses the HTTP Check receiver to verify that endpoints of the OTCM system are reachable and returning expected responses. It is primarily used in the POC for monitoring endpoints that do not require authentication.</p><hr local-id="361fa876-d19c-4a2a-ae34-d4df2d94f044"/><h1 local-id="dab80c28-9518-448c-bb0b-592e99459bc9" id="APIMetricsCollector-TableofContents">Table of Contents</h1><style type='text/css'>/*<![CDATA[*/
+div.rbtoc1767101594758 {padding: 0px;}
+div.rbtoc1767101594758 ul {list-style: default;margin-left: 0px;padding-left: ;}
+div.rbtoc1767101594758 li {margin-left: 0px;padding-left: 0px;}
+
+/*]]>*/</style><div class='toc-macro rbtoc1767101594758'>
+<ul class='toc-indentation'>
+<li><a href='#APIMetricsCollector-UseCase'>Use Case</a></li>
+<li><a href='#APIMetricsCollector-DesignConsiderations'>Design Considerations</a></li>
+<li><a href='#APIMetricsCollector-Limitations'>Limitations</a></li>
+<li><a href='#APIMetricsCollector-Receivers'>Receivers</a>
+<ul class='toc-indentation'>
+<li><a href='#APIMetricsCollector-Explanation'>Explanation</a></li>
+</ul>
+</li>
+<li><a href='#APIMetricsCollector-Exporters'>Exporters</a>
+<ul class='toc-indentation'>
+<li><a href='#APIMetricsCollector-Explanation.1'>Explanation</a></li>
+</ul>
+</li>
+<li><a href='#APIMetricsCollector-Pipelines'>Pipelines</a>
+<ul class='toc-indentation'>
+<li><a href='#APIMetricsCollector-Explanation.2'>Explanation</a></li>
+</ul>
+</li>
+<li><a href='#APIMetricsCollector-RelatedDocumentation'>Related Documentation</a></li>
+</ul>
+</div><hr local-id="2a498a8f-238f-40af-bcc2-76f8fc01716e"/><h1 local-id="88b80b7a-76e1-4b57-8af2-3d2a59ff27fd" id="APIMetricsCollector-UseCase">Use Case</h1><p local-id="49068d6c-e59f-417a-86f7-137883f5338b">OTCM does not expose native health or performance endpoints for all components.</p><p local-id="79e459d6-ccb6-4f4f-9968-12c643d4a0aa">This collector demonstrates how to:</p><ul local-id="672133a4-1e96-42df-abb9-80336999e4e7"><li local-id="aeef8259-e15d-4603-b0b5-00e6c6c9dfad"><p local-id="1fdfc2b1-4722-448a-b0dd-5fbc08d67f55">Check availability of critical endpoints (ping and auth endpoints)</p></li><li local-id="20f236c1-4d89-4359-bcf2-7c26ec34cee2"><p local-id="ccaeabb8-6e9e-4d55-af7c-7908955d4b10">Measure basic latency and response metrics</p></li><li local-id="c17cb0cf-960a-4322-b21c-9f14842047ae"><p local-id="262e7724-e086-4364-8b24-2ac6513126ed">Integrate endpoint checks into an OpenTelemetry pipeline for centralized monitoring</p></li></ul><p local-id="60c37d01-ba8d-4c33-ae2d-f4552c510fc3">Currently, the collector focuses on endpoints that do not require authentication.</p><hr local-id="238f8ada-3e63-4266-af53-d5e631a52a72"/><h1 local-id="69736fc1-0711-4cee-99b0-5ba0196742f3" id="APIMetricsCollector-DesignConsiderations">Design Considerations</h1><ul local-id="a81ff0b7-d06d-43fc-a676-b39270c66464"><li local-id="be9ea670-4778-4d96-b4fe-c08170185617"><p local-id="0dd00b9f-eb5c-41ff-b764-d118efb89bcf">Only endpoints that work without authentication are used in the POC.</p></li><li local-id="dfa2ff68-22c4-4a83-bc2c-e39a73910501"><p local-id="d41dcdf7-1671-4f7b-a289-8803bbbd269a">Does not transform HTTP responses into business metrics; for this, external tools like the Prometheus JSON exporter would be needed.<br/><a class="external-link" data-card-appearance="inline" href="https://github.com/prometheus-community/json_exporter" local-id="adaf6657-20fb-4eaa-b89e-00f2bae99039" rel="nofollow">https://github.com/prometheus-community/json_exporter</a> </p></li><li local-id="bb789d83-078e-4b1f-9e68-f211a815d7c7"><p local-id="d864d3e2-7cd9-4ce0-89be-0e9d6f2712d8">Designed as a <strong>Contrib collector</strong> to use the HTTP Check receiver.</p></li></ul><hr local-id="3c5fac8b-3fe9-4008-9058-36f694b5873c"/><h1 local-id="9d6c95a4-db14-4e7b-867f-8bf16c993aed" id="APIMetricsCollector-Limitations">Limitations</h1><ul local-id="c88f1977-dca7-4fce-a8d6-da3ed69e3b0f"><li local-id="4f008353-a369-454d-938d-adc7b06113c7"><p local-id="a9360f8e-6406-4352-848e-0d9442d8a7da">Cannot automatically re-authenticate with expired bearer tokens. Middleware or API gateway required for authenticated endpoints.</p></li><li local-id="34fe10a4-5bee-42d4-9a3f-50cac22abc7e"><p local-id="1e4308ba-54c0-4687-899e-cf84ad26ef36">Cannot generate derived business metrics from HTTP responses.</p></li><li local-id="5d0d7a72-de77-4f7e-9eea-da4c9ac13b11"><p local-id="99150422-d255-49f2-beda-e4f2c7194c39">Metrics are limited to request/response timing, validation results, and response size.</p></li><li local-id="3c398017-2ed7-4149-8da7-3f740ce4645c"><p local-id="f652eb9a-4105-48cd-8d4b-4631fbd20e33"><code>httpcheck.request.duration</code> metric is currently broken in this collector version due to a known bug.<br/><a class="external-link" data-card-appearance="inline" href="https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/44729" local-id="4bf3f7ac-c8d4-4732-a50f-61b605660461" rel="nofollow">https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/44729</a> </p></li></ul><hr local-id="d9c4530d-0094-4c25-8818-fc4290eb5dd3"/><h1 local-id="2ba63ca1-5b79-4425-80ab-26f6d0e23014" id="APIMetricsCollector-Receivers">Receivers</h1><p local-id="95fce280-b07d-4c57-9918-6b2770f68460">Receivers define how telemetry enters the collector.</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">receivers:
+  httpcheck:
+    collection_interval: 10s
+    metrics:
+      httpcheck.dns.lookup.duration:
+        enabled: true
+      httpcheck.client.connection.duration:
+        enabled: true
+      httpcheck.client.request.duration:
+        enabled: true
+#      httpcheck.request.duration:  # currently broken due to bug https://github.com/issues/44729
+#        enabled: true
+      httpcheck.response.duration:
+        enabled: true
+      httpcheck.duration:
+        enabled: true
+      httpcheck.validation.passed:
+        enabled: true
+      httpcheck.validation.failed:
+        enabled: true
+      httpcheck.response.size:
+        enabled: true
+    targets:
+      - endpoint: &quot;http://localhost/OTCS/cs.exe/api/v1/ping&quot;
+        method: GET
+        validations:
+          - contains: &quot;rest_api&quot;
+      - endpoint: &quot;http://localhost/OTCS/cs.exe/api/v1/auth&quot;
+        method: POST
+        body: &#39;{&quot;username&quot;: &quot;John Doe&quot;, &quot;password&quot;: &quot;superFakePassword&quot;}&#39;
+        validations:
+          - contains: &quot;error&quot;
+          - json_path: &quot;$.status&quot;
+            equals: &quot;unauthorized&quot;</pre>
+</div></div><h2 local-id="121002e9-c55d-4c4d-a373-6d91359bef28" id="APIMetricsCollector-Explanation"><strong>Explanation</strong></h2><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="cb7dca19-ca68-4889-a0af-28ed70510e05" class="confluenceTable"><tbody><tr ac:local-id="4b0d6b52-1981-4e81-b68e-0d91ccad32f4"><th data-local-id="7c5cd50e-4bb1-49b7-824e-6a13015d69dd" class="confluenceTh"><p local-id="f23fd113-632b-4d09-9bbf-a61b919434e5">Setting</p></th><th data-local-id="9fdd59de-3210-41ae-aa48-1900d2f40f5f" class="confluenceTh"><p local-id="5e1e6818-2aef-4644-b714-6f682c61f161">Purpose</p></th></tr><tr ac:local-id="11e07881-cc4a-4227-8060-7bd721cbc97b"><td data-local-id="5208d757-2cac-4c91-8a5d-a6acf5c6aba8" class="confluenceTd"><p local-id="bb46d5ad-8cbe-4914-8e21-de8e1afdc59a">httpcheck</p></td><td data-local-id="70b7c578-8e87-4041-99ba-bf6328a4c668" class="confluenceTd"><p local-id="afaca063-866b-409e-ac11-5572800eac43">Declares the HTTP Check receiver (Contrib version)</p></td></tr><tr ac:local-id="52de85de-8b72-4c2e-a287-b2a4241a84f6"><td data-local-id="be706b81-4588-4cdf-884b-cba877c7b4c8" class="confluenceTd"><p local-id="19582c28-35c7-46f8-9777-6722f069012d">collection_interval</p></td><td data-local-id="ef6b8eba-9002-4c96-af44-0d54dae54e8a" class="confluenceTd"><p local-id="d9d7fe11-7d7a-4b76-a3aa-301490753d06">How frequently each target is checked</p></td></tr><tr ac:local-id="a2b4ed5a-ce62-4c40-a1a6-9845926b2df0"><td data-local-id="932bfd59-c624-4ad7-a172-235d926ef84c" class="confluenceTd"><p local-id="9e99991c-40a6-4ceb-9e40-af7f724a0275">metrics</p></td><td data-local-id="f085d12c-b8cd-4c0f-a841-55e8ead8e08b" class="confluenceTd"><p local-id="0adf021b-bda0-4fbf-80b9-1734b2f67a70">Defines which request/response metrics are collected</p></td></tr><tr ac:local-id="aabac253-9f8a-40b6-a28d-1073154e543c"><td data-local-id="008775b3-7e7f-4ddc-9978-3bf848a2f081" class="confluenceTd"><p local-id="07182e2c-e69b-4283-abc8-0e53a685c20f">targets</p></td><td data-local-id="665fd266-b98e-4068-9a99-85d54a1691b1" class="confluenceTd"><p local-id="031e5468-9503-4793-9074-f5cefcd48643">List of HTTP endpoints to check and associated validation rules</p></td></tr><tr ac:local-id="ac776c05-442e-4ac5-a92b-dd49a47905c6"><td data-local-id="9b9f5bf4-f8cb-4cf9-8132-9a82d25b4e86" class="confluenceTd"><p local-id="b4711cd7-87d1-4b1e-8f11-9f9d890daee6">validations</p></td><td data-local-id="b96a8830-972d-4766-a491-bb312d3b4a0c" class="confluenceTd"><p local-id="e8867506-07f4-4453-8101-939b2c2328fb">Rules to determine if a request passes (string match or JSON path)</p></td></tr></tbody></table></div><blockquote local-id="57111355-579c-4cd9-93a2-77220ac854f5"><p local-id="fc399c0c-947f-41bc-b2ca-951709e0eed3">The collector uses the HTTP Check receiver from the Contrib version.<br/><a class="external-link" data-card-appearance="inline" href="https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/httpcheckreceiver" local-id="2ace0f3f-f0d9-4850-82ff-16ebd247f1e2" rel="nofollow">https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/httpcheckreceiver</a> </p></blockquote><hr local-id="4f215001-a04f-450a-a97d-f1cd93b433f7"/><h1 local-id="9b488716-e843-4f2f-81dd-1b766ef63277" id="APIMetricsCollector-Exporters">Exporters</h1><p local-id="3fa1c668-f473-4c66-b6e2-9e49ca07b661">Exporters define where the telemetry is sent.</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">exporters:
+  debug:
+  otlp:
+    endpoint: &quot;127.0.0.1:8895&quot;
+    tls:
+      insecure: true</pre>
+</div></div><p local-id="a2e63d1b-2141-43db-8b4a-c8c977c675e2" /><h2 local-id="22138b4c-6b4a-448e-9f22-767d2f4f507f" id="APIMetricsCollector-Explanation.1"><strong>Explanation</strong></h2><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="d769bf7e-06be-4e3c-a858-39ff0f6ded47" class="confluenceTable"><tbody><tr ac:local-id="c3229064-59d5-464d-91d4-73465dbc41dc"><th data-local-id="1015b5cb-592c-4bb9-98da-61a362c135a1" class="confluenceTh"><p local-id="ade014ea-de2c-434b-af64-4eeae2c442f6">Exporter</p></th><th data-local-id="032a8101-f9c1-455a-bdd4-4b655a6f602e" class="confluenceTh"><p local-id="894aa377-8af7-4dd2-9b6f-8083e6b5b977">Purpose</p></th></tr><tr ac:local-id="9f3e166e-13a3-4178-be23-598c980255bc"><td data-local-id="8d9c1a6f-6240-448b-b33a-157059601eba" class="confluenceTd"><p local-id="dcb5a6a1-d947-49e0-a6f6-ea206d580b17">debug</p></td><td data-local-id="fb1b9cb5-c651-42dd-ad89-f8a13a80534e" class="confluenceTd"><p local-id="0dbe02da-5221-4850-953d-d83c62851540">Outputs metrics to console for validation and debugging</p></td></tr><tr ac:local-id="fc8c2025-4409-4dbf-b636-4ba25358bf72"><td data-local-id="e5903b2c-a84f-4b65-85d9-c9123c9631d6" class="confluenceTd"><p local-id="80de0523-1640-4328-8195-14fff756bd3d">otlp</p></td><td data-local-id="a321ad26-f15d-42e1-8125-77c21900b218" class="confluenceTd"><p local-id="e7032054-838d-4750-8596-b667144c50ec">Sends metrics to the Central Collector</p></td></tr></tbody></table></div><hr local-id="08e5bd10-b533-41c7-9be0-3e5fdfbdd8bd"/><h1 local-id="4a0520d4-24f7-4162-b29b-5d3c1ce0e93a" id="APIMetricsCollector-Pipelines">Pipelines</h1><p local-id="66a71671-02df-482e-8cf1-9c7ceac5fbf3">Pipelines define how telemetry flows through receivers, processors, and exporters.</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">service:
+  telemetry:
+    metrics:
+      readers:
+        - periodic:
+            exporter:
+              otlp:
+                protocol: http/protobuf
+                endpoint: &quot;127.0.0.1:8896&quot;
+
+  pipelines:
+    metrics:
+      receivers: [httpcheck]
+      exporters: [debug, otlp]</pre>
+</div></div><p local-id="6485bdce-8246-4066-9f70-921b322d389f" /><h2 local-id="a17e4f39-7d52-4d15-a4ae-0fe8712108e1" id="APIMetricsCollector-Explanation.2"><strong>Explanation</strong></h2><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="99bb2a8f-c283-46e2-a411-648458c84da3" class="confluenceTable"><tbody><tr ac:local-id="eec6b305-a8b8-4a49-8f6b-6f4cb1807d72"><th data-local-id="3425dc9b-833d-45a4-be88-988d3594813e" class="confluenceTh"><p local-id="c37ae37e-cb82-4894-8bcf-a3402027f3e4">Pipeline</p></th><th data-local-id="5fca58ac-c62f-49f2-b508-20bbde377152" class="confluenceTh"><p local-id="7ed16e2d-9c38-4a8f-bee1-cd6a60ebc73a">Purpose</p></th></tr><tr ac:local-id="23c95a69-0187-4f6e-9e80-6a0f1c22a2ac"><td data-local-id="d9bc963a-36c2-46f1-9b44-e16b033d8cc8" class="confluenceTd"><p local-id="853bb829-4948-4762-9e03-155c3c7038b3">metrics</p></td><td data-local-id="1ddce75b-8a91-4908-bb90-707f27a4f2a2" class="confluenceTd"><p local-id="2fb067db-ce77-40b3-9dd7-ab6b8dfd122d">Collects metrics from the HTTP Check receiver and forwards them to debug output and the central collector</p></td></tr><tr ac:local-id="36614953-8826-4228-8808-3d07f2919db6"><td data-local-id="0cde7e4e-ac94-4394-969e-b52c7f7e029a" class="confluenceTd"><p local-id="5ca6f1ef-c7ef-4ce2-b34d-a982339e7f7f"><code>telemetry</code></p></td><td data-local-id="679c7400-a8bd-472a-9afa-65a2b607e8f6" class="confluenceTd"><p local-id="3755dda9-f7d4-4bb6-8d86-716ab7f0e4d8">Periodically exports internal telemetry to the central collector</p></td></tr></tbody></table></div><hr local-id="c95af228-4387-4077-ad4b-9c48104e1c39"/><h1 local-id="1920b634-a315-4a42-9c53-819251adab21" id="APIMetricsCollector-RelatedDocumentation">Related Documentation</h1><ul local-id="ef3ec7de-d307-4d6d-9dfe-4e08bf84db02"><li local-id="adca4f6b-9090-43fd-867c-729c09869142"><p local-id="c67a4dff-b5bc-43dc-9b7d-ee5e25c245c7"><strong>Central Collector</strong><br/><a href="Central-Collector_605257739.html" data-linked-resource-id="605257739" data-linked-resource-version="5" data-linked-resource-type="page">Central Collector</a> </p></li><li local-id="b728a59f-7868-4927-89a4-6bb1995cb7f5"><p local-id="287f7624-6be8-428c-bd4d-d204f85a98a3"><strong>Content Management Server API</strong><br/><a href="API_611057665.html" data-linked-resource-id="611057665" data-linked-resource-version="2" data-linked-resource-type="page">API</a> </p></li><li local-id="0d4196ac-cea4-46e7-ac7a-f4d93cd1fab7"><p local-id="e8308e5e-8b34-4a60-b773-e3e1a5449406"><strong>Content Management Server API - Endpoints</strong><br/><a class="external-link" data-card-appearance="inline" href="https://developer.opentext.com/ce/products/content-management/apis/content-server-24-4-0" local-id="3fdef62c-cd17-4b2a-b883-cf0fbd4fdbf5" rel="nofollow">https://developer.opentext.com/ce/products/content-management/apis/content-server-24-4-0</a> </p></li><li local-id="e6ce10f8-114a-4595-8c19-a3b0008884b8"><p local-id="6fd12f55-d834-4a72-a947-cc74b08a1535"><strong>OpenTelemetry Collector – HTTP Check Receiver</strong><br/><a class="external-link" data-card-appearance="inline" href="https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/httpcheckreceiver" local-id="75d09933-3322-4a0f-9332-0d2bf02cdf80" rel="nofollow">https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/httpcheckreceiver</a> </p></li><li local-id="c6880fb8-971c-49dd-b2e6-228aae15d1fe"><p local-id="0ff9e6cf-bfe7-4c00-af02-0f720bdbd05b"><strong>Prometheus JSON Exporter (tested, not implemented)</strong><br/><a class="external-link" data-card-appearance="inline" href="https://github.com/prometheus-community/json_exporter" local-id="221f2ddf-9922-405d-8482-9112072ae7ad" rel="nofollow">https://github.com/prometheus-community/json_exporter</a> </p></li></ul>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on dec 30, 2025 14:33</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Monitoring Expansion : Admin Panel Configuration</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Monitoring Expansion</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Overzicht_373653886.html">Overzicht</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Components_491388972.html">Components</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="492863490.html">OpenText Content Server (xECM)</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Monitoring Expansion : Admin Panel Configuration
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                            
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Bram Verkuijlen</span>, last modified on dec 18, 2025
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <hr local-id="d5aa80f8-c580-4a16-b827-8b6be8fa5af2"/><h1 local-id="4a4b08f1-ab64-4e51-9b63-56d5d84f3d79" id="AdminPanelConfiguration-TableofContents">Table of Contents</h1><style type='text/css'>/*<![CDATA[*/
+div.rbtoc1767101593365 {padding: 0px;}
+div.rbtoc1767101593365 ul {list-style: default;margin-left: 0px;}
+div.rbtoc1767101593365 li {margin-left: 0px;padding-left: 0px;}
+
+/*]]>*/</style><div class='toc-macro rbtoc1767101593365'>
+<ul class='toc-indentation'>
+<li><a href='#AdminPanelConfiguration-Purpose'>Purpose</a>
+<ul class='toc-indentation'>
+<li><a href='#AdminPanelConfiguration-AccessingtheAdminPanel'>Accessing the Admin Panel</a></li>
+</ul>
+</li>
+<li><a href='#AdminPanelConfiguration-FluentBitIntegration'>Fluent Bit Integration</a>
+<ul class='toc-indentation'>
+<li><a href='#AdminPanelConfiguration-AdminPanelLocation:'>Admin Panel Location:</a></li>
+<li><a href='#AdminPanelConfiguration-Features:'>Features:</a></li>
+</ul>
+</li>
+<li><a href='#AdminPanelConfiguration-InstanceLogSettings'>Instance Log Settings</a>
+<ul class='toc-indentation'>
+<li><a href='#AdminPanelConfiguration-AdminPanelLocation:.1'>Admin Panel Location:</a></li>
+<li><a href='#AdminPanelConfiguration-ConfigurableOptions:'>Configurable Options:</a></li>
+</ul>
+</li>
+<li><a href='#AdminPanelConfiguration-TemporaryLogSettings'>Temporary Log Settings</a>
+<ul class='toc-indentation'>
+<li><a href='#AdminPanelConfiguration-AdminPanelLocation:.2'>Admin Panel Location:</a></li>
+<li><a href='#AdminPanelConfiguration-Features:.1'>Features:</a></li>
+</ul>
+</li>
+<li><a href='#AdminPanelConfiguration-SystemMonitoring(JSONEvents)'>System Monitoring (JSON Events)</a>
+<ul class='toc-indentation'>
+<li><a href='#AdminPanelConfiguration-AdminPanelLocation:.3'>Admin Panel Location:</a></li>
+<li><a href='#AdminPanelConfiguration-Features:.2'>Features:</a></li>
+<li><a href='#AdminPanelConfiguration-JavaJVMLogs'>Java JVM Logs</a></li>
+<li><a href='#AdminPanelConfiguration-References'>References</a></li>
+</ul>
+</li>
+</ul>
+</div><hr local-id="7f8dad0b-3155-43cd-ac93-4f41358f8c68"/><h1 local-id="589cd379-ef9c-4cec-917c-5c2d766d34a8" id="AdminPanelConfiguration-Purpose">Purpose</h1><p local-id="a2a2beb6-a4ab-4f6a-8a22-1049150fe35e">The Admin Panel serves as the central interface to configure OTCM services, particularly <strong>logging and monitoring settings</strong>.</p><p local-id="51954c2b-43a0-4946-b7ca-fd8d328413bd">For this POC, this page focuses on:</p><ul local-id="028c2ad0-75c2-4547-abb8-add37f1f73aa"><li local-id="7e7a33c6-e0bc-44ee-89cf-d51ebd3f7b05"><p local-id="b00e4f96-18fb-4ce1-8def-00c21d28662a">How to navigate the Admin Panel</p></li><li local-id="c29241c7-65af-4faf-9580-0bc0e5f55c74"><p local-id="6bd402dc-5f44-442d-b7c1-3955da7d5aec">Activating or deactivating logging modules relevant for monitoring</p></li><li local-id="aed609d7-046e-445f-8c29-10f38ab74f05"><p local-id="d15c28b1-2131-4483-98e8-0fc85292078a">Enabling Fluent Bit integration for forwarding system and security logs</p></li><li local-id="1bdb50f9-a5e2-45d0-97df-25d8349522e6"><p local-id="61f1977e-154d-4f09-8800-5e9880aee316">Configuring temporary logging for troubleshooting purposes</p></li></ul><blockquote local-id="ddb6e5bd-1476-463e-a2b2-8f9628bf1313"><p local-id="6073c8ef-d093-4deb-9d48-54b18770a991">Detailed log types, formats, and usage are covered in the Logs subpages.</p></blockquote><hr local-id="45385947-0587-456f-9fa9-0ccb1ea9f336"/><h2 local-id="b38b9d9c-2236-48e2-942d-e6386a18d487" id="AdminPanelConfiguration-AccessingtheAdminPanel">Accessing the Admin Panel</h2><p local-id="727211cd-89ca-4e23-99a1-7af41bb2ec6a">The Admin Panel is available through the web browser via:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">http://&lt;OTCM-HOST&gt;/OTCS/cs.exe?func=admin.index</pre>
+</div></div><ul local-id="4a38c790-d772-4c4f-a22f-80f7c84810bf"><li local-id="1508e4cb-ebdd-4ad1-af2f-a90d05e1389e"><p local-id="2bdd9683-f9a1-43e0-94da-f25a285c193d"><code>&lt;OTCM-HOST&gt;</code> should be replaced with the <strong>hostname or IP address of the machine where OTCM is running</strong>.</p></li><li local-id="861258df-fece-4e1b-bd58-69dc8c1746de"><p local-id="f4439439-632f-4864-a8c3-7617fb45011b"><strong>Administrator privileges</strong> are required to access the panel and make changes to log settings or other configurations.</p></li><li local-id="c883dbd8-4723-4a51-aee5-8782e6e0dadc"><p local-id="23c36989-741c-4829-b803-312d57eca5eb">In multi-node setups, always connect <strong>directly to the target node</strong> for node-specific settings (especially for Instance Log Settings).</p></li></ul><hr local-id="f7fcb1aa-7687-44c4-8a72-2854e0b40ed9"/><h1 local-id="fb588792-08f6-4f36-b597-ba57e2bbeb83" id="AdminPanelConfiguration-FluentBitIntegration">Fluent Bit Integration</h1><p local-id="cbffdbbb-2b2e-4f95-8a49-bedeb096728f">OTCM supports integration with <strong>Fluent Bit</strong> for shipping system and security logs.</p><p local-id="42da72b8-a1af-49e0-9ac1-2e213668dd3a" /><h2 local-id="f146809a-2bdf-4689-b44d-d5ed5cd41326" id="AdminPanelConfiguration-AdminPanelLocation:"><strong>Admin Panel Location:</strong></h2><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">Admin Server → Log Settings → Fluent Bit Settings</pre>
+</div></div><p local-id="d951fe6c-18b7-4935-bbf0-823bf689cdf6" /><h2 local-id="dc24dc5e-f39a-4a59-8c26-9ee254cb819d" id="AdminPanelConfiguration-Features:"><strong>Features:</strong></h2><ul local-id="2253e038-59ed-4173-bd7b-c23c7fc4b81f"><li local-id="dcd90af8-8a4a-46df-878d-9e1b93f849b9"><p local-id="c40366fb-7eeb-445d-8f1b-2a60e6ac09b3">Forward <strong>Security Logs</strong> and <strong>System Monitoring Events</strong> via TCP (default port 5170)</p></li><li local-id="96f4c402-e01a-46bb-8451-28f9b7727453"><p local-id="6a90fb76-fa6a-49fb-9294-eb3c736ef0a9">Generates <strong>JSON-formatted events</strong> that external collectors (like Fluent Bit) can process</p></li><li local-id="690d08d5-c227-4161-857a-e425f23797ab"><p local-id="56476389-9de0-4e15-a520-a500b03611b6">OTCM does <strong>not start or manage Fluent Bit</strong>; administrators must install, start, and configure Fluent Bit separately</p></li></ul><p local-id="deeec9d9-a90c-4050-98af-ab94e79d78b6"><strong>POC Relevance:</strong><br/>Enables <strong>centralized collection</strong> of system and security logs for further processing in OpenTelemetry or other observability tools.</p><hr local-id="e5c02e32-9c5c-44f4-b7b2-775c334cf12a"/><h1 local-id="1691070e-59fb-4c89-a911-21e237e994ac" id="AdminPanelConfiguration-InstanceLogSettings">Instance Log Settings</h1><p local-id="600b5ed1-e5b5-4bd2-9fee-c90899ec2224"><strong>Instance Log Settings</strong> allow per-service configuration for OTCM log modules.</p><p local-id="dce1cde0-3eea-43de-95fc-aa78a9c0d45f" /><h2 local-id="18af1e59-0371-4707-9cad-89e7d05693e7" id="AdminPanelConfiguration-AdminPanelLocation:.1"><strong>Admin Panel Location:</strong></h2><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">Admin Server → Log Settings → Instance Log Settings</pre>
+</div></div><p local-id="fd87bf6b-0849-4f00-9d62-f3528f9a2324" /><h2 local-id="903754fb-6502-4f9f-bb96-a9798387d87d" id="AdminPanelConfiguration-ConfigurableOptions:"><strong>Configurable Options:</strong></h2><ul local-id="cdf1961e-6ca2-45cf-840b-5a5156e51a07"><li local-id="459c4f83-0274-4db1-a191-7d9374832c65"><p local-id="ae1312d8-6a56-4320-a804-925887af5b8f">Enable/disable log modules for specific services</p></li><li local-id="38bbc696-3ebf-4882-b5d6-6860ebb18683"><p local-id="458b88c8-fb58-4a90-ba38-6956fea4ad79">Set <strong>log levels</strong> (INFO, WARN, ERROR, TRACE, etc.)</p></li><li local-id="1e1bd22c-7b3e-4a00-8316-5ada54cec301"><p local-id="51e45f57-015b-4e5b-8629-68dcf562f658">Specify <strong>storage locations</strong> and rolling log policies</p></li><li local-id="6bd4ca5f-7322-4b05-b536-27abe5f9256f"><p local-id="a327954f-8548-440b-bc6a-b4c880e8feec">Configure <strong>buffering behavior</strong> and module-specific options (e.g., SOAP parameters, request details)</p></li></ul><blockquote local-id="0c6b2340-0216-4b95-9bce-e2205e764312"><p local-id="c7b46cf0-1014-4ac2-b81b-e6a4ed7fe5a6"><strong>Note:</strong> Changes apply only to the <strong>connected node</strong>. In multi-node setups, always connect directly to the target node to apply changes correctly.</p></blockquote><hr local-id="68ff6642-8a2d-41f6-b96e-d21cf1cf87e2"/><h1 local-id="b58587fd-0605-4a90-aba1-1aadd3df4d52" id="AdminPanelConfiguration-TemporaryLogSettings">Temporary Log Settings</h1><p local-id="bc6842df-17fb-4695-be02-6f30476d1690">Temporary logging can be activated for <strong>diagnostics, troubleshooting, or short-term monitoring</strong>.</p><p local-id="db01a1e3-6d2c-432d-9e08-0ba1c16e85f5" /><h2 local-id="7c88844c-014f-4e6b-b638-cd6f5fa08a1c" id="AdminPanelConfiguration-AdminPanelLocation:.2"><strong>Admin Panel Location:</strong></h2><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">Admin Server → Log Settings → Temporary Log Settings</pre>
+</div></div><p local-id="074afe6a-7289-4e2d-b65f-fa7f826104be" /><h2 local-id="aacda6f2-ca3c-4ab5-840c-21d97e573ebc" id="AdminPanelConfiguration-Features:.1"><strong>Features:</strong></h2><ul local-id="00aa9972-b97b-4235-ade6-ed483551fdba"><li local-id="971c89ec-3a22-4a4d-8b27-808171e0e88a"><p local-id="8e816c26-5cab-4dec-809e-d9d9d624d587">Expiration date automatically reverts temporary settings to defaults</p></li><li local-id="d16def5f-c9ff-4f35-9185-5d4823d3d6ab"><p local-id="15142920-a921-424d-b4a8-a5e820cbdb4d">Can be enabled for specific servers in the OTCM installation</p></li><li local-id="9444c680-49e5-404e-ae0e-a5059cb75325"><p local-id="79098961-5d9b-4356-9b4d-9c7252469bc9">Configurable <strong>log levels</strong> for SQL Connect Logs, Security Logs, and Thread Logs</p></li></ul><blockquote local-id="3cc4a54e-8dea-422e-ac66-259bd1b7651a"><p local-id="c9770a62-6d30-4cb4-9b42-73f96ffbf306">Temporary logging allows capturing additional information <strong>without impacting long-term performance or storage</strong>.</p></blockquote><hr local-id="3769df31-7a6c-44a2-a080-c3f229e234a1"/><h1 local-id="1c92b5fe-0ca1-409c-b79d-e82d475477de" id="AdminPanelConfiguration-SystemMonitoring(JSONEvents)">System Monitoring (JSON Events)</h1><p local-id="d97bc9d6-8f8d-437c-83de-f21e980947d4">OTCM generates <strong>System Monitoring Events</strong> for internal status and health.</p><p local-id="1a90dde0-ca64-4511-ae7e-6f94e2a67699" /><h2 local-id="d73fe581-85e7-4767-b836-ad18d5099ebc" id="AdminPanelConfiguration-AdminPanelLocation:.3"><strong>Admin Panel Location:</strong></h2><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">Admin Server → System Monitoring → System Monitoring</pre>
+</div></div><p local-id="ab08c278-f8d3-4fe3-a1a7-fe21ec9e1365" /><h2 local-id="8841d28f-0ade-4940-bdff-24e9d52bb0ca" id="AdminPanelConfiguration-Features:.2"><strong>Features:</strong></h2><ul local-id="aa31c19f-0756-4e5a-8de7-447ae29ec13a"><li local-id="5fa42f72-2ef3-4b2b-82fb-1dd3d5c02bec"><p local-id="1400b946-5487-41f1-aaec-2590c15e0d4b">Captures <strong>server and process health</strong>, resource utilization, and warnings/errors</p></li><li local-id="cf0b3b1b-707b-4b34-ba59-29dc39a3130a"><p local-id="f745a6ed-30af-47fc-8f62-4b2d0f09631b">Forwarded via <strong>Fluent Bit TCP listener</strong> (default port 5170) in JSON format when turned on in <a data-card-appearance="inline" href="https://amexio-group.atlassian.net/wiki/spaces/~7120202b5ef987012e4390bd33cd0bcd1947f8/pages/605028361/Admin+Panel+Configuration#Fluent-Bit-Integration" local-id="716b5051-f3ca-40e8-b6ac-4f9187b34881" rel="nofollow">https://amexio-group.atlassian.net/wiki/spaces/~7120202b5ef987012e4390bd33cd0bcd1947f8/pages/605028361/Admin+Panel+Configuration#Fluent-Bit-Integration</a> </p></li></ul><blockquote local-id="d3ed1a96-8e38-4fa1-a7af-bfb99a3a1240"><p local-id="59e34f72-a1da-4e9c-a58c-e08fc2f88ba5">Detailed examples are provided in <a href="605978637.html" data-linked-resource-id="605978637" data-linked-resource-version="5" data-linked-resource-type="page">System monitoring logs</a></p></blockquote><hr local-id="93ee04b1-2c7d-4435-b0bf-34917035871b"/><h2 local-id="cdcc398e-f5ea-42f7-9457-aed3a8c341b6" id="AdminPanelConfiguration-JavaJVMLogs">Java JVM Logs</h2><ul local-id="068cd7b8-4fbe-4ecd-b4e6-380745177374"><li local-id="8e8c397b-ca41-45fb-9420-0b46bd111cc9"><p local-id="5e76f9f7-66c3-41a6-be1c-27fd93f320d2">OTCM JVM logs exist but are <strong>not accessible through the Admin Panel</strong>.</p></li><li local-id="54926d2e-33e3-496a-b519-9f18fa6d9da7"><p local-id="78f14089-4d82-40bc-971a-731c747a37a0">Configuration is managed via the file:</p></li></ul><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">OPENTEXT\OTCS\config\javaserver.logging.properties</pre>
+</div></div><ul local-id="92a6de9c-a4d7-40d8-b7a4-3e7d85460097"><li local-id="060e6d7a-3b2c-4db1-8665-98f7c14921cf"><p local-id="3295026d-e43b-49c4-9150-f26ed267f399">Logs are stored in:</p></li></ul><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">C:\OPENTEXT\OTCS\logs\otjava*.log.*</pre>
+</div></div><ul local-id="c8778bed-c8cb-4fa8-bab7-4dc369c5f2d9"><li local-id="890d44d6-db25-4ed2-89e7-5dbba8007b4c"><p local-id="0733b031-efdb-4814-9aab-4a6fc3d46381">For the POC, JVM logs are <strong>optional and accessed via the file system</strong>, not through Admin Panel settings.</p></li></ul><blockquote local-id="404e31d9-5871-4036-9b96-11c960e43ca3"><p local-id="3cbee580-1d98-4942-94de-651406b2ab31">Detailed examples are provided in <a href="Java-JVM-Logs_607420451.html" data-linked-resource-id="607420451" data-linked-resource-version="4" data-linked-resource-type="page">Java logs</a> </p></blockquote><hr local-id="e386d3c6-73ce-461e-9783-e4c603635dd5"/><h2 local-id="8b0ac99e-24f1-49db-87bc-1154ac2b5b6c" id="AdminPanelConfiguration-References">References</h2><ul local-id="f7b14057-2305-41be-a0c4-a69617157c67"><li local-id="fa4fdd2b-9dc4-411d-aad9-f43ba4b152c4"><p local-id="69dd785c-bb9c-4667-b110-25977bddf036">Logs <br/><a href="Logs_492535812.html" data-linked-resource-id="492535812" data-linked-resource-version="10" data-linked-resource-type="page">Logs</a> </p></li><li local-id="625845b3-32c1-41dc-9636-5a3f347aacc6"><p local-id="6afc17bd-fc12-4a21-8b71-fa2e20d1205a">Fluent Bit<br/><a href="Fluent-bit_492339201.html" data-linked-resource-id="492339201" data-linked-resource-version="9" data-linked-resource-type="page">Fluent-bit</a> </p></li><li local-id="b8ca471b-efcd-48d0-848d-a665e2e1dd68"><p local-id="6309649a-13ad-485a-9461-9c911ef85dc2">OTCM Overview – Role of OTCM in POC architecture<br/><a href="492863490.html" data-linked-resource-id="492863490" data-linked-resource-version="10" data-linked-resource-type="page">OpenText Content Server (xECM)</a> </p></li></ul>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on dec 30, 2025 14:33</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

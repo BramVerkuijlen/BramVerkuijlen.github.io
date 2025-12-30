@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Monitoring Expansion : Roadmap</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Monitoring Expansion</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Overzicht_373653886.html">Overzicht</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Monitoring Expansion : Roadmap
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                            
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Bram Verkuijlen</span>, last modified on dec 30, 2025
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p local-id="f483bdb6-103e-4615-957a-21e26aecd0b3">This section outlines planned improvements, research directions, and potential future expansions for the Monitoring Expansion Proof of Concept (POC).</p><p local-id="a5ff0c59-91d6-4e59-b909-0c409cf5c293">It is intended as a living document for tracking next steps and possible enhancements.</p><hr local-id="33bd8b2c-fb1f-4434-9d66-a80b317c4106"/><h1 local-id="d8f54978-40b1-442e-8eaa-a5d47a90ac18" id="Roadmap-TableofContents">Table of Contents</h1><style type='text/css'>/*<![CDATA[*/
+div.rbtoc1767101597296 {padding: 0px;}
+div.rbtoc1767101597296 ul {list-style: default;margin-left: 0px;padding-left: ;}
+div.rbtoc1767101597296 li {margin-left: 0px;padding-left: 0px;}
+
+/*]]>*/</style><div class='toc-macro rbtoc1767101597296'>
+<ul class='toc-indentation'>
+<li><a href='#Roadmap-Short-TermImprovements'>Short-Term Improvements</a>
+<ul class='toc-indentation'>
+<li><a href='#Roadmap-MainConfiguration&amp;FolderStructureDecoupling'>Main Configuration &amp; Folder Structure Decoupling</a></li>
+<li><a href='#Roadmap-EnhancedApplicationMonitoring'>Enhanced Application Monitoring</a></li>
+</ul>
+</li>
+<li><a href='#Roadmap-Mid-TermImprovements'>Mid-Term Improvements</a>
+<ul class='toc-indentation'>
+<li><a href='#Roadmap-LinuxSupport&amp;JavaAgent'>Linux Support &amp; Java Agent</a></li>
+<li><a href='#Roadmap-Trace&amp;LogRestructuring'>Trace &amp; Log Restructuring</a></li>
+</ul>
+</li>
+<li><a href='#Roadmap-Long-TermImprovements'>Long-Term Improvements</a>
+<ul class='toc-indentation'>
+<li><a href='#Roadmap-Containerization&amp;CloudDeployment'>Containerization &amp; Cloud Deployment</a></li>
+<li><a href='#Roadmap-Security'>Security</a></li>
+</ul>
+</li>
+</ul>
+</div><hr local-id="aa7e898d-2f21-4c87-875c-48b355d4d9dd"/><h1 local-id="0ec1f171-40db-494c-85f9-c5899ddc59c0" id="Roadmap-Short-TermImprovements"><strong>Short-Term Improvements</strong></h1><p local-id="94a8f6df-c590-4db6-8e34-538e79a9a108" /><h2 local-id="a86ef2ed-ea42-4d07-981d-6d5ec2f0ab7b" id="Roadmap-MainConfiguration&amp;FolderStructureDecoupling"><strong>Main Configuration &amp; Folder Structure Decoupling</strong></h2><ul local-id="11dd4400-f51e-4177-852a-280638d556b4"><li local-id="8f7aaef5-73d7-4fcd-928b-c7880242fefa"><p local-id="e5a40d89-2eb4-4ecc-ab66-899e457d63a4">Centralize ports, file paths, and other configurable parameters in a main <code>config.yml</code></p></li><li local-id="1652857f-b811-4d65-bdf7-ef71377e61b3"><p local-id="bdc564df-5afd-43cb-baf9-b75d981be86f">Make folder paths more flexible to allow easy deployment on different Windows systems</p></li><li local-id="fc16974e-4eaf-4579-abfc-84b9fbda2f89"><p local-id="f5128557-cd6a-4bd1-be5b-eecb2de0d5e7">Ensure default configurations minimize conflicts with existing services</p></li></ul><p local-id="6b4c1349-34c0-4231-964e-0ffd7565d516" /><h2 local-id="ef9b202c-4311-437a-8450-38be584a9760" id="Roadmap-EnhancedApplicationMonitoring"><strong>Enhanced Application Monitoring</strong></h2><ul local-id="2b731670-0ee6-4140-8f2d-e2512313cd55"><li local-id="82471fe7-21bb-4de9-81bb-f0b9c7b0b00b"><p local-id="12fe1404-dfa9-48a2-bf6b-027d6fe1bd73">Explore using a reverse proxy or API gateway to gather additional performance telemetry</p></li><li local-id="9e7ae7a7-5b06-4a75-8095-b56f9ab75d43"><p local-id="7c1e246c-e3e8-41b6-9c7f-0525356eb206">Could provide deeper insights into request timings, throughput, and bottlenecks</p></li><li local-id="ae02564f-6fd5-4b9e-9efe-c7aa9f10a2c5"><p local-id="18b36699-ebc6-43e8-b147-3644fad9dfe5">Add to advice section for AmeXio use cases</p></li></ul><hr local-id="93e1139c-daa7-4f3f-8422-8ec69f0cbe03"/><h1 local-id="506db41f-b741-4d1c-91ec-05fcf540b857" id="Roadmap-Mid-TermImprovements"><strong>Mid-Term Improvements</strong></h1><p local-id="0f3605c6-ce36-4dc0-b235-f3243712ffbe" /><h2 local-id="2d35559f-2007-4f76-8a96-1b96cea726b3" id="Roadmap-LinuxSupport&amp;JavaAgent"><strong>Linux Support &amp; Java Agent</strong></h2><ul local-id="16215e95-7fbe-4412-a691-536c237760df"><li local-id="a0b85eba-4cbc-4f43-83ed-e7cda29ea097"><p local-id="8b123d0c-858c-4083-9f29-e26a7574bae4">Investigate Linux deployment options for OpenText Content Server (xECM) or collectors</p></li><li local-id="79648bc0-3862-4301-91e5-d1174eaa8008"><p local-id="3388622f-eb8e-4504-a9c7-8ea2c974aba0">Evaluate if a Java agent can be installed for more granular metrics and traces</p></li><li local-id="4f113220-4291-4200-a9c0-aca05ece64e9"><p local-id="01296df2-0f57-43e2-bbc2-1a46c01a56c0">Test collectors, Prometheus, Loki, and Grafana on Linux systems</p></li></ul><p local-id="7d40b890-b04a-46a4-89b8-d642bbd35530" /><h2 local-id="996240d9-c2c3-4f3f-abbc-b201e0fee418" id="Roadmap-Trace&amp;LogRestructuring"><strong>Trace &amp; Log Restructuring</strong></h2><ul local-id="25fb1e3d-d93c-4ea4-9a4f-028a90b1c958"><li local-id="2e72aeb2-3ded-4a36-8504-801fd5c3faa4"><p local-id="7423e85f-2d1a-44eb-a49b-ac10d9299798">Explore reorganizing log-derived traces for better correlation with metrics</p></li><li local-id="78834f0c-dc71-445b-a2ae-b47f498616c8"><p local-id="bce719d4-7d31-4741-938f-f18f705cf837">Improve histogram bucket accuracy and timing measurement</p></li></ul><hr local-id="d1726485-22ef-4440-baec-332b869496d4"/><h1 local-id="101dcd5b-73dc-4fb5-90a2-49d549ea12b7" id="Roadmap-Long-TermImprovements"><strong>Long-Term Improvements</strong></h1><p local-id="10e7227d-d952-4655-9ace-4e4c1b517e7f" /><h2 local-id="1fbf37c5-e492-4468-82f2-19198a86d234" id="Roadmap-Containerization&amp;CloudDeployment"><strong>Containerization &amp; Cloud Deployment</strong></h2><ul local-id="04c1756c-8730-44d9-8242-a0a4124e4dcd"><li local-id="4585639d-ef95-4ae7-9d49-8df8b9712f6a"><p local-id="71bb3947-c72a-4172-ad52-d1bc81e485ba">Evaluate running collectors, Prometheus, Loki, and Grafana in Docker or Kubernetes</p></li><li local-id="fdbdd0b4-e0de-4ba4-97f2-d098baca8165"><p local-id="ed5a0260-f8e8-4524-bb38-1cf0f6e2a737">Investigate cloud deployment options for scalability and resilience</p></li><li local-id="18385b6b-fcdd-4340-b09b-1ec3fbcb553a"><p local-id="643b985f-6b4d-4ac0-9bea-27214d5a5954">Consider distributed deployment best practices for high availability</p></li></ul><p local-id="e1eaf047-f85c-4925-a84f-dcea3d9a8f9b" /><h2 local-id="a964b990-df7b-448a-afda-b7664f7fc2bc" id="Roadmap-Security"><strong>Security</strong></h2><ul local-id="65a53f55-613f-4812-b5a1-c391e5525ded"><li local-id="ed2cb1d0-0a96-4f86-acc6-0aa582104fc7"><p local-id="e2814241-847f-4da0-bb1a-2019c8cd3fe2">Implement full security stack for production-grade deployment</p></li><li local-id="d5ffe028-2482-4040-970e-13d13f0f6cff"><p local-id="342b2598-5cb5-4238-9717-d3f1763f0c94">Role-based access, TLS, authentication, and secure storage of telemetry</p></li><li local-id="ab776a83-0ad4-4f94-8c16-5a717a8c287c"><p local-id="ec4e70fd-1479-43ae-9423-5f027a6edf5d">May also include auditing, logging, and alerting integration</p></li></ul>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on dec 30, 2025 14:33</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

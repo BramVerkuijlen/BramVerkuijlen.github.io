@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Monitoring Expansion : Stdout Output</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Monitoring Expansion</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Overzicht_373653886.html">Overzicht</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Components_491388972.html">Components</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Fluent-bit_492339201.html">Fluent-bit</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Monitoring Expansion : Stdout Output
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                            
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Bram Verkuijlen</span>, last modified on dec 19, 2025
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p local-id="721719cc-aa72-46f3-a545-fc444f995458"><strong>Config file:</strong> <code>outputs/stdout.conf</code></p><p local-id="8ff4fbf2-e1d2-4110-bc70-ae37e799ece1">This output configuration is used to print all ingested logs to the console or standard output. It is primarily useful for testing, debugging, or verifying that Fluent Bit is correctly reading and parsing logs.</p><hr local-id="4c66695e-5ff2-4dc7-9ba6-811d705fb0b3"/><h1 local-id="1542cbf5-b1a3-43ad-8789-8522bb696be0" id="StdoutOutput-TableofContents">Table of Contents</h1><style type='text/css'>/*<![CDATA[*/
+div.rbtoc1767101594437 {padding: 0px;}
+div.rbtoc1767101594437 ul {list-style: default;margin-left: 0px;padding-left: ;}
+div.rbtoc1767101594437 li {margin-left: 0px;padding-left: 0px;}
+
+/*]]>*/</style><div class='toc-macro rbtoc1767101594437'>
+<ul class='toc-indentation'>
+<li><a href='#StdoutOutput-Outputconfiguration'>Output configuration</a></li>
+<li><a href='#StdoutOutput-Explanation'>Explanation</a></li>
+<li><a href='#StdoutOutput-Usecase'>Use case</a></li>
+</ul>
+</div><hr local-id="0c5a7af7-44ce-4a82-ab9a-a76541b0afeb"/><h1 local-id="ea21de6c-93c4-43b9-a18c-e1acc3825a10" id="StdoutOutput-Outputconfiguration">Output configuration</h1><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">[OUTPUT]
+    Name              stdout
+    Match             *
+    Format            json_lines
+    json_date_format  iso8601
+    json_date_key     utc_timestamp
+    workers           5</pre>
+</div></div><p local-id="da4ed2a0-e136-49ce-b262-a9710e7496ae" /><h1 local-id="50d11c9b-8752-451c-8eda-abb44076b6bf" id="StdoutOutput-Explanation">Explanation</h1><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="d5ac7b5a-410e-41f8-920a-14925690fb91" class="confluenceTable"><tbody><tr ac:local-id="3b63c7d6-501d-42d5-8aee-615fe3123826"><th data-local-id="8b112139-778c-418a-b7fb-54865ff919d8" class="confluenceTh"><p local-id="dfea2ee3-189e-4b05-ab39-ae53e3280c46">Setting</p></th><th data-local-id="29e582bd-7988-40aa-96b1-7ff1ff7dc2d2" class="confluenceTh"><p local-id="c374fea0-7e08-4533-a39e-5a6ecad5c50c">Purpose</p></th></tr><tr ac:local-id="a114dfb0-38ac-42c3-b8d2-381d010ea492"><td data-local-id="e0a64c6f-3032-4d4b-a06f-4f11cb4d5be8" class="confluenceTd"><p local-id="fa6a841c-3f61-4389-9b3a-4172036c87d4"><code>Name stdout</code></p></td><td data-local-id="95d79e88-0298-4d12-96fb-11a16ed5da3a" class="confluenceTd"><p local-id="56d718d7-56af-44ca-b66e-774e464658df">Sends logs to the console/standard output for debugging or monitoring purposes</p></td></tr><tr ac:local-id="5f2e4699-5b0f-4149-a228-131abc183d9a"><td data-local-id="0c16ec1e-b866-405c-bbca-735fca3ee645" class="confluenceTd"><p local-id="3a3d48cb-d606-4ebb-ad1d-a92f9a6a6a70"><code>Match *</code></p></td><td data-local-id="01076087-439d-483b-8dfa-78c19146ac11" class="confluenceTd"><p local-id="61c37e21-a4a6-4e77-a49d-7bc26df0ab66">Matches all logs regardless of tag</p></td></tr><tr ac:local-id="b1454392-dd4e-4f80-abf9-b2feaa02114d"><td data-local-id="c5bfb46f-9861-41b2-b187-7f018dd4d81a" class="confluenceTd"><p local-id="eb6dbd07-51c9-4d1c-aee3-017f868d913a"><code>Format json_lines</code></p></td><td data-local-id="2f6b68eb-793a-4c66-883a-a71a4351ef81" class="confluenceTd"><p local-id="98a9c900-e178-4df0-a66e-9cab4f79e797">Converts log entries to JSON, one per line, for readability and structured output</p></td></tr><tr ac:local-id="b4929274-5619-43bb-9c1e-53af0ce63056"><td data-local-id="7622d2eb-893b-4024-920f-a08654e7b10d" class="confluenceTd"><p local-id="837fe1df-ab03-4428-a0e1-9c0190e44a09"><code>json_date_format iso8601</code></p></td><td data-local-id="4da27129-798c-4b44-a6e8-7fc22e11f5d3" class="confluenceTd"><p local-id="d25978c3-1ebf-4b2c-adb4-0b004ac99e00">Formats timestamps in ISO 8601 format</p></td></tr><tr ac:local-id="b1168706-9160-463d-913a-516ff623ff31"><td data-local-id="ee7f4bfe-ab83-4c39-9a49-e3e5805f4e5b" class="confluenceTd"><p local-id="ac143bb8-5808-4d22-99c1-4c24628c95b6"><code>json_date_key utc_timestamp</code></p></td><td data-local-id="5b15dbba-df0e-4bbf-ac5a-6a4aa1eaaafa" class="confluenceTd"><p local-id="d88310a6-ddae-4615-82e8-d43b11e6a2df">Field name used for the timestamp in the JSON output</p></td></tr><tr ac:local-id="92cfc17d-9df2-448a-a083-45a7bbea90c7"><td data-local-id="887c9a3e-e719-4a8b-bdab-1658dab4f16d" class="confluenceTd"><p local-id="30728fb8-8c1a-4342-a250-9edbfc5bc11b"><code>workers 5</code></p></td><td data-local-id="de9f293e-9812-4382-aef3-96d99421df08" class="confluenceTd"><p local-id="a5403c8a-7b78-4a3a-9b42-7d6eaf3e9432">Number of parallel threads used to process output events, improving throughput</p></td></tr></tbody></table></div><hr local-id="ce000a84-4f43-4fb2-bbd8-5719256e17b9"/><h1 local-id="9739c6be-b5f3-4ed6-a6d1-0857ae65ee0b" id="StdoutOutput-Usecase">Use case</h1><ul local-id="b29f35f0-bfab-440a-ba68-83f39e060cc9"><li local-id="104ab649-c711-479b-8082-265a52dcf6be"><p local-id="bf3c5106-9da2-40e1-b686-7f4bd3a78e98">Quick validation of input configuration, parsing, and filters</p></li><li local-id="694dca97-cdec-4395-8d29-830c61c885de"><p local-id="784851c1-e9d9-425a-b19b-26069908fd22">Debugging Fluent Bit pipelines before sending logs to a remote endpoint</p></li><li local-id="e00aa2e8-a8dd-4be3-ad8e-05570fddb276"><p local-id="55f195dc-00b2-4c9c-8507-b0c79dfebedb">Useful in development or POC environments where logs are not yet forwarded externally</p></li></ul><p local-id="020ed61a-825c-4eba-ab9c-42666467465c" />
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on dec 30, 2025 14:33</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

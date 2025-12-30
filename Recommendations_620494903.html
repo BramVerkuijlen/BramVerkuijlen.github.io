@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Monitoring Expansion : Recommendations</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Monitoring Expansion</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Overzicht_373653886.html">Overzicht</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Monitoring Expansion : Recommendations
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                            
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Bram Verkuijlen</span>, last modified on dec 29, 2025
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p local-id="c57a6070-10d4-4aa2-8878-3a3860c9d2b0">This section provides recommendations based on the Monitoring Expansion Proof of Concept (POC) and the research performed during the internship. It is intended for engineers, architects, and decision-makers at AmeXio who are evaluating monitoring strategies for OpenText Content Management (OTCM) and broader observability adoption.</p><hr local-id="d0903ed6-26fa-4ab5-bcdd-0b43d7e3cdec"/><h1 local-id="22dd0801-5b45-459c-a1c4-f179758a21a3" id="Recommendations-TableofContents">Table of Contents</h1><style type='text/css'>/*<![CDATA[*/
+div.rbtoc1767101597369 {padding: 0px;}
+div.rbtoc1767101597369 ul {list-style: default;margin-left: 0px;padding-left: ;}
+div.rbtoc1767101597369 li {margin-left: 0px;padding-left: 0px;}
+
+/*]]>*/</style><div class='toc-macro rbtoc1767101597369'>
+<ul class='toc-indentation'>
+<li><a href='#Recommendations-Purpose'>Purpose</a></li>
+<li><a href='#Recommendations-Scope'>Scope</a></li>
+<li><a href='#Recommendations-SubPages'>SubPages</a></li>
+<li><a href='#Recommendations-Notes'>Notes</a></li>
+</ul>
+</div><hr local-id="c49a8f28-368c-4646-b2c3-0fbe4533e01d"/><h1 local-id="18bce22e-1416-4fdf-9a18-5afc5c979bfc" id="Recommendations-Purpose">Purpose</h1><p local-id="e62742b9-d807-4200-acc1-490bc4fba779">This section provides guidance on how to use the Monitoring Expansion POC effectively and how to use its findings for broader observability strategies. Topics include:</p><ul local-id="3854d340-e553-4734-a1ca-10e673b98149"><li local-id="19eed842-792a-469d-ab61-96564804d581"><p local-id="c750d608-c596-477a-9c57-597355fa08a2">Best practices for collecting performance data from OpenText Content Server (OTCM)</p></li><li local-id="824c9fb8-63c4-4d47-af6d-97e2792f3ab3"><p local-id="d066547e-2d9c-4614-bf86-cbf4e6dd2a73">Strategies for integrating the POC with AMI (AmeXio Monitoring Insights)</p></li><li local-id="2f8de787-f8ea-4621-b927-049133ff5ef3"><p local-id="d35fce68-d7cb-4704-8d32-ebfea7dd0cc1">Recommendations for deploying the POC on other systems or operating systems</p></li><li local-id="2e47c68c-f2c4-44ef-bf04-b20b0cc764a9"><p local-id="d421ae5b-09df-43bc-b592-b92133c3d190">Lessons learned for using, extending, and maintaining the POC</p></li></ul><hr local-id="9224d451-035d-43b7-aae4-dfaa3b3c8e89"/><h1 local-id="2d381d4f-34d1-4e4b-a2a4-1f10bbc1407c" id="Recommendations-Scope">Scope</h1><p local-id="1d909a8d-4e9f-43dc-b141-27130c0094ee">The information provided here are based on hands-on research and experimentation during the internship project. They are meant for:</p><ul local-id="cf3d5b5e-91eb-4cbe-ae21-98dcef6ad190"><li local-id="2fda7b57-9bc1-4ed3-aaf5-c099da97754b"><p local-id="a15efabb-0699-47c4-8fa5-630ebc47fe73">Understanding capabilities and limitations of the current POC</p></li><li local-id="52045b98-3c77-48d4-a53c-f51d5401bddb"><p local-id="e4d41eaf-8ffd-421f-abc0-35411118fe5e">Informing architectural decisions and integration strategies</p></li><li local-id="a9e9f270-cf78-4238-b5b5-0b438ae25530"><p local-id="4e762371-e235-48a1-991c-65d6f2749514">Guiding future extensions of the POC or AMI</p></li></ul><p local-id="44ece3f8-68ca-44ac-b0e4-a56f71bfcbb9">This section <strong>does not provide exhaustive implementation instructions</strong>, and assumes familiarity with the POC’s architecture and components.</p><hr local-id="0762b21e-14eb-482b-bdf6-5c97b82aed38"/><h1 local-id="b7c65e10-5f12-4c1d-8e88-7c20f7bae6aa" id="Recommendations-SubPages">SubPages</h1><ul class='childpages-macro'><li><a href="AMI_620331063.html" data-linked-resource-id="620331063" data-linked-resource-version="3" data-linked-resource-type="page">AMI</a></li><li><a href="Performance-monitoring_620265498.html" data-linked-resource-id="620265498" data-linked-resource-version="3" data-linked-resource-type="page">Performance monitoring</a></li><li><a href="Monitoring-other-systems_619970598.html" data-linked-resource-id="619970598" data-linked-resource-version="2" data-linked-resource-type="page">Monitoring other systems</a></li></ul><h1 local-id="9abe5264-e72d-4cca-9444-231c8ff38008" id="Recommendations-Notes">Notes</h1><ul local-id="22fe657f-9445-4792-8eb2-d59c85278bdc"><li local-id="28d1c06a-4f3a-4af9-8c27-73c763306f76"><p local-id="c7b7f043-44dc-49c0-9197-607032c51b08">This section is intended to complement the <strong>Roadmap &amp; Improvements</strong> section. While the roadmap focuses on planned work, the insights here reflect actionable lessons and best practices from the POC itself.<br/><a href="Roadmap_491225099.html" data-linked-resource-id="491225099" data-linked-resource-version="5" data-linked-resource-type="page">Roadmap</a> </p></li><li local-id="a983daa4-327e-4eca-b6dc-067092e79c3d"><p local-id="2f34249a-b6a6-4691-8ddc-6b12b1c2eb88">Recommendations are based on Windows-based POC testing; Linux or cloud-based deployments may offer additional options not covered here.</p></li></ul>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on dec 30, 2025 14:33</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

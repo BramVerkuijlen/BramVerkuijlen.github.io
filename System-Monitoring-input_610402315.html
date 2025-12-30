@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Monitoring Expansion : System Monitoring input</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Monitoring Expansion</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Overzicht_373653886.html">Overzicht</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Components_491388972.html">Components</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Fluent-bit_492339201.html">Fluent-bit</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Monitoring Expansion : System Monitoring input
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                            
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Bram Verkuijlen</span>, last modified on dec 19, 2025
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p local-id="bf22a42a-c7d7-4f70-85c2-f276661eb986"><strong>Configuration file:</strong> <code>inputs/ot_monitoring.conf</code></p><p local-id="258a3957-7c6a-4a52-a652-8f2944570665">This Fluent Bit input is used to ingest <strong>OTCM System Monitoring events</strong>.<br/>For a detailed explanation of the event structure, fields, and use cases, refer to the <strong>System Monitoring Logs</strong> documentation page.<br/><a href="605978637.html" data-linked-resource-id="605978637" data-linked-resource-version="5" data-linked-resource-type="page">System Monitoring (JSON Events)</a> </p><hr local-id="2bba8632-74fe-47c6-ac0c-747a14f3d07e"/><h1 local-id="7c8e001a-b035-4bce-a60d-90027b7eb946" id="SystemMonitoringinput-TableofContents">Table of Contents</h1><style type='text/css'>/*<![CDATA[*/
+div.rbtoc1767101594354 {padding: 0px;}
+div.rbtoc1767101594354 ul {list-style: default;margin-left: 0px;padding-left: ;}
+div.rbtoc1767101594354 li {margin-left: 0px;padding-left: 0px;}
+
+/*]]>*/</style><div class='toc-macro rbtoc1767101594354'>
+<ul class='toc-indentation'>
+<li><a href='#SystemMonitoringinput-Configuration'>Configuration</a>
+<ul class='toc-indentation'>
+<li><a href='#SystemMonitoringinput-explanation'>explanation</a></li>
+</ul>
+</li>
+<li><a href='#SystemMonitoringinput-Relateddocumentation'>Related documentation</a></li>
+</ul>
+</div><hr local-id="79667bb0-fbde-443c-b7b7-debf2efddad2"/><h1 local-id="a5dfd221-9bcb-4473-bacf-49a54c8ccd85" id="SystemMonitoringinput-Configuration">Configuration</h1><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"># Opentext monitoring logs
+# Configured in OTCM via:
+# http://&lt;OTCM-HOST&gt;/OTCS/cs.exe?func=admin.FluentBitConfig
+
+[INPUT]
+    Name   tcp
+    Format json
+    Listen 127.0.0.1
+    Port   5170
+    tag    cs.systemmonitoring</pre>
+</div></div><p local-id="edb867ee-9749-4620-b24d-95e1ac738ccd" /><h3 local-id="4997070d-adfb-4ab2-b2d5-3bdc13f5104d" id="SystemMonitoringinput-explanation">explanation</h3><div class="table-wrap"><table data-table-width="1800" data-layout="align-start" data-local-id="99c5691b-ca78-4608-81f1-0e1ed2816972" class="confluenceTable"><tbody><tr ac:local-id="8a4ea56d-012f-448f-8427-71d0eb780eac"><th data-local-id="8985f5fc-ec58-4247-b220-aaa3cf7b1250" class="confluenceTh"><p local-id="7e3a641d-b6e2-4024-98a3-a28a8030c72f">Setting</p></th><th data-local-id="a7359912-2340-48bd-8bcf-30324fc498cf" class="confluenceTh"><p local-id="2c5d948e-1a6d-4169-8dc6-d7af9efeab88">Explanation</p></th></tr><tr ac:local-id="94485785-08a6-45a7-9832-4ab000b67452"><td data-local-id="924b029c-5155-43b7-98b6-d006ec61f80a" class="confluenceTd"><p local-id="e05b048a-46f7-4ed9-983e-2f9202da33b5"><code>Name tcp</code></p></td><td data-local-id="c0043cda-6b84-45df-8123-92a9f382442a" class="confluenceTd"><p local-id="b6837581-4ea1-48dd-a0d8-469cb0f9eda8">Uses the TCP input plugin to receive log events pushed by OTCM</p></td></tr><tr ac:local-id="bfb90afb-b45b-4277-a7d1-bf1579fdcd74"><td data-local-id="38272d6b-8fbc-4460-9210-464e33de5618" class="confluenceTd"><p local-id="bae397c7-4bf3-4e5d-a9ff-8632632a988b"><code>Format json</code></p></td><td data-local-id="7c6838ec-c794-4292-a438-3513737ba47e" class="confluenceTd"><p local-id="80b88d09-c89b-4f29-8af6-90c15f5aebff">System Monitoring events are emitted by OTCM in JSON format</p></td></tr><tr ac:local-id="9848498d-61aa-4dd0-a5ca-2cca863b3e0a"><td data-local-id="e772b306-ab6f-4e1d-b175-69514a52f573" class="confluenceTd"><p local-id="966410d9-829f-4cd2-b4a5-6b77ac56ab1d"><code>Listen 127.0.0.1</code></p></td><td data-local-id="a3726afa-d8c0-4464-9c8b-773e6e7a6f4d" class="confluenceTd"><p local-id="b5b68eaa-ce9a-43bb-8c63-3f62397d2f3c">Fluent Bit listens only on the local interface</p></td></tr><tr ac:local-id="b6f6ae36-78ec-49cb-84ac-c31d08a7416d"><td data-local-id="9e93d7e3-9384-4e6f-81b0-7594fd8cd274" class="confluenceTd"><p local-id="871e8beb-7abc-4d27-8339-6a1ae933f417"><code>Port 5170</code></p></td><td data-local-id="ea5ce1cd-131c-472f-a848-35c9109cfa74" class="confluenceTd"><p local-id="6693ae0e-04db-4e1c-8c18-d9f838f3732c">Default port used by OTCM to send System Monitoring events</p></td></tr><tr ac:local-id="c29ce85c-eb23-4dba-a261-4c085671c081"><td data-local-id="738b2bdf-914a-4ba9-9660-2f5c54756ef6" class="confluenceTd"><p local-id="7e246fc0-f22b-4c8a-ac44-710f2db76e3a"><code>tag cs.systemmonitoring</code></p></td><td data-local-id="cb241c96-9b4e-4d97-b695-f0a6c7dfafda" class="confluenceTd"><p local-id="79765f3a-215b-4b5e-8406-ffd504199bea">Tag used to identify and route System Monitoring logs</p></td></tr></tbody></table></div><hr local-id="a9742b13-d744-4e27-bdd7-2f3576870306"/><h1 local-id="7fe7039f-62a4-4723-9c05-ab4a56629b7a" id="SystemMonitoringinput-Relateddocumentation">Related documentation</h1><ul local-id="c8eeba4f-5461-4ec5-ab7c-f4f05ae1f8ca"><li local-id="84d9bf2b-4fac-49c0-a5d8-3661368e975d"><p local-id="0a0ea519-612d-4ea7-a463-c26b4fa97860"><strong>System Monitoring Logs</strong> – detailed event types, fields, and examples<br/><a href="605978637.html" data-linked-resource-id="605978637" data-linked-resource-version="5" data-linked-resource-type="page">System Monitoring (JSON Events)</a></p></li><li local-id="156a99ba-4b64-4435-8e56-6e67a7d17982"><p local-id="c4dc8161-ae71-4f2d-b05d-9176a978c4bf"><strong> Fluent Bit TCP input</strong> - How to Turn on the Fluent Bit intergration in Content management server<br/><a href="Admin-Panel-Configuration_605028361.html#Fluent-Bit-Integration" data-linked-resource-id="605028361" data-linked-resource-version="3" data-linked-resource-type="page">Admin Panel Configuration</a> </p></li></ul>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on dec 30, 2025 14:33</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>
